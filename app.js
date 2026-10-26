@@ -34,6 +34,9 @@
   const state = {
     lang: detectedLang,
     mode: "easy", // "easy" or "advanced"
+    easyView: "wizard", // easy mode: "wizard" (one question at a time) or "list" (all at once)
+    step: 0, // wizard step; Q.questions.length = result page
+    answered: new Set(), // questions answered in the wizard ("No change" is only marked once chosen)
     year: CONFIG.defaultYear,
     includeFunds: false,
     selected: new Map(),
@@ -197,6 +200,9 @@
         JSON.stringify({
           lang: state.lang,
           mode: state.mode,
+          easyView: state.easyView,
+          step: state.step,
+          answered: [...state.answered],
           year: state.year,
           includeFunds: state.includeFunds,
           selected: [...state.selected],
@@ -207,16 +213,28 @@
     }
   }
 
-  function loadFromStorage() {
-    let saved;
+  function readStorage() {
     try {
-      saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      return saved && typeof saved === "object" ? saved : null;
     } catch {
-      return;
+      return null;
     }
-    if (!saved || typeof saved !== "object") return;
+  }
+
+  // Restores where the visitor left off in easy mode.
+  function restoreProgress(saved) {
+    if (saved.easyView === "list") state.easyView = "list";
+    if (Number.isInteger(saved.step)) state.step = Math.max(0, Math.min(saved.step, Q.questions.length));
+    if (Array.isArray(saved.answered)) saved.answered.forEach((id) => state.answered.add(id));
+  }
+
+  function loadFromStorage() {
+    const saved = readStorage();
+    if (!saved) return;
     if (CONFIG.languages.includes(saved.lang)) state.lang = saved.lang;
     if (saved.mode === "advanced") state.mode = "advanced";
+    restoreProgress(saved);
     if (YEARS.includes(saved.year)) state.year = saved.year;
     state.includeFunds = saved.includeFunds === true;
     if (Array.isArray(saved.selected)) saved.selected.forEach(([id, count]) => addSelection(id, count));
@@ -246,12 +264,25 @@
       const [id, count] = part.split("*");
       addSelection(id, count);
     }
+    // A link with selections (e.g. shared by a friend) opens on the result page
+    if (state.selected.size) state.step = Q.questions.length;
   }
 
-  // A link with state (e.g. a shared one) wins; otherwise continue from where the visitor left off.
+  // A link with state wins; otherwise continue from where the visitor left off.
+  // If the link's selections match what this browser saved, it is the visitor's own page (e.g. a reload),
+  // so their progress is restored instead of jumping to the result page meant for shared links.
   function loadState() {
-    if (location.hash.length > 1) loadFromUrl();
-    else loadFromStorage();
+    if (location.hash.length <= 1) {
+      loadFromStorage();
+      return;
+    }
+    loadFromUrl();
+    const saved = readStorage();
+    const key = (entries) => entries.map(([id, count]) => `${id}*${count}`).sort().join(",");
+    if (saved && Array.isArray(saved.selected) && key(saved.selected) === key([...state.selected])) {
+      state.step = 0;
+      restoreProgress(saved);
+    }
   }
 
   function saveState() {
@@ -383,6 +414,12 @@
   }
 
   // ---------- Easy mode ----------
+  // Two ways to answer: one question at a time ("wizard", default) or all questions at once ("list").
+  // Wizard steps are 0 … questions.length - 1, and questions.length is the result page.
+
+  const RESULT_STEP = Q.questions.length;
+  const AUTO_ADVANCE_MS = 600;
+  let advanceTimer;
 
   function renderEasy() {
     const card = (q) => `
@@ -407,22 +444,38 @@
         </details>
       </article>`;
 
-    $("#easy").innerHTML =
-      Q.sections
-        .map(
-          (s) => `
-        <section class="section">
-          <h2>${esc(loc(s.title))}</h2>
-          <div class="cards">${Q.questions.filter((q) => q.section === s.id).map(card).join("")}</div>
-        </section>`
-        )
-        .join("") +
-      `<section class="result">
-        <h2>${esc(t("resultTitle"))}</h2>
-        <p data-result-text></p>
+    $("#easy").innerHTML = `
+      <div class="easy-view-switch" role="group" aria-label="${esc(t("easyViewLabel"))}">
+        <button type="button" data-easy-view="wizard">${esc(t("viewOneByOne"))}</button>
+        <button type="button" data-easy-view="list">${esc(t("viewAll"))}</button>
+      </div>
+
+      <section class="wizard" id="wizard" aria-live="polite"></section>
+
+      <div class="list-view" id="list-view">
+        ${Q.sections
+          .map(
+            (s) => `
+          <section class="section">
+            <h2>${esc(loc(s.title))}</h2>
+            <div class="cards">${Q.questions.filter((q) => q.section === s.id).map(card).join("")}</div>
+          </section>`
+          )
+          .join("")}
+      </div>
+
+      <section class="result" id="result">
+        <h2 tabindex="-1">${esc(t("resultTitle"))}</h2>
+        <p class="result-text" data-result-text></p>
         <div class="result-actions">
           <button type="button" class="btn" data-share-image>${esc(t("shareImage"))}</button>
           <button type="button" class="btn secondary" data-share>${esc(t("share"))}</button>
+        </div>
+        <h3 class="answers-title">${esc(t("yourAnswers"))}</h3>
+        <p class="muted answers-hint">${esc(t("answersHint"))}</p>
+        <ol class="answers" data-answers></ol>
+        <div class="result-actions">
+          <button type="button" class="btn secondary" data-start-over>${esc(t("startOver"))}</button>
           <button type="button" class="btn secondary" data-mode="advanced">${esc(t("toAdvanced", { n: Object.keys(M).length }))}</button>
         </div>
       </section>`;
@@ -445,7 +498,73 @@
       .join("");
   }
 
+  // One question with big answer options; each option shows what it means before choosing.
+  function renderWizardStep() {
+    const step = state.step;
+    const q = Q.questions[step];
+    const current = currentLevel(q);
+    const options = [0, ...q.levels.map((_, i) => i + 1)]
+      .map((n) => {
+        const desc = n === 0 ? t("noChangeDescription") : loc(q.levels[n - 1].description);
+        const amount = n === 0 ? "" : formatEur(levelTotal(q.levels[n - 1]));
+        const checked = n === current && (n > 0 || state.answered.has(q.id));
+        return `
+          <button type="button" class="option" role="radio" aria-checked="${checked}" data-question="${q.id}" data-level="${n}">
+            <span class="option-head">
+              <span class="option-name">${esc(levelName(q, n))}</span>
+              <span class="option-amount">${amount}</span>
+            </span>
+            <span class="option-description">${esc(desc)}</span>
+          </button>`;
+      })
+      .join("");
+    const isLast = step === RESULT_STEP - 1;
+
+    $("#wizard").innerHTML = `
+      <div class="wizard-progress">
+        <span>${esc(t("questionOf", { n: step + 1, total: RESULT_STEP }))}</span>
+        <span class="muted">${esc(loc(Q.sections.find((s) => s.id === q.section).title))}</span>
+      </div>
+      <div class="progress" aria-hidden="true"><div style="width:${(step / RESULT_STEP) * 100}%"></div></div>
+      <article class="wizard-card">
+        <h2 tabindex="-1">${esc(loc(q.title))}</h2>
+        <p class="wizard-description">${esc(loc(q.description))}</p>
+        ${current === -1 ? `<p class="notice-text">${esc(t("modifiedInAdvanced"))}</p>` : ""}
+        <div class="options" role="radiogroup" aria-label="${esc(loc(q.title))}">${options}</div>
+        <details class="card-details" data-card-details="${q.id}">
+          <summary>${esc(t("cardDetails"))}</summary>
+          <div class="card-details-body"></div>
+        </details>
+      </article>
+      <div class="wizard-nav">
+        <button type="button" class="btn secondary big" data-goto="${step - 1}" ${step === 0 ? "disabled" : ""}>${esc(t("previous"))}</button>
+        <button type="button" class="btn big" data-goto="${step + 1}">${esc(isLast ? t("toResult") : t("next"))}</button>
+      </div>`;
+  }
+
+  function goToStep(step) {
+    clearTimeout(advanceTimer);
+    state.step = Math.max(0, Math.min(step, RESULT_STEP));
+    update();
+    // Bring the new question (or the result) into view below the sticky meter, and move focus to its heading
+    const target = state.step === RESULT_STEP ? $("#result") : $("#wizard");
+    const meterHeight = $(".meter").getBoundingClientRect().height;
+    const top = target.getBoundingClientRect().top + window.scrollY - meterHeight - 12;
+    if (target.getBoundingClientRect().top < meterHeight || target.getBoundingClientRect().top > window.innerHeight * 0.6) {
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+    $("h2", target)?.focus({ preventScroll: true });
+  }
+
   function updateEasy() {
+    const wizard = state.easyView === "wizard";
+    $$(".easy-view-switch [data-easy-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.easyView === state.easyView)));
+    $("#list-view").hidden = wizard;
+    $("#wizard").hidden = !wizard || state.step === RESULT_STEP;
+    $("#result").hidden = wizard && state.step !== RESULT_STEP;
+    if (wizard && state.step < RESULT_STEP) renderWizardStep();
+
+    // All-at-once cards
     for (const q of Q.questions) {
       const el = $(`.card[data-question="${q.id}"]`);
       const current = currentLevel(q);
@@ -457,9 +576,10 @@
       });
       $("[data-level-description]", el).textContent =
         current > 0 ? loc(q.levels[current - 1].description) : current === -1 ? t("modifiedInAdvanced") : "";
-      const details = $("details", el);
-      if (details.open) $(".card-details-body", details).innerHTML = renderCardDetails(q);
     }
+    $$("details[data-card-details]").forEach((d) => {
+      if (d.open) $(".card-details-body", d).innerHTML = renderCardDetails(Q.questions.find((x) => x.id === d.dataset.cardDetails));
+    });
 
     // Result summary
     let spending = 0;
@@ -482,6 +602,19 @@
       text += t("resultQuestion");
     }
     $("[data-result-text]").textContent = text;
+
+    // Answers: tap one to jump back to that question
+    $("[data-answers]").innerHTML = Q.questions
+      .map((q, i) => {
+        const n = currentLevel(q);
+        const answer = n === -1 ? t("modified") : levelName(q, n);
+        const amount = n > 0 ? formatEur(levelTotal(q.levels[n - 1])) : n === -1 ? formatEur(q.allIds.reduce((s, id) => s + selectedImpact(id), 0)) : "";
+        return `<li><button type="button" class="answer" data-goto="${i}">
+          <span class="answer-question">${esc(loc(q.title))}</span>
+          <span class="answer-choice${n === 0 ? " muted" : ""}">${esc(answer)}${amount ? ` · ${amount}` : ""}</span>
+        </button></li>`;
+      })
+      .join("");
   }
 
   function setMode(mode) {
@@ -885,8 +1018,40 @@
       const levelBtn = e.target.closest("[data-level]");
       if (levelBtn) {
         const q = Q.questions.find((x) => x.id === levelBtn.dataset.question);
+        state.answered.add(q.id);
         setLevel(q, Number(levelBtn.dataset.level));
         update();
+        // In the wizard, move on once the choice has had a moment to show
+        if (levelBtn.classList.contains("option")) {
+          const step = state.step;
+          clearTimeout(advanceTimer);
+          advanceTimer = setTimeout(() => {
+            if (state.step === step && state.mode === "easy") goToStep(step + 1);
+          }, AUTO_ADVANCE_MS);
+        }
+        return;
+      }
+
+      const gotoBtn = e.target.closest("[data-goto]");
+      if (gotoBtn) {
+        state.easyView = "wizard";
+        goToStep(Number(gotoBtn.dataset.goto));
+        return;
+      }
+
+      const viewBtn = e.target.closest("[data-easy-view]");
+      if (viewBtn) {
+        clearTimeout(advanceTimer);
+        state.easyView = viewBtn.dataset.easyView;
+        update();
+        return;
+      }
+
+      if (e.target.closest("[data-start-over]")) {
+        state.selected.clear();
+        state.answered.clear();
+        state.easyView = "wizard";
+        goToStep(0);
         return;
       }
 

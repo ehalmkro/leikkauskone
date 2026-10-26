@@ -291,6 +291,64 @@ body.mode-advanced .easy-only { display: none !important; }
 .card-details-body li .num { white-space: nowrap; }
 .details-title { margin: 6px 0 2px; font-weight: 600; color: var(--text); }
 
+/* Easy mode: one question at a time (sized generously for readability) */
+
+.easy-view-switch {
+  display: inline-flex; padding: 3px; gap: 2px; margin-top: 16px;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+}
+.easy-view-switch button {
+  font: inherit; font-size: 0.88rem; font-weight: 600; color: var(--text-2);
+  background: none; border: 0; border-radius: 999px; padding: 0.35em 1em; cursor: pointer;
+}
+.easy-view-switch button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgb(0 0 0 / 0.12); }
+
+.wizard { max-width: 760px; margin-top: 16px; }
+.wizard-progress { display: flex; justify-content: space-between; gap: 12px; font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+.progress { height: 8px; background: var(--track); border-radius: 999px; overflow: hidden; margin-bottom: 14px; }
+.progress > div { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.3s ease; }
+.wizard-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 22px 16px;
+}
+.wizard-card h2 { font-size: clamp(1.35rem, 3.2vw, 1.7rem); margin-bottom: 8px; }
+.wizard-card h2:focus { outline: none; }
+.wizard-description { font-size: 1.05rem; color: var(--text-2); margin: 0 0 18px; }
+.notice-text { background: var(--notice-bg); padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; }
+.options { display: grid; gap: 10px; }
+.option {
+  font: inherit; color: var(--text); text-align: left;
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 14px 16px; min-height: 64px;
+  background: var(--surface-2); border: 2px solid var(--border); border-radius: 10px; cursor: pointer;
+}
+.option:hover { border-color: var(--accent); }
+.option-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.option-name { font-size: 1.15rem; font-weight: 700; }
+.option-amount { font-size: 1.05rem; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.option-description { font-size: 0.98rem; color: var(--text-2); }
+.option[aria-checked="true"] { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
+.option[aria-checked="true"] .option-name::before { content: "✓ "; color: var(--accent); }
+.wizard-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; }
+.btn.big { font-size: 1.05rem; padding: 0.7em 1.4em; }
+
+.answers { list-style: none; margin: 0 0 16px; padding: 0; }
+.answers li + li { border-top: 1px solid var(--surface-2); }
+.answer {
+  font: inherit; color: var(--text); text-align: left; width: 100%;
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  background: none; border: 0; padding: 10px 4px; cursor: pointer; border-radius: 6px;
+}
+.answer:hover { background: var(--surface-2); }
+.answer-question { flex: 1 1 260px; }
+.answer-choice { font-weight: 600; white-space: nowrap; }
+.answers-title { font-size: 1.05rem; margin: 22px 0 2px; }
+.answers-hint { margin: 0 0 8px; font-size: 0.88rem; }
+.result h2:focus { outline: none; }
+.result-text { font-size: 1.05rem; }
+
 .result {
   margin-top: 28px;
   background: var(--surface);

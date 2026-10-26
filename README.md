@@ -7,7 +7,9 @@ review* (26 Oct 2026) and the options in its *tax review*.
 The page has two views:
 
 - **Easy** (default): 17 big questions ("Cut support for families with children?") answered with
-  *No change / A little / A lot*.
+  *No change / A little / A lot*. Questions are shown one at a time, voting-advice-application style
+  (each option explains what it means, choosing moves on, you can always go back), ending in a result page
+  with a shareable image. All questions can also be shown at once.
 - **Detailed**: all 459 measures, grouped and individually selectable.
 
 Both views share the same selections: easy-mode answers show up as individual measures in the detailed view.
