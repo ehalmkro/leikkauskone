@@ -1,0 +1,535 @@
+key;en
+category:ELI;Business, transport and environment
+category:KOU;Education, culture and sport
+category:SOS;Social security benefits
+category:SOT;Health and social services
+category:HAL;Security, defence and administration
+category:IND;Index-linked spending
+category:VAL;Government, structures and public staff
+category:VER;Taxes (tax review)
+group:T&K-rahoitus;R&D funding
+group:Yritys- ja energiatuet;Business and energy subsidies
+group:Liikenne;Transport
+group:Yle;Yle (public broadcaster)
+group:Maatalous ja maaseutu;Agriculture and rural areas
+group:Metsät, kala- ja riistatalous;Forests, fishing and game
+group:Ympäristö ja asuminen;Environment and housing
+group:Aluehallinto ja muut;Regional administration and other
+group:Varhaiskasvatus;Early childhood education
+group:Perusopetus;Basic education
+group:Toinen aste;Upper secondary education
+group:Korkeakoulut ja tiede;Higher education and science
+group:Opintotuki ja koulumatkat;Student aid and school transport
+group:Vapaa sivistystyö;Adult liberal education
+group:Kulttuuri ja taide;Culture and arts
+group:Liikunta ja nuoriso;Sport and youth
+group:Kirkot, järjestöt ja hallinto;Churches, associations and administration
+group:Lapsiperheiden tuet;Support for families with children
+group:Asumistuki, toimeentulo ja työttömyysturva;Housing allowance, social assistance and unemployment benefits
+group:Lääkkeet ja muut Kela-korvaukset;Medicines and other Kela reimbursements
+group:Kansaneläke, takuueläke ja vammaisetuudet;National pension, guarantee pension and disability benefits
+group:Työeläkkeet;Earnings-related pensions
+group:Yrittäjien eläkkeet ja lomitus;Entrepreneurs' pensions and farm relief services
+group:Mitoitukset ja hoitotakuut;Staffing ratios and care guarantees
+group:Asiakasmaksut ja omavastuut;Client fees and co-payments
+group:Palvelujen rajaaminen;Limiting services
+group:Palveluverkko ja rakenteet;Service network and structures
+group:Valtionavustukset ja koulutus;Government grants and training
+group:Ulkoasiat ja kehitysyhteistyö;Foreign affairs and development aid
+group:Puolustus ja kriisinhallinta;Defence and crisis management
+group:Oikeuslaitos ja ulosotto;Judiciary and debt enforcement
+group:Poliisi, rajat ja maahanmuutto;Police, borders and immigration
+group:Valtionhallinnon tehostaminen;Making central government more efficient
+group:Yleiset indeksitoimet;General index measures
+group:Presidentti, eduskunta ja valtioneuvosto;President, Parliament and Government
+group:Kunnat ja valtionosuudet;Municipalities and central government transfers
+group:Budjetointi ja valtion rakenteet;Budgeting and government structures
+group:Julkisen sektorin henkilöstö;Public sector staff
+group:Ansio- ja eläketulot;Earned and pension income
+group:Pääomatulot, varainsiirto ja perinnöt;Capital income, transfer tax and inheritances
+group:Yritys- ja metsäverotus;Business and forest taxation
+group:Arvonlisävero;Value added tax
+group:Liikenne- ja energiaverot;Transport and energy taxes
+group:Alkoholi, tupakka ja virvoitusjuomat;Alcohol, tobacco and soft drinks
+group:Kiinteistövero ja muut;Property tax and other
+ELI-05;Repealing the R&D Funding Act early
+ELI-06;Repealing the R&D Funding Act and returning R&D funding to its pre-Act level
+ELI-07;Channelling more EU funding to R&D in the next EU budget period
+ELI-08;Increasing the R&D share of university funding
+ELI-09;Ending the R&D project funding for SMEs
+ELI-10;Reducing the government grant to VTT (Technical Research Centre of Finland)
+ELI-11;Ending Business Finland's non-R&D business funding (or cutting it significantly)
+ELI-13;Cutting funding for energy efficiency and renewable energy promotion
+ELI-14;Ending energy aid (or cutting it significantly)
+ELI-17;Ending innovation aid for shipbuilding
+ELI-18;Ending discretionary grants for sustainable growth policy (or cutting them significantly)
+ELI-19;Ending reimbursement of seafarers' travel costs (or cutting it significantly)
+ELI-23;Ending regional transport aid (or cutting it significantly)
+ELI-24;Capital repayment or dividends from Finnish Industry Investment (Tesi) to the state
+ELI-25;Cutting all direct business subsidies (grants) by 30 per cent
+ELI-26;Repealing the R&D Funding Act early and cutting all direct business subsidies by 30 per cent
+ELI-27;Lowering the loss compensation rate paid to Finnvera
+ELI-41;Excluding service staff from the shipping company subsidy (or reforming the whole maritime subsidy system)
+ELI-29;Channelling EU funding to transport projects (military mobility) in the next EU budget period
+ELI-30;Raising fairway dues to cover the authorities' maintenance costs
+ELI-31;Raising rail network charges and extending their collection
+ELI-32;Cutting uncommitted funding for new transport infrastructure projects
+ELI-33;Cutting funding for basic maintenance of roads, railways and waterways
+ELI-34;Ending state funding for private roads and for promoting walking and cycling (or cutting it significantly)
+ELI-35;Ending grants to airports outside the Finavia network (or cutting them significantly)
+ELI-36;Reducing state support for land and water area compensation
+ELI-37;Reducing grants for archipelago ferry pier repairs, surveys and information
+ELI-38;Lowering the state's share of public transport funding from 50 to 30 per cent
+ELI-39;Ending support for regional flights (purchased air services)
+ELI-40;Ending government grants for transport development projects and mobility management (or cutting them significantly)
+ELI-42;Cutting funding for Yle (public broadcaster) gradually by 20 per cent
+ELI-43;Cutting funding for Yle (public broadcaster) gradually by 10 per cent
+ELI-15;Ending the agricultural energy tax refund on fuels
+ELI-16;Ending the agricultural energy tax refund entirely
+ELI-44;Ending non-EU-funded agricultural and forestry research
+ELI-45;Ending miscellaneous subsidies in agriculture and forestry (or cutting them significantly)
+ELI-46;Ending interest subsidies for rural businesses
+ELI-47;Lowering the interest subsidy rate for rural businesses
+ELI-48;Lowering the maximum interest subsidy for rural businesses
+ELI-49;Ending funding for agricultural advisory services (or cutting it significantly)
+ELI-50;Reducing funding for the maintenance of reindeer fences
+ELI-51;Ending support for reindeer husbandry advisory and development work
+ELI-52;Ending support for the equine industry (or cutting it significantly)
+ELI-53;Ending discretionary funding for 4H youth activities (or cutting it significantly)
+ELI-54;Ending discretionary rural development funding (or cutting it significantly)
+ELI-55;Abolishing national aid for agriculture and horticulture
+ELI-56;Gradually reducing national aid for agriculture and horticulture
+ELI-57;Reducing the fully nationally funded part of EU co-financed CAP support
+ELI-58;Abolishing fully national top-up funding to EU co-financed CAP support
+ELI-59;Ending nutrient recycling aid (or cutting it significantly)
+ELI-60;Ending government grants to national animal welfare organisations and universities (or cutting them significantly)
+ELI-69;Lowering the maximum national funding for the CAP support programme
+ELI-72;Ending subsidies for passive farming
+ELI-61;Ending discretionary project funding for natural resources and the bioeconomy (or cutting it significantly)
+ELI-62;Halving compensation for damage caused by large carnivores
+ELI-63;Halving subsidies for sustainable timber production
+ELI-64;Reducing funding for the METSO forest biodiversity programme
+ELI-65;Ending funding for the METSO forest biodiversity programme
+ELI-66;Reducing the government grant to the Finnish Forest Centre
+ELI-67;Ending state funding for non-profit organisations in the natural resources sector
+ELI-68;Reducing funding for Metsähallitus (public administration tasks)
+ELI-70;Reducing research, planning and maintenance costs of state-owned water structures
+ELI-71;Lowering the maximum national funding for the EU fisheries programme
+ELI-73;Raising fishing licence fees and removing their earmarking
+ELI-74;Raising hunting licence fees and removing their earmarking
+ELI-75;Introducing a land use change fee
+ELI-76;Higher revenue from Metsähallitus business operations (including wind power)
+ELI-77;Higher revenue from Metsähallitus business operations (excluding wind power)
+ELI-78;Ending discretionary grants to associations and for environmental management (or cutting them significantly)
+ELI-79;Significantly cutting nature conservation funding
+ELI-80;Reducing discretionary environmental grants and fixed-term staff, and ending the Climate Change Panel
+ELI-81;Cutting funding for Baltic Sea and water protection
+ELI-82;Reducing discretionary funding for water and environmental management
+ELI-83;Ending the transfer for rescue services' oil spill response equipment
+ELI-84;Ending housing advice services
+ELI-85;Reducing renovation grants
+ELI-86;Reducing grants for state-subsidised housing production
+ELI-87;Ending grants for the care of built heritage (or cutting them significantly)
+ELI-12;Shortening non-military (civilian) service
+ELI-20;Ending discretionary regional grants (international recruitment and Eastern Finland)
+ELI-21;Removing extra layers of rural administration
+ELI-22;Consolidating the regional state administration (vitality centres)
+ELI-28;Reducing or ending calculated integration compensation to municipalities
+KOU-11;Introducing a minimum fee for early childhood education
+KOU-12;Raising the maximum fee for early childhood education
+KOU-13;Returning early childhood education fee criteria to pre-2017 levels
+KOU-14;Lowering the income thresholds for early childhood education fees
+KOU-15;Easing qualification requirements for early childhood education teachers
+KOU-16;Returning daycare staffing ratios to 2016–2020 levels
+KOU-17;Limiting the universal right to early childhood education to school hours
+KOU-18;Ending government grants for early childhood education in-service training
+KOU-19;A common worldview/ethics subject for all pupils instead of separate religion classes
+KOU-20;Abolishing the equality funding for basic education
+KOU-21;Reducing the equality funding for basic education
+KOU-22;Cutting three weekly lessons from basic education
+KOU-23;Cutting B1 language teaching by one weekly lesson
+KOU-24;Ending funding for Finnish schools abroad
+KOU-25;Freezing index increases for pre-primary, basic and early childhood education funding
+KOU-05;Raising matriculation exam fees to cover costs
+KOU-31;Ending free study materials in upper secondary education (restoring the material allowance)
+KOU-32;Reversing the 2021 extension of compulsory education (restoring the material allowance)
+KOU-33;Merging state-run vocational education providers into larger units
+KOU-34;Splitting vocational education funding between first qualifications and adult education and cutting adult vocational funding
+KOU-35;Removing index-linking from adult vocational education funding
+KOU-36;Setting minimum fees for vocational and specialist vocational qualifications
+KOU-37;Charging for school meals in vocational education
+KOU-38;Limiting general upper secondary school funding to 3 years
+KOU-39;Ending the small upper secondary school supplement
+KOU-40;Ending funding for special educational tasks and national development tasks of upper secondary schools
+KOU-41;Charging for school meals in general upper secondary schools
+KOU-42;Removing index-linking from general upper secondary school funding
+KOU-43;Limiting state funding to a person's first higher education degree at each level
+KOU-44;Excluding degrees of fee-paying non-EU students from state funding
+KOU-45;Introducing tuition fees in higher education
+KOU-46;Introducing fees for doctoral education
+KOU-47;Removing index-linking from higher education funding
+KOU-48;Ending the separate extra funding for Åbo Akademi University
+KOU-49;Ending funding for private archives
+KOU-50;Ending funding for Finnish research institutes abroad
+KOU-83;Developing the scope and structure of the higher education network
+KOU-51;Abolishing the student loan compensation for higher education students
+KOU-52;Lowering the maximum student loan compensation
+KOU-53;Removing municipal zoning from the student housing supplement
+KOU-54;Ending the parental supplement to the study grant (or cutting it significantly)
+KOU-55;Removing index-linking from the study grant
+KOU-56;Removing index-linking from students' annual income limits
+KOU-57;Moving higher education students to a fully loan-based student aid system
+KOU-58;Limiting the duration of study grant and housing supplement in higher education
+KOU-59;Lowering the study grant for higher education students and raising the state-guaranteed student loan
+KOU-60;Ending the meal subsidy for higher education students
+KOU-61;Overall reform of school transport support
+KOU-62;Increasing the distance threshold for school transport support
+KOU-26;Reducing funding for adult liberal education (e.g. adult education centres)
+KOU-27;Ending funding for adult liberal education
+KOU-28;Removing index increases from adult liberal education funding
+KOU-29;Ending funding for the folk high school year
+KOU-30;Ending funding for study centres
+KOU-63;Stopping new extraordinary artists' pensions
+KOU-64;Removing index increases from extraordinary artists' and journalists' pensions
+KOU-65;Reducing funding for performing arts and museums
+KOU-66;Removing index increases from performing arts and museum funding
+KOU-67;Reducing funding for basic education in the arts
+KOU-68;Removing index increases from funding for basic education in the arts
+KOU-69;Reducing public lending right remuneration
+KOU-70;Reducing grants for promoting arts and culture
+KOU-71;Reducing film production support in line with the new audiovisual levy
+KOU-72;Awarding fewer artist grants
+KOU-73;Removing index increases from funding for national arts institutions
+KOU-74;Charging adults for library cards or reintroducing reservation fees
+KOU-06;Ending grants for children's and young people's hobby activities (or cutting them significantly)
+KOU-75;Stopping new extraordinary athletes' pensions
+KOU-76;Ending support for building sports facilities
+KOU-77;Reducing funding for promoting sport and physical activity
+KOU-78;Ending the Finland on the Move programme (or cutting it significantly)
+KOU-79;Moving municipal sports transfers into the basic services transfer
+KOU-80;Moving municipal youth work transfers into the basic services transfer
+KOU-81;Ending funding for youth centres (or cutting it significantly)
+KOU-82;Reducing funding for youth workshops
+KOU-07;Cutting grants to associations (education and culture sector)
+KOU-08;Lowering and pruning certain Ministry of Education and Culture grants
+KOU-09;Ending state funding for the public duties of parishes in burial services
+KOU-10;Removing index increases from funding for the Lutheran and Orthodox churches
+KOU-84;Reorganising the Finnish National Agency for Education
+SOS-05;Removing the sibling supplements to child benefit
+SOS-06;Removing the child benefit supplement for children under 3
+SOS-07;Removing the single-parent supplement to child benefit
+SOS-08;Abolishing child benefit
+SOS-09;Limiting the maternity grant (baby box) to the first child and ending the cash option
+SOS-10;Abolishing child maintenance allowance
+SOS-60;Abolishing the partial childcare allowance
+SOS-61;Abolishing the flexible childcare allowance
+SOS-62;Abolishing or limiting the child home care allowance
+SOS-63;Ending the higher rate for the first 16 days of parental allowance
+SOS-64;Changing the calculation basis of parental allowance
+SOS-11;Lowering housing allowance everywhere to the level of the cheapest municipality group
+SOS-12;Lowering the housing allowance rate from 70 to 60 per cent
+SOS-13;Linking the basic amount of social assistance to the recipient's age
+SOS-14;Introducing spousal income testing for the new general benefit
+SOS-15;Shortening earnings-related unemployment benefit to 300 days
+SOS-16;Cutting discretionary rehabilitation funding to the statutory minimum
+SOS-17;Limiting Kela-reimbursed rehabilitation psychotherapy
+SOS-18;Ending Kela reimbursements for private doctor visits
+SOS-19;Raising the patient co-payment for health-related travel from €25 to €35
+SOS-20;Raising the annual cap on health-related travel costs from €300 to €500
+SOS-21;Ending reimbursement of over-the-counter medicines
+SOS-22;Raising the initial medicine deductible from €70 to €100
+SOS-23;Lowering the basic medicine reimbursement rate from 40 to 30 per cent
+SOS-24;Lowering the lower special reimbursement rate for medicines from 65 to 60 per cent
+SOS-25;Raising the co-payment in the higher special reimbursement category from €4.50 to €6
+SOS-26;Raising the co-payment for additional medicine reimbursement from €2.50 to €4
+SOS-65;Lowering Kela's occupational health reimbursement (class I) from 60 to 50 per cent
+SOS-66;Lowering Kela's occupational health reimbursement (class II) from 50 to 40 per cent
+SOS-67;Lowering the per-employee cap on occupational health reimbursement by €50
+SOS-32;Removing the income limit linked to the full national pension
+SOS-33;Raising the national pension reduction rate from 50 to 60 per cent
+SOS-34;Removing index-linking from the national pension and guarantee pension
+SOS-35;Removing the child supplement to the national pension
+SOS-36;Abolishing the guarantee pension
+SOS-37;Lowering the guarantee pension
+SOS-38;Prorating the guarantee pension by years of residence in Finland like the national pension
+SOS-39;Limiting the guarantee pension to those who have reached the minimum retirement age
+SOS-40;Merging pensioners' housing allowance into the general housing allowance
+SOS-41;Moving rehabilitation allowance recipients from pensioners' housing allowance to general housing allowance
+SOS-42;Limiting pensioners' housing allowance to old-age pensioners
+SOS-43;Abolishing the lowest (basic) level of disability and care allowances
+SOS-59;Freezing index increases of all benefits tied to the national pension index or consumer prices
+SOS-44;Ending pension accrual for completed degrees
+SOS-45;Ending pension accrual for caring for a child under 3
+SOS-46;Ending pension accrual for family leave other than home care
+SOS-47;Ending pension accrual during earnings-related unemployment benefit
+SOS-48;Ending other pension accrual for unpaid periods
+SOS-49;Raising the minimum retirement age by 6 months per age cohort from 2032 (to 70 by 2046)
+SOS-50;Linking earnings-related pension indexation fully to consumer prices
+SOS-51;Temporarily freezing the earnings-related pension index and wage coefficient
+SOS-52;Limiting survivors' pensions (excluding families with children) to 2 years
+SOS-53;Abolishing or tightening the partial early old-age pension
+SOS-54;Removing special disability pension rules for older workers
+SOS-55;Abolishing the occupational disability definition in the public sector
+SOS-56;Removing the one-off increase to disability pensions
+SOS-57;Lowering the pension accrual rate
+SOS-58;Changing the weights of the wage coefficient
+SOS-27;Ending the state contribution to the seafarers' pension scheme
+SOS-28;Removing (or reducing) contribution discounts in the farmers' and grant recipients' pension scheme
+SOS-29;Ending funding for the "Välitä viljelijästä" farmer wellbeing project
+SOS-30;Changing how earned income is determined under the Self-employed Persons' Pensions Act
+SOS-31;Ending the state contribution to farmers' accident insurance
+SOS-68;Ending state-funded farm relief services and related compensation
+SOS-69;Limiting state-compensated farm relief to core food supply and security of supply activities
+SOT-05;Repealing the caseload limit for child welfare social workers
+SOT-06;Repealing the minimum staffing ratio in 24-hour care for older people
+SOT-07;Counting technology towards staffing ratios in 24-hour care for older people
+SOT-08;Repealing staffing ratios in student welfare services
+SOT-09;Extending the maximum waiting time for non-urgent primary care for under-23s
+SOT-10;Easing the rules on access to non-urgent specialised medical care
+SOT-11;Repealing the therapy guarantee for children and young people
+SOT-14;Repealing aftercare rules for young adults leaving child welfare
+SOT-15;Easing the regulation of the division of work between social care professionals
+SOT-38;Harmonising the professional staff mix in 24-hour care
+SOT-16;Introducing a wealth-based fee for 24-hour care
+SOT-17;Introducing a broader wealth-based fee for 24-hour care
+SOT-18;Introducing a fee for 24-hour care based on housing and other wealth (housing partly counted)
+SOT-19;Introducing a fee for 24-hour care based on housing and other wealth (housing fully counted)
+SOT-20;Introducing a wealth-based fee for home care of older people
+SOT-21;Requiring wellbeing services counties to charge client fees at the statutory maximum
+SOT-22;Increasing fee income from disability services
+SOT-23;Charging fees for confirming family law agreements
+SOT-24;Pruning publicly provided medical aids and introducing a co-payment
+SOT-12;Fewer routine health check-ups, targeted by need
+SOT-13;Targeting screenings by risk
+SOT-28;Simplifying social services legislation
+SOT-29;Limiting the obligation to provide adult dental care
+SOT-30;Raising co-payments for dental care
+SOT-34;Reducing low-value treatments and procedures
+SOT-39;Repealing transition support for young people who arrived as unaccompanied minors
+SOT-25;Further consolidating the 24-hour emergency department network
+SOT-26;Concentrating demanding and costly specialised care in fewer hospitals
+SOT-27;Requiring support services to be centralised at the collaborative area level
+SOT-31;Reducing the number of wellbeing services counties
+SOT-32;Freezing the wellbeing services county funding index
+SOT-33;Overall reform of social and health services, regional division and funding
+SOT-35;National steering of the primary care service network
+SOT-36;Reforming primary care inpatient wards and follow-up care for older people
+SOT-37;Harmonising eligibility criteria for 24-hour care nationally using RAI assessments
+SOT-44;Merging units assisting in child abuse investigations into university hospitals
+SOT-45;Moving separate state reimbursements into the general funding of wellbeing services counties
+SOT-48;Centralising medical helicopter services in one wellbeing services county
+SOT-40;Ending government grants for regional health and social NGOs and health promotion
+SOT-41;Ending separate compensation for two-tier psychotherapy training
+SOT-42;Ending separate state compensation for specialist training of health and social care staff
+SOT-43;Ending the separate tasks and state compensation of the client and patient safety centre
+SOT-46;Narrowing student health services for higher education students and changing cost shares
+SOT-47;Lowering the state's share of student health care funding (partly overlaps with the previous measure)
+SOT-49;Repealing the act on social welfare competence centres and ending their grants
+HAL-05;Closing some embassies and missions abroad
+HAL-06;A lighter representation model at Finnish missions abroad
+HAL-07;Raising fees for consular and other Foreign Ministry services
+HAL-08;Selling state-owned mission properties abroad and moving to smaller premises
+HAL-09;Selling properties of cultural and academic institutes abroad
+HAL-10;Prioritising Team Finland export promotion activities
+HAL-11;Charging more for export promotion services
+HAL-15;Ending peace mediation activities (or cutting them significantly)
+HAL-16;Ending the Foreign Ministry's development cooperation (or cutting it significantly)
+HAL-17;Ending the budget item for supporting Ukraine
+HAL-18;Ending capital injections to Finnfund
+HAL-19;Ending development policy loans and investments (or cutting them significantly)
+HAL-20;Ending humanitarian disaster aid (or cutting it significantly)
+HAL-21;Ending certain state aid of the Foreign Ministry (or cutting it significantly)
+HAL-12;Assessing Finland's participation in crisis management operations more critically
+HAL-13;Ending civilian crisis management (Foreign Ministry share)
+HAL-14;Ending civilian crisis management (Crisis Management Centre share)
+HAL-48;Shortening conscript service
+HAL-49;Skipping index adjustments to defence operating costs in 2028–2031
+HAL-50;Reaching the NATO defence spending target (3.5% of GDP by 2035) on a slower schedule
+HAL-51;Reaching the NATO defence spending target (3.5% of GDP by 2035) on an even slower schedule
+HAL-52;Skipping index adjustments to defence procurement in 2028–2031
+HAL-53;Participating less in crisis management operations
+HAL-54;Skipping index adjustments to military crisis management equipment costs in 2028–2031
+HAL-55;Moving defence health care preparedness funding to the Ministry of Defence
+HAL-56;Directing more defence funding to R&D
+HAL-22;Raising court fees
+HAL-23;Raising fees for public guardianship services
+HAL-24;Reducing the number of ombudsmen or merging their offices
+HAL-25;Reducing translation and interpretation costs in the justice sector
+HAL-26;Funding court translation and interpretation from existing court budgets
+HAL-27;Cutting justice sector grants
+HAL-28;Ending state compensation for crime victims and reducing compensation for wrongful imprisonment
+HAL-29;Raising general productivity in the courts
+HAL-30;Lowering fees paid to private legal aid counsel
+HAL-31;Shortening limitation periods for private debts in debt enforcement
+HAL-32;Ending travel compensation for private legal aid counsel
+HAL-33;Raising debt enforcement sales fees to cover costs
+HAL-34;Raising enforcement fees for evictions to cover costs
+HAL-35;Abolishing conversion of unpaid fines into imprisonment
+HAL-36;Handling complaints to authorities more efficiently
+HAL-37;Requiring something in return for prisoners' daily allowance
+HAL-38;Fewer prisoners in closed prisons and more use of electronically monitored sentences
+HAL-39;Ending temporary protection (Ukrainian refugees)
+HAL-40;Developing police operations (police pay supplements)
+HAL-41;Developing the operations and division of work of the Border Guard and Customs
+HAL-42;Reducing the number of police officers
+HAL-43;Reviewing the network of police premises
+HAL-44;Moving the police to a single-agency model
+HAL-45;Ending the reception of quota refugees
+HAL-46;Using artificial intelligence at the Finnish Immigration Service
+HAL-47;Merging the Immigration Service's country information service into the Foreign Ministry
+HAL-57;Limiting the number of seconded national experts in the EU
+HAL-58;Curbing and reducing travel costs of government agencies
+HAL-59;Clarifying the division of work between ministries and agencies and streamlining ministries
+HAL-60;Clarifying the division of tasks between research organisations and reforming their structure
+HAL-61;Administering government grants more efficiently
+HAL-62;Restructuring the government's shared services
+HAL-63;Centralising financial and HR administration more strongly
+HAL-64;Charging for government supervision on consistent principles
+HAL-65;Moving Kela's premises to Senate Properties and rationalising them
+HAL-66;Curbing government premises costs by consolidating police station and prison networks
+HAL-67;Making government procurement more efficient
+HAL-68;Continuing to consolidate government licensing and supervision tasks
+HAL-69;Consolidating statistics production
+HAL-70;Moving guardianship tasks from the Digital and Population Data Services Agency to the Legal Aid Agency
+HAL-71;Integrating the occupational safety division into the Permit and Supervision Agency
+HAL-72;Merging government ICT data centres and related services
+HAL-73;Centralising information management responsibilities across ministries
+HAL-74;Cutting the tasks of the Permit and Supervision Agency
+HAL-75;Improving cost recovery of fee-based government services
+HAL-76;Ending the joint development budget item for government operations and digitalisation (or cutting it significantly)
+HAL-77;A productivity requirement for central government bodies
+HAL-78;Centralising state ownership steering
+HAL-79;Cutting coordination structures
+IND-05;Temporary index freeze
+IND-06;Removing index-linking
+IND-07;Permanently tighter indexation practice
+VAL-05;Reducing discretionary funding for the President's visits and travel
+VAL-06;Halting the staff growth of the Office of the President
+VAL-07;Reducing funding for former presidents' expenses
+VAL-08;Reducing the number of MPs from 200 to 150
+VAL-09;Reducing support for parliamentary groups
+VAL-10;Tightening the criteria for MPs' adjustment allowance
+VAL-11;Lowering the unit costs of the National Audit Office's performance audits
+VAL-12;Ending Parliament's Christmas donation money practice
+VAL-13;Reducing the number of ministers
+VAL-14;Ending the central budget item for implementing the government programme (or cutting it significantly)
+VAL-15;Fewer state secretaries and special advisers to ministers
+VAL-16;Ending party subsidies (or cutting them significantly)
+VAL-17;Reducing the number of ministries by three
+VAL-18;Reducing the number of ministries to three
+VAL-20;Reforming municipal tasks and structures
+VAL-21;Freezing the index of central government transfers to municipalities
+VAL-19;Identifying and ending unjustified statutory liabilities of the state
+VAL-22;Reducing and refocusing authorisations for state-subsidised housing
+VAL-23;One operating budget item per ministry and normalising carried-over appropriations
+VAL-24;Overall reform of government grant schemes
+VAL-25;Fewer ministerial committees
+VAL-26;Combining preparation of the fiscal plan and the budget proposal
+VAL-27;Stricter control over budget implementation
+VAL-28;Smaller unallocated reserve in the spending limits and more moderate discretionary price adjustments
+VAL-29;Closing down Sitra (Finnish Innovation Fund)
+VAL-30;Partly funding state pay rises from existing budgets through productivity gains
+VAL-31;Reviewing whether Finland's memberships in international organisations are necessary
+VAL-32;Repealing special laws on government grants and ending separate funding (e.g. women's organisations, UKK Institute)
+VAL-33;Ending the separate budget item for food aid
+VAL-34;Merging private sector pension insurers
+VAL-35;Introducing an automatic stabiliser in the pension system
+VAL-36;Reducing authority to grant state guarantees
+VAL-37;Raising the level and coverage of guarantee fees
+VAL-38;Including guarantee liabilities in the budget proposal
+VAL-39;Abandoning the current model of performance management
+VAL-40;Activity-based spending reviews in all government agencies
+VAL-41;Reducing person-years by 1 per cent
+VAL-42;Reducing staff by not replacing those who retire
+VAL-43;Extending annual working time by 1 hour
+VAL-44;Extending annual working time by 24 hours
+VAL-45;Making the first sick day unpaid
+VAL-46;Making Ascension Day and Epiphany working days
+VAL-47;Making 50th and 60th birthdays working days
+VAL-48;Cutting long annual leaves from 38 to 30 days
+VAL-49;Cutting long annual leaves from 38 to 36 days
+VAL-50;Lowering holiday pay from 6 to 5 per cent
+VAL-51;Halving all holiday bonuses
+VAL-52;Cutting wages by 1 per cent
+VER-15;Not adjusting income tax brackets for inflation (2028 level)
+VER-16;Tightening the taxation of pension income
+VER-17;Raising the deductible for commuting expenses by €100
+VER-18;Abolishing the tax deduction for donations
+VER-19;Reducing the household tax credit (for domestic services)
+VER-20;Raising all marginal rates of the state income tax scale by one percentage point
+VER-21;Raising the additional tax on pension income by one percentage point
+VER-23;Raising the lower capital income tax rate by one percentage point
+VER-24;Raising the higher capital income tax rate by one percentage point
+VER-38;Raising the withholding tax on interest income by one percentage point
+VER-40;Raising the transfer tax on real estate and buildings by one percentage point
+VER-41;Raising the transfer tax on housing and real estate company shares by one percentage point
+VER-42;Raising the transfer tax on other shares by one percentage point
+VER-44;Removing or limiting tax relief for business successions
+VER-45;Raising inheritance and gift tax rates by one percentage point
+VER-26;Abolishing the entrepreneur deduction (including forestry)
+VER-27;Reforming the taxation of dividends from unlisted companies
+VER-28;Removing or limiting the combined R&D tax deduction
+VER-29;Ending book-tax conformity of depreciation and the credit loss provision in IFRS alignment
+VER-30;Raising the corporate tax rate by one percentage point
+VER-31;Lowering the return rate on net assets for unlisted company dividends by one percentage point
+VER-32;Lowering the entrepreneur deduction rate by one percentage point
+VER-36;Lowering the limits of the forest deduction (e.g. from 75 to 60 per cent)
+VER-47a;Merging reduced VAT rates into a single 15 per cent rate
+VER-47b;Merging reduced VAT rates into a single 16 per cent rate
+VER-48;Raising VAT on food and restaurant services from 13.5 to 18 per cent
+VER-49;Moving all goods except food and restaurant services to the standard 25.5 per cent VAT rate
+VER-50;Moving everything to the standard 25.5 per cent VAT rate
+VER-51;Raising the standard 25.5 per cent VAT rate by one percentage point
+VER-52;Raising the reduced 13.5 per cent VAT rate by one percentage point
+VER-53;Raising the reduced 10 per cent VAT rate by one percentage point
+VER-55;Indexing excise taxes (excl. alcohol and tobacco) and vehicle tax to consumer prices from 2028
+VER-58;Reducing energy tax subsidies for diesel and transport gas
+VER-59;Abolishing the professional diesel tax subsidy
+VER-60;Reducing energy tax subsidies for rail transport
+VER-61;Raising the propulsion tax on vans and light trucks to offset their energy tax subsidy
+VER-62;Raising the basic vehicle tax, e.g. by €100 per year
+VER-63;Abolishing the agricultural energy tax refund on fuels
+VER-64;Removing the tax-free threshold and tax subsidies for peat in the effort sharing sector
+VER-65;Removing the tax-free threshold for peat
+VER-66;Tightening the tax treatment of biogas
+VER-67;Taxing solid biomass (excluding small-scale wood burning)
+VER-68;Taxing waste incineration
+VER-69;Reducing or removing tax subsidies for heat pumps and electric boilers
+VER-70;Air and/or ferry ticket tax
+VER-74;Raising transport fuel tax by €1/MWh (about 1 cent per litre of diesel)
+VER-75;Raising tax on machinery and heating fuels by €1/MWh (1 cent per litre)
+VER-76;Raising electricity tax class I by €1/MWh (0.1 cent/kWh)
+VER-77;Raising electricity tax class II by €1/MWh (0.1 cent/kWh)
+VER-78;Raising car tax by one percentage point for all cars (incl. electric cars)
+VER-56;Raising tobacco tax to support tobacco policy goals
+VER-57a;Abolishing the small brewery alcohol tax relief
+VER-57b;Limiting the small brewery tax relief to breweries producing up to 500,000 litres a year
+VER-71;Raising tobacco tax by about 1 per cent on average
+VER-72;Raising alcohol tax by about 1 per cent on average
+VER-73;Raising soft drink tax by 1 cent per litre
+VER-82;Introducing up-to-date taxable values for land without changing the tax rate ranges
+VER-83;Raising the lower limit of the general property tax rate for land by 0.1 percentage points
+VER-79;Raising the waste tax by €10 per tonne
+VER-80;Raising the mining mineral tax by 0.1 percentage points
+basis:Staattinen tuottovaikutus;Static revenue effect
+basis:VM:n arvio nettovaikutuksesta julkiseen talouteen (kommentissa);VM's estimate of the net effect on public finances (in the comment)
+basis:VM:n arvio nettovaikutuksesta julkiseen talouteen (kommentissa) (hintajousto huomioitu);VM's estimate of the net effect on public finances (in the comment, price elasticity included)
+"basis:VM:n esimerkkiluku; riippuu toteutusmallista";"VM's example figure; depends on the design"
+basis:Koko verotuen määrä (enimmäisvaikutus);Full amount of the tax subsidy (maximum effect)
+basis:Koko verotuen määrä;Full amount of the tax subsidy
+basis:Verotuen arvioitu määrä;Estimated amount of the tax subsidy
+"basis:Staattinen tuottovaikutus; VM: todellinen tuotto voi jäädä merkittävästi pienemmäksi";"Static revenue effect; VM: actual revenue may be considerably lower"
+basis:Ei arvioitu;Not estimated
+basis:95 % staattisesta (yhteisöverovaikutus huomioitu);95% of the static effect (corporate tax effect included)
+basis:97 % staattisesta (yhteisöverovaikutus huomioitu);97% of the static effect (corporate tax effect included)
+basis:83 % staattisesta (yhteisöverovaikutus huomioitu);83% of the static effect (corporate tax effect included)
+basis:98 % staattisesta (yhteisöverovaikutus huomioitu);98% of the static effect (corporate tax effect included)
+basis:82 % staattisesta (yhteisöverovaikutus huomioitu);82% of the static effect (corporate tax effect included)
+basis:80 % staattisesta (VM:n kommentti);80% of the static effect (VM's comment)
+basis:VM:n arvio nettovaikutuksesta julkiseen talouteen (kommentissa), vaihteluvälin 90–120 alaraja;VM's estimate of the net effect on public finances, lower end of the 90–120 range
+"basis:Staattinen tuottovaikutus; VM: käyttäytymisvaikutukset huomioiden todennäköisesti vähäinen";"Static revenue effect; VM: likely small once behavioural effects are included"
+basis:Verotuki n. 320 milj. €, josta julkisen talouden vaikutus n. 80 %;Tax subsidy about €320m, of which the net effect on public finances is about 80%
+basis:Verotuen alaraja 30 milj. €, josta julkisen talouden vaikutus n. 80 %;Lower bound of the tax subsidy €30m, of which the net effect on public finances is about 80%
+basis:Vaihteluvälin 200–400 alaraja;Lower end of the 200–400 range
+basis:Staattinen vaikutus nykyisillä verotusarvoilla (uusilla n. 100);Static effect with current taxable values (about 100 with new values)
+basis:Yhteisöverovaikutus huomioitu;Corporate tax effect included

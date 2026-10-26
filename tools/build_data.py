@@ -7,6 +7,7 @@ Reads:
     "Excel-taulukko meno- ja rakennekartoitus.xlsx"  – the Ministry of Finance (VM) list of spending measures
     data/grouping.csv                                 – categories, groups and alternatives for spending measures
     data/taxes.csv                                    – tax measures from the VM tax review (optional)
+    data/translations_en.csv                          – English names for measures, groups, categories and tax bases
 Writes:
     data.js                                           – data used by the page (do not edit by hand)
 
@@ -24,6 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 EXCEL = ROOT / "Excel-taulukko meno- ja rakennekartoitus.xlsx"
 GROUPING = ROOT / "data" / "grouping.csv"
 TAXES = ROOT / "data" / "taxes.csv"
+TRANSLATIONS_EN = ROOT / "data" / "translations_en.csv"
 TAX_CATEGORY_NAME = "Verot (verokartoitus)"  # shown in the UI
 OUTPUT = ROOT / "data.js"
 
@@ -196,6 +198,28 @@ def main():
 
     for key in sorted(set(excel) - used):
         warnings.append(f"Excel row {key} is missing from grouping.csv and will not be shown")
+
+    # English names. Keys: measure id, "category:<id>", "group:<Finnish name>", "basis:<Finnish text>"
+    en = {r["key"]: r["en"].strip() for r in read_csv(TRANSLATIONS_EN)} if TRANSLATIONS_EN.exists() else {}
+    missing = []
+    for m in measures.values():
+        m["nameEn"] = en.get(m["id"], "")
+        if m["type"] == "tax":
+            m["basisEn"] = en.get(f"basis:{m['basis']}", "")
+            if m["basis"] and not m["basisEn"]:
+                missing.append(f"basis:{m['basis']}")
+        if not m["nameEn"]:
+            missing.append(m["id"])
+    for c in categories:
+        c["nameEn"] = en.get(f"category:{c['id']}", "")
+        if not c["nameEn"]:
+            missing.append(f"category:{c['id']}")
+        for g in c["groups"]:
+            g["nameEn"] = en.get(f"group:{g['name']}", "")
+            if not g["nameEn"]:
+                missing.append(f"group:{g['name']}")
+    if missing:
+        warnings.append(f"{len(missing)} English translations missing, e.g. {', '.join(missing[:5])}")
 
     data = {
         "source": {

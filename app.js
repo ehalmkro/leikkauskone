@@ -1,13 +1,14 @@
 // Leikkauskone – application logic.
-// Data comes from data.js (window.CUTS_DATA), settings from config.js (window.CONFIG)
-// and easy-mode questions from questions.js (window.QUESTIONS).
-// All amounts are million euros per year. User-facing text is in Finnish.
+// Data comes from data.js (window.CUTS_DATA), settings from config.js (window.CONFIG),
+// UI strings from i18n.js (window.STRINGS) and easy-mode questions from questions.js (window.QUESTIONS).
+// All amounts are million euros per year.
 
 (function () {
   "use strict";
 
   const DATA = window.CUTS_DATA;
   const CONFIG = window.CONFIG;
+  const STRINGS = window.STRINGS;
   const Q = window.QUESTIONS;
   const M = DATA.measures;
   const YEARS = DATA.years;
@@ -24,8 +25,14 @@
     q.allIds = [...new Set(q.levels.flatMap((l) => l.items.map((x) => x.id)))].filter((id) => M[id]);
   }
 
+  // Browser language decides the default: Finnish browsers get Finnish, everyone else English.
+  const detectedLang = (navigator.languages || [navigator.language || ""]).some((l) => /^fi\b/i.test(l))
+    ? "fi"
+    : CONFIG.languages.find((l) => l !== "fi") || "fi";
+
   // selected = Map(id -> count). A regular measure has count 1, unit-yield measures the number of steps.
   const state = {
+    lang: detectedLang,
     mode: "easy", // "easy" or "advanced"
     year: CONFIG.defaultYear,
     includeFunds: false,
@@ -39,19 +46,54 @@
   const esc = (s) =>
     String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
+  // ---------- Translations ----------
+
+  // UI string with {placeholders}; falls back to Finnish if a key is missing.
+  function t(key, vars = {}) {
+    const s = STRINGS[state.lang]?.[key] ?? STRINGS.fi[key] ?? key;
+    return s.replace(/\{(\w+)\}/g, (_, k) => (k in vars ? vars[k] : `{${k}}`));
+  }
+
+  // A text from config.js / questions.js: either a plain string or { fi, en }.
+  const loc = (v) => (v == null || typeof v === "string" ? v ?? "" : v[state.lang] ?? v.fi ?? "");
+
+  const nameOf = (x) => (state.lang !== "fi" && x.nameEn ? x.nameEn : x.name);
+
+  function applyStaticTexts() {
+    document.documentElement.lang = state.lang;
+    document.title = t("pageTitle");
+    $$("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
+    $$("[data-i18n-html]").forEach((el) => (el.innerHTML = t(el.dataset.i18nHtml)));
+    $$("[data-i18n-placeholder]").forEach((el) => (el.placeholder = t(el.dataset.i18nPlaceholder)));
+    $$("[data-i18n-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
+    $$(".lang-switch [data-lang]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === state.lang)));
+  }
+
   // ---------- Numbers and formatting ----------
 
-  const nfBillions = new Intl.NumberFormat("fi-FI", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  const nfMillions = new Intl.NumberFormat("fi-FI", { maximumFractionDigits: 0 });
-  const nfSmall = new Intl.NumberFormat("fi-FI", { maximumFractionDigits: 1 });
+  const LOCALES = { fi: "fi-FI", en: "en-GB" };
+  const formatters = {};
+  function nf(kind) {
+    const key = `${state.lang}:${kind}`;
+    if (!formatters[key]) {
+      const opts = {
+        billions: { minimumFractionDigits: 1, maximumFractionDigits: 1 },
+        millions: { maximumFractionDigits: 0 },
+        small: { maximumFractionDigits: 1 },
+      }[kind];
+      formatters[key] = new Intl.NumberFormat(LOCALES[state.lang] || "fi-FI", opts);
+    }
+    return formatters[key];
+  }
 
   function formatEur(millions) {
     const a = Math.abs(millions);
     const sign = millions < 0 ? "−" : "";
-    if (a >= 1000) return sign + nfBillions.format(a / 1000) + " mrd €";
-    if (a === 0) return "0 €";
-    if (a < 10) return sign + nfSmall.format(a) + " milj. €";
-    return sign + nfMillions.format(a) + " milj. €";
+    if (a === 0) return state.lang === "fi" ? "0 €" : "€0";
+    const [num, unit] =
+      a >= 1000 ? [nf("billions").format(a / 1000), t("billions")] : [nf(a < 10 ? "small" : "millions").format(a), t("millions")];
+    // Finnish: "1,2 mrd €", English: "€1.2bn"
+    return state.lang === "fi" ? `${sign}${num} ${unit}` : `${sign}€${num}${unit}`;
   }
 
   const yearIndex = () => YEARS.indexOf(state.year);
@@ -121,8 +163,9 @@
   // ---------- Easy-mode levels ----------
 
   const levelTotal = (level) => level.items.reduce((sum, x) => sum + (M[x.id] ? (impact(M[x.id]) || 0) * x.count : 0), 0);
+  const levelName = (q, n) => (n === 0 ? t("noChange") : loc(q.levels[n - 1].name) || t(n === 1 ? "levelLow" : "levelHigh"));
 
-  // 0 = no change, 1.. = level, -1 = selection was modified in the advanced view
+  // 0 = no change, 1.. = level, -1 = selection was modified in the detailed view
   function currentLevel(q) {
     const chosen = q.allIds.filter((id) => state.selected.has(id));
     if (!chosen.length) return 0;
@@ -143,6 +186,7 @@
 
   function saveToUrl() {
     const parts = [];
+    if (state.lang !== detectedLang) parts.push(`lang=${state.lang}`);
     if (state.mode === "advanced") parts.push("view=advanced");
     if (state.year !== CONFIG.defaultYear) parts.push(`year=${state.year}`);
     if (state.includeFunds) parts.push("funds=1");
@@ -155,6 +199,7 @@
 
   function loadFromUrl() {
     const p = new URLSearchParams(location.hash.slice(1));
+    if (CONFIG.languages.includes(p.get("lang"))) state.lang = p.get("lang");
     if (p.get("view") === "advanced") state.mode = "advanced";
     const y = Number(p.get("year"));
     if (YEARS.includes(y)) state.year = y;
@@ -178,13 +223,13 @@
 
   function notifyRemoved(removed) {
     if (!removed.length) return;
-    const names = removed.map((id) => `”${truncate(M[id].name, 70)}”`).join(", ");
-    toast(`Poistettiin vaihtoehtoinen tai päällekkäinen valinta: ${names}`);
+    const names = removed.map((id) => `”${truncate(nameOf(M[id]), 70)}”`).join(", ");
+    toast(t("toastRemoved", { names }));
   }
 
   const truncate = (s, n) => (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s);
 
-  // ---------- Rendering (once) ----------
+  // ---------- Rendering (on start and when the language changes) ----------
 
   function renderStructure() {
     // Year selector
@@ -194,36 +239,36 @@
     const jumpLinks = DATA.categories
       .map(
         (c, i) =>
-          `<a href="#cat-${c.id}"><span class="swatch" style="background:var(--series-${i + 1})"></span>${esc(c.name)}</a>`
+          `<a href="#cat-${c.id}"><span class="swatch" style="background:var(--series-${i + 1})"></span>${esc(nameOf(c))}</a>`
       )
       .join("");
 
     const descriptions = CONFIG.categoryDescriptions || {};
     $("#categories").innerHTML =
-      `<nav class="jump-nav" aria-label="Pääluokat">${jumpLinks}</nav>` +
+      `<nav class="jump-nav" aria-label="${esc(t("categoriesNav"))}">${jumpLinks}</nav>` +
       DATA.categories
         .map(
           (c, i) => `
       <section class="category" id="cat-${c.id}" data-category="${c.id}">
         <div class="category-header">
-          <h2><span class="swatch" style="background:var(--series-${i + 1})"></span>${esc(c.name)}</h2>
+          <h2><span class="swatch" style="background:var(--series-${i + 1})"></span>${esc(nameOf(c))}</h2>
           <span class="category-total" data-category-total></span>
         </div>
-        ${descriptions[c.id] ? `<p class="category-description">${esc(descriptions[c.id])}</p>` : ""}
+        ${descriptions[c.id] ? `<p class="category-description">${esc(loc(descriptions[c.id]))}</p>` : ""}
         ${c.groups.map(renderGroup).join("")}
       </section>`
         )
         .join("") +
-      `<p class="no-results" id="no-results" hidden>Ei osumia haulle.</p>`;
+      `<p class="no-results" id="no-results" hidden>${esc(t("noResults"))}</p>`;
 
     // Sources
     $("#sources").innerHTML = CONFIG.sources
-      .map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a></li>`)
+      .map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(loc(s.name))}</a></li>`)
       .join("");
     $("#source-note").textContent =
-      `Toimenpiteet ja euroarviot: ${DATA.source.name}, ${DATA.source.date}` +
-      (DATA.source.taxes ? " sekä VM:n verokartoituksen liite 1." : ".") +
-      " Ryhmittely ja vaihtoehtojen yhteensopivuus on tämän sivun tekijän tulkinta.";
+      t("sourceNote", { source: DATA.source.name, date: DATA.source.date }) +
+      (DATA.source.taxes ? t("sourceNoteTaxes") : ".") +
+      t("sourceNoteInterpretation");
   }
 
   function renderGroup(g) {
@@ -233,13 +278,13 @@
           <button type="button" class="group-toggle" aria-expanded="false" aria-controls="list-${g.id}">
             <span class="chevron" aria-hidden="true"></span>
             <span>
-              <span class="group-name">${esc(g.name)}</span><br>
+              <span class="group-name">${esc(nameOf(g))}</span><br>
               <span class="group-status" data-group-status></span>
             </span>
           </button>
           <div class="group-figures" data-group-figures></div>
           <div class="group-actions">
-            <button type="button" class="btn small" data-package="${g.id}">Valitse ryhmä</button>
+            <button type="button" class="btn small" data-package="${g.id}"></button>
           </div>
         </div>
         <ul class="measure-list" id="list-${g.id}" hidden>
@@ -250,25 +295,27 @@
 
   function renderMeasure(m) {
     const badges = [];
-    if (m.alternative) badges.push(`<span class="badge">Vaihtoehto</span>`);
-    if (!hasEstimate(m)) badges.push(`<span class="badge">Ei euroarviota</span>`);
-    if (m.type === "tax" && m.fromYear > YEARS[0]) badges.push(`<span class="badge">Alkaen ${m.fromYear}</span>`);
+    if (m.alternative) badges.push(`<span class="badge">${esc(t("badgeAlternative"))}</span>`);
+    if (!hasEstimate(m)) badges.push(`<span class="badge">${esc(t("badgeNoEstimate"))}</span>`);
+    if (m.type === "tax" && m.fromYear > YEARS[0]) badges.push(`<span class="badge">${esc(t("badgeFrom", { year: m.fromYear }))}</span>`);
     if (m.funds.some((x) => x > 0)) {
-      badges.push(`<span class="badge notice" data-funds-badge>Säästöä myös sosiaaliturvarahastoihin</span>`);
+      badges.push(`<span class="badge notice" data-funds-badge>${esc(t("badgeFunds"))}</span>`);
     }
+    // The budget item ("kohde") is only meaningful in Finnish
+    const target = state.lang === "fi" && m.target && m.type === "spending" ? `<span>${esc(m.target)}</span>` : "";
 
     const control = m.unit
       ? `<div class="measure-select">
-           <span class="measure-name">${esc(m.name)}</span>
+           <span class="measure-name">${esc(nameOf(m))}</span>
          </div>
-         <div class="stepper" role="group" aria-label="Korotuksen määrä">
-           <button type="button" data-step="-1" data-id="${m.id}" aria-label="Vähennä">−</button>
+         <div class="stepper" role="group" aria-label="${esc(t("stepperLabel"))}">
+           <button type="button" data-step="-1" data-id="${m.id}" aria-label="${esc(t("decrease"))}">−</button>
            <output data-count></output>
-           <button type="button" data-step="1" data-id="${m.id}" aria-label="Lisää">+</button>
+           <button type="button" data-step="1" data-id="${m.id}" aria-label="${esc(t("increase"))}">+</button>
          </div>`
       : `<label class="measure-select">
            <input type="checkbox" data-select="${m.id}">
-           <span class="measure-name">${esc(m.name)}</span>
+           <span class="measure-name">${esc(nameOf(m))}</span>
          </label>`;
 
     return `
@@ -277,13 +324,10 @@
           ${control}
           <span class="measure-amount" data-amount></span>
         </div>
-        <div class="measure-meta">
-          ${m.target && m.type === "spending" ? `<span>${esc(m.target)}</span>` : ""}
-          ${badges.join("")}
-        </div>
+        <div class="measure-meta">${target}${badges.join("")}</div>
         <p class="measure-conflict" data-conflict hidden></p>
         <details class="measure-details" data-details="${m.id}">
-          <summary>Lisätietoja</summary>
+          <summary>${esc(t("details"))}</summary>
           <div class="measure-details-body"></div>
         </details>
       </li>`;
@@ -291,19 +335,17 @@
 
   // ---------- Easy mode ----------
 
-  const NO_CHANGE = "Ei muutosta";
-
   function renderEasy() {
     const card = (q) => `
       <article class="card" data-question="${q.id}">
-        <h3>${esc(q.title)}</h3>
-        <p class="card-description">${esc(q.description)}</p>
-        <div class="levels" role="radiogroup" aria-label="${esc(q.title)}">
-          ${[NO_CHANGE, ...q.levels.map((l) => l.name)]
+        <h3>${esc(loc(q.title))}</h3>
+        <p class="card-description">${esc(loc(q.description))}</p>
+        <div class="levels" role="radiogroup" aria-label="${esc(loc(q.title))}">
+          ${[0, ...q.levels.map((_, i) => i + 1)]
             .map(
-              (name, n) => `
+              (n) => `
             <button type="button" class="level" role="radio" aria-checked="false" data-question="${q.id}" data-level="${n}">
-              <span class="level-name">${esc(name)}</span>
+              <span class="level-name">${esc(levelName(q, n))}</span>
               <span class="level-amount" data-level-amount></span>
             </button>`
             )
@@ -311,7 +353,7 @@
         </div>
         <p class="level-description" data-level-description></p>
         <details class="card-details" data-card-details="${q.id}">
-          <summary>Mitä VM:n toimenpiteitä tähän kuuluu?</summary>
+          <summary>${esc(t("cardDetails"))}</summary>
           <div class="card-details-body"></div>
         </details>
       </article>`;
@@ -321,17 +363,17 @@
         .map(
           (s) => `
         <section class="section">
-          <h2>${esc(s.title)}</h2>
+          <h2>${esc(loc(s.title))}</h2>
           <div class="cards">${Q.questions.filter((q) => q.section === s.id).map(card).join("")}</div>
         </section>`
         )
         .join("") +
       `<section class="result">
-        <h2>Sinun budjettisi</h2>
+        <h2>${esc(t("resultTitle"))}</h2>
         <p data-result-text></p>
         <div class="result-actions">
-          <button type="button" class="btn" data-share>Jaa valintasi</button>
-          <button type="button" class="btn secondary" data-mode="advanced">Valitse tarkemmin: kaikki ${Object.keys(M).length} toimenpidettä</button>
+          <button type="button" class="btn" data-share>${esc(t("share"))}</button>
+          <button type="button" class="btn secondary" data-mode="advanced">${esc(t("toAdvanced", { n: Object.keys(M).length }))}</button>
         </div>
       </section>`;
   }
@@ -339,14 +381,14 @@
   function renderCardDetails(q) {
     return q.levels
       .map(
-        (l) => `
-        <p class="details-title">${esc(l.name)}:</p>
+        (l, i) => `
+        <p class="details-title">${esc(levelName(q, i + 1))}:</p>
         <ul>${l.items
           .filter((x) => M[x.id])
           .map((x) => {
             const a = impact(M[x.id]);
             const steps = M[x.id].unit ? ` (+${x.count} × ${esc(M[x.id].unit.step)})` : "";
-            return `<li><span>${esc(M[x.id].name)}${steps}</span><span class="num">${a == null ? "–" : formatEur(a * x.count)}</span></li>`;
+            return `<li><span>${esc(nameOf(M[x.id]))}${steps}</span><span class="num">${a == null ? "–" : formatEur(a * x.count)}</span></li>`;
           })
           .join("")}</ul>`
       )
@@ -364,7 +406,7 @@
         $("[data-level-amount]", b).textContent = n === 0 ? "" : formatEur(levelTotal(q.levels[n - 1]));
       });
       $("[data-level-description]", el).textContent =
-        current > 0 ? q.levels[current - 1].description : current === -1 ? "Valintoja on muokattu tarkassa tilassa." : "";
+        current > 0 ? loc(q.levels[current - 1].description) : current === -1 ? t("modifiedInAdvanced") : "";
       const details = $("details", el);
       if (details.open) $(".card-details-body", details).innerHTML = renderCardDetails(q);
     }
@@ -381,13 +423,13 @@
     const reached = milestones.filter((ms) => total >= ms.value);
     let text;
     if (!state.selected.size) {
-      text = "Et ole vielä valinnut mitään. Vastaa ylläoleviin kysymyksiin.";
+      text = t("resultNothing");
     } else {
-      text = `Leikkauksia ${formatEur(spending)} ja veronkorotuksia ${formatEur(taxes)}, yhteensä ${formatEur(total)} vuodessa. `;
-      if (!reached.length) text += `Se ei vielä riitä edes ensimmäiseen tavoitteeseen (${formatEur(milestones[0].value)}).`;
-      else if (reached.length === milestones.length) text += "Valintasi riittäisivät laskennallisesti jopa valtion budjetin tasapainottamiseen.";
-      else text += `Saavutit tavoitteen: ${reached[reached.length - 1].name.toLowerCase()}.`;
-      text += " Olisitko valmis puolustamaan näitä valintoja vaalikentillä?";
+      text = t("resultSplit", { spending: formatEur(spending), taxes: formatEur(taxes), total: formatEur(total) });
+      if (!reached.length) text += t("resultNone", { first: formatEur(milestones[0].value) });
+      else if (reached.length === milestones.length) text += t("resultAll");
+      else text += t("resultSome", { name: loc(reached[reached.length - 1].name).toLowerCase() });
+      text += t("resultQuestion");
     }
     $("[data-result-text]").textContent = text;
   }
@@ -399,43 +441,56 @@
     $$(".mode-switch [data-mode]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
   }
 
+  function setLang(lang) {
+    state.lang = lang;
+    applyStaticTexts();
+    renderStructure();
+    renderEasy();
+    update();
+  }
+
   async function share() {
-    const total = formatEur(totalImpact());
-    const text = `Minä löysin valtion budjettiin ${total}. Mistä sinä ottaisit?`;
+    const text = t("shareText", { total: formatEur(totalImpact()) });
     try {
       if (navigator.share) {
-        await navigator.share({ title: "Leikkauskone", text, url: location.href });
+        await navigator.share({ title: t("appName"), text, url: location.href });
         return;
       }
       await navigator.clipboard.writeText(`${text} ${location.href}`);
-      toast("Linkki valintoihisi kopioitiin leikepöydälle – liitä se viestiin.");
+      toast(t("toastCopied"));
     } catch (e) {
-      if (e?.name !== "AbortError") toast("Kopiointi ei onnistunut – kopioi osoite selaimen osoiteriviltä.");
+      if (e?.name !== "AbortError") toast(t("toastCopyFailed"));
     }
   }
 
   // Measure details are rendered only when opened.
   function renderMeasureDetails(m) {
-    const fmt = (x) => (x == null ? "–" : nfSmall.format(x));
+    const fmt = (x) => (x == null ? "–" : nf("small").format(x));
     const now = yearIndex();
     let html = "";
     if (m.type === "tax") {
-      const used = m.government.find((x) => x != null) != null ? fmt(Math.max(...m.government.map((x) => x || 0))) + " milj. €" : "ei arviota";
-      html += `<p><strong>VM:n tuottoarvio (2028):</strong> ${esc(m.vmEstimate || "–")} milj. €<br>
-               <strong>Koneessa käytetty luku:</strong> ${used}${m.unit ? ` (per ${esc(m.unit.step)})` : ""} – ${esc(m.basis)}.<br>
-               Tuoton oletetaan pysyvän samana kaikkina vuosina${m.fromYear > YEARS[0] ? ` (toteutettavissa vuodesta ${m.fromYear})` : ""}.</p>`;
+      const value = m.government.find((x) => x != null) != null ? Math.max(...m.government.map((x) => x || 0)) : null;
+      const used = value == null ? t("noEstimate") : formatEur(value);
+      const basis = state.lang !== "fi" && m.basisEn ? m.basisEn : m.basis;
+      html += `<p><strong>${esc(t("taxEstimate"))}:</strong> ${esc(m.vmEstimate || "–")} ${esc(state.lang === "fi" ? "milj. €" : "€m")}<br>
+               <strong>${esc(t("taxUsed"))}:</strong> ${used}${m.unit ? ` (${esc(t("perStep", { step: m.unit.step }))})` : ""} – ${esc(basis)}.<br>
+               ${esc(t("taxConstant"))}${m.fromYear > YEARS[0] ? esc(t("taxFrom", { year: m.fromYear })) : ""}.</p>`;
     } else {
       html += `<div class="table-scroll"><table class="year-table">
-        <thead><tr><th>milj. €</th>${YEARS.map((y, i) => `<th class="${i === now ? "current" : ""}">${y}</th>`).join("")}</tr></thead>
+        <thead><tr><th>${esc(state.lang === "fi" ? "milj. €" : "€m")}</th>${YEARS.map((y, i) => `<th class="${i === now ? "current" : ""}">${y}</th>`).join("")}</tr></thead>
         <tbody>
-          <tr><td>Valtio ja paikallishallinto</td>${m.government.map((x, i) => `<td class="${i === now ? "current" : ""}">${fmt(x)}</td>`).join("")}</tr>
-          <tr><td>Sosiaaliturvarahastot</td>${m.funds.map((x, i) => `<td class="${i === now ? "current" : ""}">${fmt(x)}</td>`).join("")}</tr>
+          <tr><td>${esc(t("governmentRow"))}</td>${m.government.map((x, i) => `<td class="${i === now ? "current" : ""}">${fmt(x)}</td>`).join("")}</tr>
+          <tr><td>${esc(t("fundsRow"))}</td>${m.funds.map((x, i) => `<td class="${i === now ? "current" : ""}">${fmt(x)}</td>`).join("")}</tr>
         </tbody></table></div>`;
     }
-    if (m.background) html += `<p>${esc(m.background)}</p>`;
-    if (m.memo) html += `<p><strong>VM:n taustamuistio:</strong> ${esc(m.memo)}</p>`;
+    // VM's background texts are only available in Finnish
+    if (m.background || m.memo) {
+      if (state.lang !== "fi") html += `<p><em>${esc(t("backgroundFinnishOnly"))}</em></p>`;
+      if (m.background) html += `<p lang="fi">${esc(m.background)}</p>`;
+      if (m.memo) html += `<p lang="fi"><strong>${esc(t("memo"))}:</strong> ${esc(m.memo)}</p>`;
+    }
     if (m.conflicts.length) {
-      html += `<p><strong>Ei voi valita yhdessä:</strong> ${m.conflicts.map((c) => esc(truncate(M[c].name, 80))).join("; ")}</p>`;
+      html += `<p><strong>${esc(t("cannotCombine"))}:</strong> ${m.conflicts.map((c) => esc(truncate(nameOf(M[c]), 80))).join("; ")}</p>`;
     }
     return html;
   }
@@ -458,7 +513,7 @@
       const checkbox = $("input[data-select]", li);
       if (checkbox) checkbox.checked = count > 0;
       if (m.unit) {
-        $("[data-count]", li).textContent = count ? `+${count} × ${m.unit.step}` : "ei korotusta";
+        $("[data-count]", li).textContent = count ? `+${count} × ${m.unit.step}` : t("noIncrease");
         $('[data-step="-1"]', li).disabled = count === 0;
         $('[data-step="1"]', li).disabled = count >= m.unit.max;
       }
@@ -467,10 +522,10 @@
       const amountEl = $("[data-amount]", li);
       amountEl.classList.toggle("empty", a == null);
       amountEl.classList.toggle("negative", a != null && a < 0);
-      if (a == null) amountEl.textContent = "ei arviota";
+      if (a == null) amountEl.textContent = t("noEstimate");
       else if (m.unit) amountEl.textContent = count > 1 ? formatEur(a * count) : `${formatEur(a)} / ${m.unit.step}`;
       else amountEl.textContent = formatEur(a);
-      amountEl.title = a != null && a < 0 ? "Toimi heikentää tätä taloutta valittuna vuonna (lisää menoja tai vähentää tuloja)." : "";
+      amountEl.title = a != null && a < 0 ? t("negativeTitle") : "";
 
       const fundsBadge = $("[data-funds-badge]", li);
       if (fundsBadge) fundsBadge.hidden = state.includeFunds;
@@ -480,9 +535,7 @@
       const conflictEl = $("[data-conflict]", li);
       conflictEl.hidden = !conflicts.length;
       if (conflicts.length) {
-        conflictEl.textContent = `Vaihtoehtoinen tai päällekkäinen valitun kanssa: ${conflicts
-          .map((c) => truncate(M[c].name, 60))
-          .join("; ")}. Tämän valitseminen poistaa sen.`;
+        conflictEl.textContent = t("conflictNote", { names: conflicts.map((c) => truncate(nameOf(M[c]), 60)).join("; ") });
       }
 
       const details = $("details[data-details]", li);
@@ -503,22 +556,22 @@
         categoryPotential += pot;
         el.classList.toggle("has-selection", chosen.length > 0);
         $("[data-group-status]", el).textContent =
-          `${g.measures.length} toimenpidettä` + (chosen.length ? ` · ${chosen.length} valittu` : "");
+          t("measuresCount", { n: g.measures.length }) + (chosen.length ? ` · ${t("selectedCount", { n: chosen.length })}` : "");
         $("[data-group-figures]", el).innerHTML = chosen.length
-          ? `<strong>${formatEur(total)}</strong>valittu`
-          : `<strong>${formatEur(pot)}</strong>enintään`;
+          ? `<strong>${formatEur(total)}</strong>${esc(t("selectedFigure"))}`
+          : `<strong>${formatEur(pot)}</strong>${esc(t("maxFigure"))}`;
 
         const btn = $("[data-package]", el);
         const toAdd = packageFor(g);
-        btn.textContent = toAdd.length ? (chosen.length ? "Valitse loput" : "Valitse ryhmä") : "Poista valinnat";
+        btn.textContent = toAdd.length ? (chosen.length ? t("selectRest") : t("selectGroup")) : t("removeSelections");
         btn.classList.toggle("secondary", !toAdd.length);
         btn.disabled = !toAdd.length && !chosen.length;
         btn.dataset.action = toAdd.length ? "add" : "remove";
       }
       categoryTotals[c.id] = categoryTotal;
       $(`[data-category="${c.id}"] [data-category-total]`).innerHTML = categoryTotal
-        ? `valittu <strong>${formatEur(categoryTotal)}</strong> · enintään ${formatEur(categoryPotential)}`
-        : `enintään ${formatEur(categoryPotential)}`;
+        ? t("categorySelected", { total: formatEur(categoryTotal), max: formatEur(categoryPotential) })
+        : t("categoryMax", { max: formatEur(categoryPotential) });
     });
 
     updateMeter(categoryTotals);
@@ -539,27 +592,27 @@
     $("#bar").innerHTML = DATA.categories
       .map((c, i) =>
         categoryTotals[c.id] > 0
-          ? `<div class="bar-segment" style="width:${pct(categoryTotals[c.id])};background:var(--series-${i + 1})" title="${esc(c.name)}: ${formatEur(categoryTotals[c.id])}"></div>`
+          ? `<div class="bar-segment" style="width:${pct(categoryTotals[c.id])};background:var(--series-${i + 1})" title="${esc(nameOf(c))}: ${formatEur(categoryTotals[c.id])}"></div>`
           : ""
       )
       .join("");
-    $("#bar").setAttribute("aria-label", `Valitut säästöt ${formatEur(total)} asteikolla 0–${formatEur(max)}`);
+    $("#bar").setAttribute("aria-label", t("barAria", { total: formatEur(total), max: formatEur(max) }));
 
     const milestones = CONFIG.milestones;
     $("#milestones").innerHTML = milestones
       .map((ms, n) => {
         const left = (ms.value / max) * 100;
         const classes = ["milestone", total >= ms.value ? "reached" : "", left > 85 ? "align-right" : "", n % 2 ? "upper" : ""].join(" ");
-        return `<div class="${classes}" style="left:${left}%"><span>${esc(ms.short)}</span></div>`;
+        return `<div class="${classes}" style="left:${left}%"><span>${esc(loc(ms.short))}</span></div>`;
       })
       .join("");
 
     $("#milestone-list").innerHTML = milestones
       .map((ms) => {
         const ok = total >= ms.value;
-        return `<li class="${ok ? "reached" : ""}" title="${esc(ms.description)}">
+        return `<li class="${ok ? "reached" : ""}" title="${esc(loc(ms.description))}">
           <span class="icon" aria-hidden="true">${ok ? "✓" : ""}</span>
-          <span>${esc(ms.name)}: ${formatEur(ms.value)}${ok ? " – saavutettu" : ""}</span></li>`;
+          <span>${esc(loc(ms.name))}: ${formatEur(ms.value)}${ok ? ` – ${esc(t("reached"))}` : ""}</span></li>`;
       })
       .join("");
 
@@ -567,14 +620,14 @@
     const previous = [...milestones].reverse().find((ms) => total >= ms.value);
     let text;
     if (!next) {
-      text = `<strong>Kaikki tavoitteet saavutettu.</strong> Valintasi kattaisivat laskennallisesti jopa valtion vuoden 2027 budjetin alijäämän.`;
+      text = t("allReachedHtml");
     } else if (previous) {
-      text = `✓ <strong>${esc(previous.name)}</strong> saavutettu. Seuraava tavoite: ${esc(next.name)} – puuttuu vielä <strong>${formatEur(next.value - total)}</strong>.`;
+      text = t("reachedNextHtml", { reached: esc(loc(previous.name)), next: esc(loc(next.name)), missing: formatEur(next.value - total) });
     } else {
-      text = `Seuraava tavoite: ${esc(next.name)} – puuttuu vielä <strong>${formatEur(next.value - total)}</strong>.`;
+      text = t("nextHtml", { next: esc(loc(next.name)), missing: formatEur(next.value - total) });
     }
     if (state.year !== CONFIG.defaultYear) {
-      text += ` <span class="year-note">Huom: sopeutustavoite koskee vuotta ${CONFIG.defaultYear}.</span>`;
+      text += ` <span class="year-note">${esc(t("yearNote", { year: CONFIG.defaultYear }))}</span>`;
     }
     $("#next-goal").innerHTML = text;
   }
@@ -582,27 +635,27 @@
   function updateSummary(categoryTotals) {
     const n = state.selected.size;
     $("#selection-count").textContent = n
-      ? `${n} toimenpidettä, yhteensä ${formatEur(totalImpact())} vuonna ${state.year}.`
-      : "Et ole vielä valinnut mitään. Aloita valitsemalla kokonainen ryhmä tai yksittäisiä toimenpiteitä.";
+      ? t("selectionCount", { n, total: formatEur(totalImpact()), year: state.year })
+      : t("nothingSelectedAdvanced");
 
     $("#breakdown tbody").innerHTML = DATA.categories
       .map((c, i) =>
         categoryTotals[c.id]
-          ? `<tr><td><span class="swatch" style="background:var(--series-${i + 1})"></span>${esc(c.name)}</td><td>${formatEur(categoryTotals[c.id])}</td></tr>`
+          ? `<tr><td><span class="swatch" style="background:var(--series-${i + 1})"></span>${esc(nameOf(c))}</td><td>${formatEur(categoryTotals[c.id])}</td></tr>`
           : ""
       )
       .join("");
 
     const chosen = [...state.selected.keys()].sort((a, b) => selectedImpact(b) - selectedImpact(a));
     $("#selected-list").innerHTML = chosen.length
-      ? `<li class="selected-list-title">Suurimmasta pienimpään</li>` +
+      ? `<li class="selected-list-title">${esc(t("largestFirst"))}</li>` +
         chosen
           .map((id) => {
             const m = M[id];
             const count = state.selected.get(id);
-            const name = truncate(m.name, 90) + (m.unit && count ? ` (+${count} × ${m.unit.step})` : "");
+            const name = truncate(nameOf(m), 90) + (m.unit && count ? ` (+${count} × ${m.unit.step})` : "");
             return `<li><span class="name">${esc(name)}</span><span class="amount">${formatEur(selectedImpact(id))}</span>
-              <button type="button" data-remove="${id}" aria-label="Poista ${esc(m.name)}" title="Poista">×</button></li>`;
+              <button type="button" data-remove="${id}" aria-label="${esc(t("removeNamed", { name: nameOf(m) }))}" title="${esc(t("remove"))}">×</button></li>`;
           })
           .join("")
       : "";
@@ -626,7 +679,9 @@
         const groupName = $(".group-name", g).textContent;
         for (const li of $$(".measure", g)) {
           const m = M[li.dataset.id];
-          const visible = !query || (m.name + " " + m.target + " " + groupName).toLowerCase().includes(query);
+          // Search both languages so e.g. "Yle" or a Finnish term works in the English view too
+          const haystack = [m.name, m.nameEn, m.target, groupName].join(" ").toLowerCase();
+          const visible = !query || haystack.includes(query);
           li.hidden = !visible;
           if (visible) groupMatches++;
         }
@@ -656,7 +711,7 @@
       if (!state.selected.size) return;
       state.selected.clear();
       update();
-      toast("Kaikki valinnat poistettu.");
+      toast(t("toastCleared"));
     });
 
     let searchTimer;
@@ -677,6 +732,12 @@
     });
 
     document.addEventListener("click", (e) => {
+      const langBtn = e.target.closest("[data-lang]");
+      if (langBtn) {
+        if (langBtn.dataset.lang !== state.lang) setLang(langBtn.dataset.lang);
+        return;
+      }
+
       const levelBtn = e.target.closest("[data-level]");
       if (levelBtn) {
         const q = Q.questions.find((x) => x.id === levelBtn.dataset.question);
@@ -727,9 +788,7 @@
           const toAdd = packageFor(group);
           toAdd.forEach((id) => state.selected.set(id, 1));
           const skipped = group.measures.filter((id) => !state.selected.has(id) && hasEstimate(M[id]) && savesMoney(M[id]));
-          if (skipped.length) {
-            toast(`Valittiin ${toAdd.length} toimenpidettä. ${skipped.length} jätettiin pois, koska ne ovat vaihtoehtoisia tai päällekkäisiä valittujen kanssa – avaa ryhmä ja vaihda halutessasi.`);
-          }
+          if (skipped.length) toast(t("toastPackage", { added: toAdd.length, skipped: skipped.length }));
         }
         update();
         return;
@@ -762,6 +821,7 @@
   // ---------- Startup ----------
 
   loadFromUrl();
+  applyStaticTexts();
   renderStructure();
   renderEasy();
   setMode(state.mode);

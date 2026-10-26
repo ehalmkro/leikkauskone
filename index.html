@@ -10,63 +10,57 @@
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="style.css">
 </head>
+<!-- Texts marked with data-i18n* are filled in from i18n.js; the Finnish text here is only a fallback. -->
 <body class="mode-easy">
   <header class="page-header">
     <div class="container">
       <div class="title-row">
-        <h1>Leikkauskone</h1>
-        <div class="mode-switch" role="group" aria-label="Näkymä">
-          <button type="button" data-mode="easy" aria-pressed="true">Helppo</button>
-          <button type="button" data-mode="advanced" aria-pressed="false">Tarkka</button>
+        <h1 data-i18n="appName">Leikkauskone</h1>
+        <div class="switches">
+          <div class="mode-switch" role="group" data-i18n-aria="modeLabel">
+            <button type="button" data-mode="easy" aria-pressed="true" data-i18n="modeEasy">Helppo</button>
+            <button type="button" data-mode="advanced" aria-pressed="false" data-i18n="modeAdvanced">Tarkka</button>
+          </div>
+          <div class="lang-switch" role="group" data-i18n-aria="langLabel">
+            <button type="button" data-lang="fi" lang="fi" aria-pressed="true">FI</button>
+            <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
+          </div>
         </div>
       </div>
 
       <div class="easy-only">
-        <p class="lead">
-          Valtion budjetti on ensi vuonna noin <strong>12 miljardia euroa alijäämäinen</strong>, eli valtio ottaa sen verran lisää velkaa.
-          Seuraavan hallituksen on tarkoitus vahvistaa julkista taloutta <strong>8–11 miljardilla eurolla</strong> vuoteen 2031 mennessä.
-        </p>
-        <p class="lead lead-question">Mistä sinä ottaisit rahat? Vastaa kysymyksiin, niin mittari näyttää, riittääkö.</p>
+        <p class="lead" data-i18n-html="easyLeadHtml"></p>
+        <p class="lead lead-question" data-i18n="easyQuestion"></p>
       </div>
 
       <div class="advanced-only">
-        <p class="lead">
-          Valtiovarainministeriö listasi noin 400 tapaa vahvistaa julkista taloutta ja noin 60 verovaihtoehtoa. Valitse yksittäisiä
-          toimenpiteitä tai kokonaisia ryhmiä ja katso, riittävätkö ne sopeutustavoitteeseen tai jopa valtion budjetin tasapainottamiseen.
-        </p>
+        <p class="lead" data-i18n="advancedLead"></p>
         <details class="help">
-          <summary>Näin kone toimii ja näin luvut luetaan</summary>
-          <ul>
-            <li><strong>Valitse kokonainen ryhmä</strong> yhdellä napilla tai avaa ryhmä ja valitse yksittäisiä toimenpiteitä. Ryhmävalinta poimii vaihtoehdoista sen, joka säästää eniten.</li>
-            <li>Osa toimenpiteistä on <strong>toistensa vaihtoehtoja tai päällekkäisiä</strong>. Jos valitset sellaisen, kone poistaa ristiriitaisen valinnan automaattisesti ja kertoo siitä.</li>
-            <li>Luvut ovat VM:n arvioita siitä, paljonko toimi vahvistaisi <strong>valtion ja paikallishallinnon</strong> (kunnat ja hyvinvointialueet) taloutta valittuna vuonna, milj. euroa vuodessa. Halutessasi voit laskea mukaan myös sosiaaliturvarahastot (esim. työeläkerahastot).</li>
-            <li>Moni toimi alkaa pienenä ja kasvaa vuosien mittaan. Vaihda tarkasteluvuotta nähdäksesi kehityksen.</li>
-            <li>VM korostaa, ettei kartoitus ole sen suositus.</li>
-            <li>Summat ovat suuntaa antavia: VM ei ole arvioinut kaikkien toimien yhteisvaikutuksia, eikä kone tunnista kaikkia päällekkäisyyksiä.</li>
-          </ul>
+          <summary data-i18n="helpSummary"></summary>
+          <ul data-i18n-html="helpItemsHtml"></ul>
         </details>
       </div>
     </div>
   </header>
 
-  <section class="meter" aria-label="Säästöjen kertymä">
+  <section class="meter" data-i18n-aria="meterLabel">
     <div class="container">
       <div class="meter-row">
         <div class="total">
-          <span class="total-label">Kasassa vuonna <span id="year-label"></span></span>
+          <span class="total-label"><span data-i18n="totalLabel"></span> <span id="year-label"></span></span>
           <span class="total-value" id="total">0 €</span>
         </div>
         <p class="next-goal" id="next-goal" aria-live="polite"></p>
         <div class="controls">
           <label class="control advanced-only">
-            <span>Vuosi</span>
+            <span data-i18n="year"></span>
             <select id="year"></select>
           </label>
           <label class="control toggle advanced-only">
             <input type="checkbox" id="funds">
-            <span><span class="wide-only">Sosiaaliturva</span><span class="narrow-only">Sotu-</span>rahastot mukaan</span>
+            <span class="wide-only" data-i18n="fundsWide"></span><span class="narrow-only" data-i18n="fundsNarrow"></span>
           </label>
-          <button type="button" class="btn secondary" id="clear">Tyhjennä</button>
+          <button type="button" class="btn secondary" id="clear" data-i18n="clear"></button>
         </div>
       </div>
       <div class="bar-frame">
@@ -84,28 +78,28 @@
   <main class="container layout advanced-only">
     <div class="measures">
       <div class="search">
-        <label for="search" class="visually-hidden">Hae toimenpiteitä</label>
-        <input type="search" id="search" placeholder="Hae toimenpidettä, esim. lapsilisä, Yle, poliisi…" autocomplete="off">
+        <label for="search" class="visually-hidden" data-i18n="searchLabel"></label>
+        <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" autocomplete="off">
       </div>
       <div id="categories"></div>
     </div>
 
-    <aside class="summary" aria-label="Valintasi">
+    <aside class="summary" data-i18n-aria="summaryTitle">
       <div class="summary-body">
-        <h2>Valintasi</h2>
-        <p class="muted" id="selection-count">Et ole vielä valinnut mitään.</p>
+        <h2 data-i18n="summaryTitle"></h2>
+        <p class="muted" id="selection-count"></p>
         <table class="breakdown" id="breakdown">
-          <caption class="visually-hidden">Säästöt pääluokittain</caption>
+          <caption class="visually-hidden" data-i18n="breakdownCaption"></caption>
           <tbody></tbody>
         </table>
         <ol class="selected-list" id="selected-list"></ol>
-        <button type="button" class="btn" id="copy-link" data-share>Kopioi linkki valintoihin</button>
+        <button type="button" class="btn" id="copy-link" data-share data-i18n="copyLink"></button>
       </div>
     </aside>
   </main>
 
   <footer class="container page-footer">
-    <h2>Lähteet</h2>
+    <h2 data-i18n="sources"></h2>
     <ul id="sources"></ul>
     <p class="muted" id="source-note"></p>
   </footer>
@@ -113,6 +107,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="config.js"></script>
+  <script src="i18n.js"></script>
   <script src="data.js"></script>
   <script src="questions.js"></script>
   <script src="app.js"></script>
