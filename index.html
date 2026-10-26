@@ -10,31 +10,31 @@
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="tila-helppo">
-  <header class="sivun-otsikko">
-    <div class="leveys">
-      <div class="otsikkorivi">
+<body class="mode-easy">
+  <header class="page-header">
+    <div class="container">
+      <div class="title-row">
         <h1>Leikkauskone</h1>
-        <div class="tilanvaihto" role="group" aria-label="Näkymä">
-          <button type="button" data-tila="helppo" aria-pressed="true">Helppo</button>
-          <button type="button" data-tila="tarkka" aria-pressed="false">Tarkka</button>
+        <div class="mode-switch" role="group" aria-label="Näkymä">
+          <button type="button" data-mode="easy" aria-pressed="true">Helppo</button>
+          <button type="button" data-mode="advanced" aria-pressed="false">Tarkka</button>
         </div>
       </div>
 
-      <div class="vain-helppo">
-        <p class="ingressi">
+      <div class="easy-only">
+        <p class="lead">
           Valtion budjetti on ensi vuonna noin <strong>12 miljardia euroa alijäämäinen</strong>, eli valtio ottaa sen verran lisää velkaa.
           Seuraavan hallituksen on tarkoitus vahvistaa julkista taloutta <strong>8–11 miljardilla eurolla</strong> vuoteen 2031 mennessä.
         </p>
-        <p class="ingressi kysymys">Mistä sinä ottaisit rahat? Vastaa kysymyksiin, niin mittari näyttää, riittääkö.</p>
+        <p class="lead lead-question">Mistä sinä ottaisit rahat? Vastaa kysymyksiin, niin mittari näyttää, riittääkö.</p>
       </div>
 
-      <div class="vain-tarkka">
-        <p class="ingressi">
+      <div class="advanced-only">
+        <p class="lead">
           Valtiovarainministeriö listasi noin 400 tapaa vahvistaa julkista taloutta ja noin 60 verovaihtoehtoa. Valitse yksittäisiä
           toimenpiteitä tai kokonaisia ryhmiä ja katso, riittävätkö ne sopeutustavoitteeseen tai jopa valtion budjetin tasapainottamiseen.
         </p>
-        <details class="ohje">
+        <details class="help">
           <summary>Näin kone toimii ja näin luvut luetaan</summary>
           <ul>
             <li><strong>Valitse kokonainen ryhmä</strong> yhdellä napilla tai avaa ryhmä ja valitse yksittäisiä toimenpiteitä. Ryhmävalinta poimii vaihtoehdoista sen, joka säästää eniten.</li>
@@ -49,72 +49,72 @@
     </div>
   </header>
 
-  <section class="mittari" aria-label="Säästöjen kertymä">
-    <div class="leveys">
-      <div class="mittari-rivi">
-        <div class="kokonaissumma">
-          <span class="kokonaissumma-otsikko">Kasassa vuonna <span id="vuosi-teksti"></span></span>
-          <span class="kokonaissumma-luku" id="kokonaissumma">0 €</span>
+  <section class="meter" aria-label="Säästöjen kertymä">
+    <div class="container">
+      <div class="meter-row">
+        <div class="total">
+          <span class="total-label">Kasassa vuonna <span id="year-label"></span></span>
+          <span class="total-value" id="total">0 €</span>
         </div>
-        <p class="seuraava" id="seuraava" aria-live="polite"></p>
-        <div class="saatimet">
-          <label class="saadin vain-tarkka">
+        <p class="next-goal" id="next-goal" aria-live="polite"></p>
+        <div class="controls">
+          <label class="control advanced-only">
             <span>Vuosi</span>
-            <select id="vuosi"></select>
+            <select id="year"></select>
           </label>
-          <label class="saadin kytkin vain-tarkka">
-            <input type="checkbox" id="rahastot">
-            <span><span class="vain-leveat">Sosiaaliturva</span><span class="vain-kapeat">Sotu-</span>rahastot mukaan</span>
+          <label class="control toggle advanced-only">
+            <input type="checkbox" id="funds">
+            <span><span class="wide-only">Sosiaaliturva</span><span class="narrow-only">Sotu-</span>rahastot mukaan</span>
           </label>
-          <button type="button" class="nappi toissijainen" id="tyhjenna">Tyhjennä</button>
+          <button type="button" class="btn secondary" id="clear">Tyhjennä</button>
         </div>
       </div>
-      <div class="palkki-kehys">
-        <div class="palkki" id="palkki" role="img"></div>
-        <div class="virstat" id="virstat"></div>
+      <div class="bar-frame">
+        <div class="bar" id="bar" role="img"></div>
+        <div class="milestones" id="milestones"></div>
       </div>
-      <ul class="virstalista" id="virstalista"></ul>
+      <ul class="milestone-list" id="milestone-list"></ul>
     </div>
   </section>
 
-  <!-- Helppo tila: isot kysymykset -->
-  <main class="leveys helppo vain-helppo" id="helppo"></main>
+  <!-- Easy mode: big questions -->
+  <main class="container easy easy-only" id="easy"></main>
 
-  <!-- Tarkka tila: kaikki toimenpiteet -->
-  <main class="leveys asettelu vain-tarkka">
-    <div class="toimenpiteet">
-      <div class="haku">
-        <label for="haku" class="nakymaton">Hae toimenpiteitä</label>
-        <input type="search" id="haku" placeholder="Hae toimenpidettä, esim. lapsilisä, Yle, poliisi…" autocomplete="off">
+  <!-- Advanced mode: all measures -->
+  <main class="container layout advanced-only">
+    <div class="measures">
+      <div class="search">
+        <label for="search" class="visually-hidden">Hae toimenpiteitä</label>
+        <input type="search" id="search" placeholder="Hae toimenpidettä, esim. lapsilisä, Yle, poliisi…" autocomplete="off">
       </div>
-      <div id="paaluokat"></div>
+      <div id="categories"></div>
     </div>
 
-    <aside class="yhteenveto" aria-label="Valintasi">
-      <div class="yhteenveto-sisalto">
+    <aside class="summary" aria-label="Valintasi">
+      <div class="summary-body">
         <h2>Valintasi</h2>
-        <p class="hiljainen" id="valintojen-maara">Et ole vielä valinnut mitään.</p>
-        <table class="jakauma" id="jakauma">
-          <caption class="nakymaton">Säästöt pääluokittain</caption>
+        <p class="muted" id="selection-count">Et ole vielä valinnut mitään.</p>
+        <table class="breakdown" id="breakdown">
+          <caption class="visually-hidden">Säästöt pääluokittain</caption>
           <tbody></tbody>
         </table>
-        <ol class="valitut" id="valitut"></ol>
-        <button type="button" class="nappi" id="kopioi" data-jaa>Kopioi linkki valintoihin</button>
+        <ol class="selected-list" id="selected-list"></ol>
+        <button type="button" class="btn" id="copy-link" data-share>Kopioi linkki valintoihin</button>
       </div>
     </aside>
   </main>
 
-  <footer class="leveys alatunniste">
+  <footer class="container page-footer">
     <h2>Lähteet</h2>
-    <ul id="lahteet"></ul>
-    <p class="hiljainen" id="lahde-teksti"></p>
+    <ul id="sources"></ul>
+    <p class="muted" id="source-note"></p>
   </footer>
 
-  <div class="ilmoitus" id="ilmoitus" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="asetukset.js"></script>
+  <script src="config.js"></script>
   <script src="data.js"></script>
-  <script src="helppo.js"></script>
+  <script src="questions.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

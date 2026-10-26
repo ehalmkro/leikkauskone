@@ -1,4 +1,4 @@
-﻿id;alaryhmä;toimenpide;vaikutus_milj;yksikkö_max;askel;alkaen;vaihtoehtoryhmä;ei_yhdessä;luvun_peruste;vm_tuottoarvio;vm_kommentti
+﻿id;group;measure;impact_meur;unit_max;unit_step;from_year;alternative_group;conflicts_with;basis;vm_estimate;vm_comment
 VER-15;Ansio- ja eläketulot;Indeksitarkistuksen tekemättä jättäminen vuoden 2028 tasossa;815;;;;;;Staattinen tuottovaikutus;815;Toimenpide kiristäisi työn verotusta, millä olisi vaikutuksia työllisyyteen. Näitä kuvataan tarkemmin luvussa 3.
 VER-16;Ansio- ja eläketulot;Eläketulon verotuksen kiristäminen;100;;;;elaketulo;;"VM:n esimerkkiluku; riippuu toteutusmallista";Riippuu toteutusmallista, esim. 100 milj. euroa.;Eläketulon verotuksen kiristäminen suhteessa työtulon verotukseen parantaisi eläkeikäisten työnteon kannustimia.
 VER-17;Ansio- ja eläketulot;Matkakuluvähennyksen omavastuun korottaminen 100 eurolla;25;;;;;;Staattinen tuottovaikutus;25;Toimenpide kiristäisi työn verotusta, millä olisi vaikutuksia työllisyyteen. Näitä kuvataan tarkemmin luvussa 3.

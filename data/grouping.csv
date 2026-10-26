@@ -1,4 +1,4 @@
-﻿id;välilehti;rivi;pääluokka;alaryhmä;vaihtoehtoryhmä;ei_yhdessä;toimenpide (vain luettavuutta varten)
+﻿id;sheet;row;category;group;alternative_group;conflicts_with;measure (for readability only)
 ELI-05;Elinkeino, liikenne, maa, metsä;5;Elinkeinot, liikenne ja ympäristö;T&K-rahoitus;tk-laki;;T&K-rahoituslain kumoaminen
 ELI-06;Elinkeino, liikenne, maa, metsä;6;Elinkeinot, liikenne ja ympäristö;T&K-rahoitus;tk-laki;ELI-26;T&K-rahoituslain kumoaminen ja rahoitustason palauttaminen T&K-rahoituslain voimaantuloa edeltävään tasoon
 ELI-07;Elinkeino, liikenne, maa, metsä;7;Elinkeinot, liikenne ja ympäristö;T&K-rahoitus;;;EU-rahoituksen kohdentaminen uudella rahoituskehyskaudella aiempaa vahvemmin T&k-toimintaan
