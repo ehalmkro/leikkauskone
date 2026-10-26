@@ -1,0 +1,400 @@
+﻿id;välilehti;rivi;pääluokka;alaryhmä;vaihtoehtoryhmä;ei_yhdessä;toimenpide (vain luettavuutta varten)
+ELI-05;Elinkeino, liikenne, maa, metsä;5;Elinkeinot, liikenne ja ympäristö;T&K-rahoitus;tk-laki;;T&K-rahoituslain kumoaminen
+ELI-06;Elinkeino, liikenne, maa, metsä;6;Elinkeinot, liikenne ja ympäristö;T&K-rahoitus;tk-laki;ELI-26;T&K-rahoituslain kumoaminen ja rahoitustason palauttaminen T&K-rahoituslain voimaantuloa edeltävään tasoon
+ELI-07;Elinkeino, liikenne, maa, metsä;7;Elinkeinot, liikenne ja ympäristö;T&K-rahoitus;;;EU-rahoituksen kohdentaminen uudella rahoituskehyskaudella aiempaa vahvemmin T&k-toimintaan
+ELI-08;Elinkeino, liikenne, maa, metsä;8;Elinkeinot, liikenne ja ympäristö;T&K-rahoitus;;;T&K-rahoituksen osuuden lisääminen korkeakouluissa
+ELI-09;Elinkeino, liikenne, maa, metsä;9;Elinkeinot, liikenne ja ympäristö;T&K-rahoitus;;;Pk-yritysten tutkimus- ja kehittämishankkeen lakkauttaminen
+ELI-10;Elinkeino, liikenne, maa, metsä;10;Elinkeinot, liikenne ja ympäristö;T&K-rahoitus;;;Valtionavustuksen tason vähentäminen
+ELI-11;Elinkeino, liikenne, maa, metsä;11;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Business Finlandin muiden kuin T&K-tukien lakkauttaminen (elinkeino- ja innovaatiorahoitus) (tai tason alentaminen merkittävästi)
+ELI-13;Elinkeino, liikenne, maa, metsä;13;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Energiatehokkuuden ja uusiutuvan energian käytön edistämisen määrärahan alentaminen
+ELI-14;Elinkeino, liikenne, maa, metsä;14;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Energiatuen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-17;Elinkeino, liikenne, maa, metsä;17;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Laivanrakennuksen innovaatiotuen myöntämisen lakkauttaminen
+ELI-18;Elinkeino, liikenne, maa, metsä;18;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Kestävän kasvupolitiikan harkinnanvaraisten avustusten lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-19;Elinkeino, liikenne, maa, metsä;19;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Merimiesten matkakustannusten korvaamisen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-23;Elinkeino, liikenne, maa, metsä;23;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Alueellisen kuljetustuen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-24;Elinkeino, liikenne, maa, metsä;24;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Pääomanpalautus tai osinkojen maksu valtiolle
+ELI-25;Elinkeino, liikenne, maa, metsä;25;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;yritystuet-30;ELI-11 ELI-14 ELI-17 ELI-18 ELI-19 ELI-23 ELI-85 ELI-86;Kaikkien suorien avustusmuotoisten yritystukien tason laskeminen 30 prosenttia
+ELI-26;Elinkeino, liikenne, maa, metsä;26;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;yritystuet-30;ELI-11 ELI-14 ELI-17 ELI-18 ELI-19 ELI-23 ELI-85 ELI-86;TAI T&K-lain kumoaminen ennenaikaisesti ja kaikkien suorien avustusmuotoisten yritystukien tason laskeminen 30 prosenttia
+ELI-27;Elinkeino, liikenne, maa, metsä;27;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Finnvera Oyj:n tappiokorvausprosentin laskeminen
+ELI-41;Elinkeino, liikenne, maa, metsä;41;Elinkeinot, liikenne ja ympäristö;Yritys- ja energiatuet;;;Palveluhenkilökunnan rajaaminen varustamotuen ulkopuolelle tai vaihtoehtoisesti koko Suomen merenkulun tukijärjestelmän uudistaminen
+ELI-29;Elinkeino, liikenne, maa, metsä;29;Elinkeinot, liikenne ja ympäristö;Liikenne;;;EU-rahoituksen kohdentaminen uudella rahoituskehyskaudella liikennehankkeisiin (sotilaallisen liikkuvuuden hankkeet)
+ELI-30;Elinkeino, liikenne, maa, metsä;30;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Väylämaksujen korottaminen vastaamaan väylien hoitoon liittyviä viranomaiskustannuksia
+ELI-31;Elinkeino, liikenne, maa, metsä;31;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Ratamaksujen korottaminen ja maksujen perimisen laajentaminen
+ELI-32;Elinkeino, liikenne, maa, metsä;32;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Väyläverkon hankkeisiin sitomattoman rahoituksen leikkaaminen
+ELI-33;Elinkeino, liikenne, maa, metsä;33;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Perusväylänpidon määrärahatason alentaminen
+ELI-34;Elinkeino, liikenne, maa, metsä;34;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Yksityistieavustuksen ja kävelyn ja pyöräilyn edistämisen avustuksen valtion rahoituksen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-35;Elinkeino, liikenne, maa, metsä;35;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Finavian lentoasemaverkoston ulkopuolisille lentoasemille ja lentopaikoille myöntämien avustusten lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-36;Elinkeino, liikenne, maa, metsä;36;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Maa- ja vesialueiden korvauksista maksettavan valtion tuen laskeminen
+ELI-37;Elinkeino, liikenne, maa, metsä;37;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Saariston yhteysalusliikenteen käyttämiin laiturien korjauksiin, selvityksiin ja tiedottamiseen myönnettävien avustusten pienentäminen
+ELI-38;Elinkeino, liikenne, maa, metsä;38;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Valtion rahoitusosuuden laskeminen 50 prosentista 30 prosenttiin
+ELI-39;Elinkeino, liikenne, maa, metsä;39;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Maakuntalentojen tuen lakkauttaminen (tuki lentojen ostoliikenteelle)
+ELI-40;Elinkeino, liikenne, maa, metsä;40;Elinkeinot, liikenne ja ympäristö;Liikenne;;;Liikenteen kehittämishankkeisiin ja liikkumisen ohjaukseen tarkoitettujen valtionavustusten lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-42;Elinkeino, liikenne, maa, metsä;42;Elinkeinot, liikenne ja ympäristö;Yle;yle;;Valtion televisio- ja radiorahaston rahoituksen laskeminen asteittainen 20 prosentilla
+ELI-43;Elinkeino, liikenne, maa, metsä;43;Elinkeinot, liikenne ja ympäristö;Yle;yle;;TAI Valtion televisio- ja radiorahaston rahoituksen laskeminen asteittain 10 prosentilla
+ELI-15;Elinkeino, liikenne, maa, metsä;15;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;energiaveron-palautus;;Maatalouden energiaveron palautuksen poistaminen polttoaineilta
+ELI-16;Elinkeino, liikenne, maa, metsä;16;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;energiaveron-palautus;;Maatalouden energiaveron palautuksen lakkauttaminen
+ELI-44;Elinkeino, liikenne, maa, metsä;44;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Muun kuin EU-rahoitteisen maa- ja metsätalouden tutkimustoiminnan lakkauttaminen
+ELI-45;Elinkeino, liikenne, maa, metsä;45;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Maa- ja metsätaloussektorin sekalaisten tukien lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-46;Elinkeino, liikenne, maa, metsä;46;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;korkotuki;ELI-48;Maaseutuelinkeinotoiminnan korkotuen lakkauttaminen
+ELI-47;Elinkeino, liikenne, maa, metsä;47;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;korkotuki;;TAI Valtion myöntämän maaseutuelinkeinotoiminnan korkotukiprosentin laskeminen
+ELI-48;Elinkeino, liikenne, maa, metsä;48;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Valtion myöntämän maaseutuelinkeinotoiminnan korkotuen enimmäismäärän laskeminen
+ELI-49;Elinkeino, liikenne, maa, metsä;49;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Maatalouden neuvontapalveluiden rahoituksen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-50;Elinkeino, liikenne, maa, metsä;50;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Poroaitojen ylläpitorahoituksen vähentäminen
+ELI-51;Elinkeino, liikenne, maa, metsä;51;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Porotalouden neuvonta- ja kehittämistyön tuen lakkauttaminen
+ELI-52;Elinkeino, liikenne, maa, metsä;52;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Hevostalouden tuen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-53;Elinkeino, liikenne, maa, metsä;53;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;4H-toiminnan harkinnanvaraisen rahoituksen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-54;Elinkeino, liikenne, maa, metsä;54;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Maaseudun kehittämisen harkinnanvaraisen rahoituksen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-55;Elinkeino, liikenne, maa, metsä;55;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;kansallinen-tuki;;Maa- ja puutarhatalouden kansallisen tuen lakkauttaminen
+ELI-56;Elinkeino, liikenne, maa, metsä;56;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;kansallinen-tuki;;TAI Maa- ja puutarhatalouden kansallisen tuen tason laskeminen asteittain
+ELI-57;Elinkeino, liikenne, maa, metsä;57;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;luonnonhaitta;;EU-osarahoitteisen CAP-suunnitelmatuen kokonaan kansallisesti rahoitetun osuuden vähentäminen
+ELI-58;Elinkeino, liikenne, maa, metsä;58;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;luonnonhaitta;;EU-osarahoitteisen CAP-suunnitelmatuen kokonaan kansallisen lisärahoituksen lakkauttaminen
+ELI-59;Elinkeino, liikenne, maa, metsä;59;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Ravinnekiertotuen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-60;Elinkeino, liikenne, maa, metsä;60;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Valtakunnallisille eläinsuojelujärjestöille ja yliopistoille maksettavien valtionavustusten lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-69;Elinkeino, liikenne, maa, metsä;69;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;CAP-tukiohjelman kansallisen rahoituksen enimmäismäärän laskeminen
+ELI-72;Elinkeino, liikenne, maa, metsä;72;Elinkeinot, liikenne ja ympäristö;Maatalous ja maaseutu;;;Passiiviviljelyyn kohdennettujen tukien lopettaminen
+ELI-61;Elinkeino, liikenne, maa, metsä;61;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Harkinnanvaraisen hankerahoituksen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-62;Elinkeino, liikenne, maa, metsä;62;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Petovahinkoihin liittyvän korvaustason laskeminen puoleen nykyisestä
+ELI-63;Elinkeino, liikenne, maa, metsä;63;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Puuntuotannon kestävyyden turvaamiseen maksettavien tukien puolittaminen
+ELI-64;Elinkeino, liikenne, maa, metsä;64;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;metso;;METSO-ohjelman rahoitustason laskeminen
+ELI-65;Elinkeino, liikenne, maa, metsä;65;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;metso;;TAI METSO-ohjelman rahoituksen lakkauttaminen
+ELI-66;Elinkeino, liikenne, maa, metsä;66;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Suomen metsäkeskuksen valtionavustuksen tason laskeminen
+ELI-67;Elinkeino, liikenne, maa, metsä;67;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Luonnonvara-alan yleishyödyllisten yhteisöjen valtion rahoituksen lakkauttaminen
+ELI-68;Elinkeino, liikenne, maa, metsä;68;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Metsähallituksen rahoituksen vähentäminen
+ELI-70;Elinkeino, liikenne, maa, metsä;70;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Vähennetään tutkimus-, suunnittelu- ja ylläpitomenoja
+ELI-71;Elinkeino, liikenne, maa, metsä;71;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;EU-toimintaohjelman kansallisen rahoituksen enimmäismäärän laskeminen
+ELI-73;Elinkeino, liikenne, maa, metsä;73;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Kalastonhoidon lupamaksujen korottaminen ja maksujen korvamerkinnän purkaminen
+ELI-74;Elinkeino, liikenne, maa, metsä;74;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Riistatalouden lupamaksujen korottaminen ja maksujen korvamerkinnän purkaminen
+ELI-75;Elinkeino, liikenne, maa, metsä;75;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;;;Maankäytön muutosmaksun käyttöönotto
+ELI-76;Elinkeino, liikenne, maa, metsä;76;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;metsahallitus;;Metsähallituksen liiketoiminnan tuloutuksen lisääminen (tuloarviot tuulivoimarakentamisen vaikutuksista)
+ELI-77;Elinkeino, liikenne, maa, metsä;77;Elinkeinot, liikenne ja ympäristö;Metsät, kala- ja riistatalous;metsahallitus;;Metsähallituksen liiketoiminnan tuloutuksen lisääminen (tuloarviot ilman tuulivoimarakentamisen vaikutuksia)
+ELI-78;Elinkeino, liikenne, maa, metsä;78;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;Järjestöjen ja ympäristönhoidon harkinnanvaraisten avustusten lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-79;Elinkeino, liikenne, maa, metsä;79;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;Luonnonsuojelun määrärahojen rahoituksen merkittävä tason alentaminen
+ELI-80;Elinkeino, liikenne, maa, metsä;80;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;"Harkinnanvaraisten avustusten, kehittämisen sekä momentilta palkattujen määräaikaisten resurssien vähentäminen; ilmastopaneelin toiminnan lakkauttaminen"
+ELI-81;Elinkeino, liikenne, maa, metsä;81;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;Itämeren ja vesiensuojelun määrärahan tason alentaminen mm. supistamalla momentilta palkattua henkilöstömäärää
+ELI-82;Elinkeino, liikenne, maa, metsä;82;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;Vesien ja ympäristönhoidon tukemisen momentin harkinnanvaraisen rahoituksen laskeminen
+ELI-83;Elinkeino, liikenne, maa, metsä;83;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;Pelastuslaitosten öljyntorjuntakaluston hankintaan liittyvän siirron lakkauttaminen
+ELI-84;Elinkeino, liikenne, maa, metsä;84;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;Asumisneuvonnan lakkauttaminen
+ELI-85;Elinkeino, liikenne, maa, metsä;85;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;Korjaustoiminnan avustusten vähentäminen
+ELI-86;Elinkeino, liikenne, maa, metsä;86;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;Valtion tukeman asuntotuotannon avustusten vähentäminen
+ELI-87;Elinkeino, liikenne, maa, metsä;87;Elinkeinot, liikenne ja ympäristö;Ympäristö ja asuminen;;;Rakennusperinnön hoidon avustuksen lakkauttaminen (tai tason alentaminen merkittävästi)
+ELI-12;Elinkeino, liikenne, maa, metsä;12;Elinkeinot, liikenne ja ympäristö;Aluehallinto ja muut;;;Siviilipalvelusajan lyhentäminen
+ELI-20;Elinkeino, liikenne, maa, metsä;20;Elinkeinot, liikenne ja ympäristö;Aluehallinto ja muut;;;Harkinnanvaraisten avustusten lakkauttaminen (kansainvälinen rekrytointi ja Itä-Suomi)
+ELI-21;Elinkeino, liikenne, maa, metsä;21;Elinkeinot, liikenne ja ympäristö;Aluehallinto ja muut;;;Maaseutuhallinnon ylimääräisten portaiden purkaminen
+ELI-22;Elinkeino, liikenne, maa, metsä;22;Elinkeinot, liikenne ja ympäristö;Aluehallinto ja muut;;;Valtion aluehallinnon (elinvoimakeskukset) virastorakenteen tiivistäminen
+ELI-28;Elinkeino, liikenne, maa, metsä;28;Elinkeinot, liikenne ja ympäristö;Aluehallinto ja muut;;;Kotoutumisen laskennallisten korvausten vähentäminen / poistaminen
+KOU-11;koul. os. liik. kult.;11;Koulutus, kulttuuri ja liikunta;Varhaiskasvatus;;;Varhaiskasvatuksen vähimmäismaksu
+KOU-12;koul. os. liik. kult.;12;Koulutus, kulttuuri ja liikunta;Varhaiskasvatus;vakamaksut;;Varhaiskasvatuksen enimmäismaksun korottaminen
+KOU-13;koul. os. liik. kult.;13;Koulutus, kulttuuri ja liikunta;Varhaiskasvatus;vakamaksut;;Maksujen määräytymiskriteerien palauttaminen vuotta 2017 edeltäneelle tasolle
+KOU-14;koul. os. liik. kult.;14;Koulutus, kulttuuri ja liikunta;Varhaiskasvatus;vakamaksut;;Tulorajojen alentaminen
+KOU-15;koul. os. liik. kult.;15;Koulutus, kulttuuri ja liikunta;Varhaiskasvatus;;;Kelpoisuusvaatimusten keventäminen
+KOU-16;koul. os. liik. kult.;16;Koulutus, kulttuuri ja liikunta;Varhaiskasvatus;;;Päiväkodin henkilöstömitoituksen palauttaminen vuosien 2016-2020 tasolle
+KOU-17;koul. os. liik. kult.;17;Koulutus, kulttuuri ja liikunta;Varhaiskasvatus;;;Subjektiivisen varhaiskasvatusoikeuden rajaaminen koulujen työajalle
+KOU-18;koul. os. liik. kult.;18;Koulutus, kulttuuri ja liikunta;Varhaiskasvatus;;;Varhaiskasvatuksen täydennyskoulutusmallin valtionavustusten lopettaminen
+KOU-19;koul. os. liik. kult.;19;Koulutus, kulttuuri ja liikunta;Perusopetus;;;Yhteinen katsomusaineen opetus kaikille
+KOU-20;koul. os. liik. kult.;20;Koulutus, kulttuuri ja liikunta;Perusopetus;tasa-arvoraha;;Perusopetuksen tasa-arvorahan poistaminen
+KOU-21;koul. os. liik. kult.;21;Koulutus, kulttuuri ja liikunta;Perusopetus;tasa-arvoraha;;TAI Perusopetuksen tasa-arvorahan vähentäminen
+KOU-22;koul. os. liik. kult.;22;Koulutus, kulttuuri ja liikunta;Perusopetus;;;Kolmen vuosiviikkotunnin vähentäminen perusopetuksesta
+KOU-23;koul. os. liik. kult.;23;Koulutus, kulttuuri ja liikunta;Perusopetus;;;B1-kielen opetuksen vähentäminen yhdellä vuosiviikkotunnilla
+KOU-24;koul. os. liik. kult.;24;Koulutus, kulttuuri ja liikunta;Perusopetus;;;Ulkomailla toimivien koulujen rahoituksen lakkauttaminen
+KOU-25;koul. os. liik. kult.;25;Koulutus, kulttuuri ja liikunta;Perusopetus;;;Indeksikorotusten jäädyttäminen
+KOU-05;koul. os. liik. kult.;5;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Ylioppilastutkintomaksujen nostaminen kustannusvastaaviksi
+KOU-31;koul. os. liik. kult.;31;Koulutus, kulttuuri ja liikunta;Toinen aste;oppimateriaalit;;Toisen asteen oppimateriaalien maksuttomuuden lakkauttaminen ja oppimateriaalilisän palauttaminen
+KOU-32;koul. os. liik. kult.;32;Koulutus, kulttuuri ja liikunta;Toinen aste;oppimateriaalit;;TAI Vuonna 2021 voimaan tulleen oppivelvollisuuden pidennyksen peruminen ja oppimateriaalisän palauttaminen
+KOU-33;koul. os. liik. kult.;33;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Valtionhallinnon ammatillisen koulutuksen järjestäjien kokoaminen suuremmiksi kokonaisuuksiksi
+KOU-34;koul. os. liik. kult.;34;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Ammatillisen koulutuksen rahoituksen jakaminen ensimmäistä ammatillista perustutkintoa suorittavien koulutukseen ja aikuisten ammatilliseen koulutukseen. Samalla alennetaan aikuisten ammatillisen koulutuksen rahoitusta.
+KOU-35;koul. os. liik. kult.;35;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Aikuisten ammatillisen koulutuksen rahoituksen indeksisidonnaisuuden poistaminen
+KOU-36;koul. os. liik. kult.;36;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Pakollisista ammatti- ja erikoisammattitutkintokoulutuksen vähimmäismaksuista säätäminen
+KOU-37;koul. os. liik. kult.;37;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Ammatillisen koulutuksen kouluruokailun maksullisuus
+KOU-38;koul. os. liik. kult.;38;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Lukiokoulutuksen rahoituksen rajaaminen 3 vuoteen (koulutuksen järjestäjän saama rahoitus)
+KOU-39;koul. os. liik. kult.;39;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Pienten lukioiden lisän lakkauttaminen lukiokoulutuksen rahoitusmallista
+KOU-40;koul. os. liik. kult.;40;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Lukiokoulutuksen erityisiin koulutustehtäviin ja valtakunnallisiin kehittämistehtäviin tarkoitetun rahoituksen lakkauttaminen
+KOU-41;koul. os. liik. kult.;41;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Lukiolaisten kouluruokailun maksullisuus
+KOU-42;koul. os. liik. kult.;42;Koulutus, kulttuuri ja liikunta;Toinen aste;;;Lukiokoulutuksen rahoituksen indeksisidonnaisuuden poistaminen
+KOU-43;koul. os. liik. kult.;43;Koulutus, kulttuuri ja liikunta;Korkeakoulut ja tiede;;;Valtionrahoituksen rajaaminen vain ensimmäiseen saman tason korkeakoulututkintoon
+KOU-44;koul. os. liik. kult.;44;Koulutus, kulttuuri ja liikunta;Korkeakoulut ja tiede;;;Kolmansien maiden lukuvuosimaksuja maksavien opiskelijoiden suorittamien tutkintojen poistaminen valtionrahoituksen piiristä
+KOU-45;koul. os. liik. kult.;45;Koulutus, kulttuuri ja liikunta;Korkeakoulut ja tiede;;;Korkeakoulujen lukukausimaksuista säätäminen
+KOU-46;koul. os. liik. kult.;46;Koulutus, kulttuuri ja liikunta;Korkeakoulut ja tiede;;;Tohtorikoulutuksen maksuista säätäminen
+KOU-47;koul. os. liik. kult.;47;Koulutus, kulttuuri ja liikunta;Korkeakoulut ja tiede;;;Korkeakoulujen rahoituksen indeksisidonnaisuuden poistaminen
+KOU-48;koul. os. liik. kult.;48;Koulutus, kulttuuri ja liikunta;Korkeakoulut ja tiede;;;Åbo Akademin erillisen lisärahoituksen lakkauttaminen
+KOU-49;koul. os. liik. kult.;49;Koulutus, kulttuuri ja liikunta;Korkeakoulut ja tiede;;;Yksityisten arkistojen rahoituksen lakkauttaminen
+KOU-50;koul. os. liik. kult.;50;Koulutus, kulttuuri ja liikunta;Korkeakoulut ja tiede;;;Ulkomailla sijaitsevien tiedeinstituuttien rahoituksen lakkauttaminen
+KOU-83;koul. os. liik. kult.;83;Koulutus, kulttuuri ja liikunta;Korkeakoulut ja tiede;;;Korkeakouluverkoston laajuuden ja rakenteen kehittäminen
+KOU-51;koul. os. liik. kult.;51;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;opintolainahyvitys;;Korkeakouluopiskelijoiden opintolainahyvityksen lakkauttaminen
+KOU-52;koul. os. liik. kult.;52;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;opintolainahyvitys;;TAI Opintolainahyvityksen enimmäismäärän alentaminen
+KOU-53;koul. os. liik. kult.;53;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;;;Asumislisän kuntajaottelusta luopuminen
+KOU-54;koul. os. liik. kult.;54;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;;;Opintorahan huoltajakorotuksen lakkauttaminen (tai tason alentaminen merkittävästi)
+KOU-55;koul. os. liik. kult.;55;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;;;Opintorahan indeksisidonnaisuuden lakkauttaminen
+KOU-56;koul. os. liik. kult.;56;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;;;Vuositulorajan indeksisidonnaisuuden lakkauttaminen
+KOU-57;koul. os. liik. kult.;57;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;korkeakouluopintotuki;;Kokonaan lainapohjaiseen opintotukeen siirtyminen
+KOU-58;koul. os. liik. kult.;58;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;korkeakouluopintotuki;;TAI Korkeakouluopintojen opintorahan ja asumislisän keston rajaaminen
+KOU-59;koul. os. liik. kult.;59;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;korkeakouluopintotuki;;TAI Korkeakouluopiskelijoiden opintorahan alentaminen ja opintolainan valtiontakauksen määrän nostaminen
+KOU-60;koul. os. liik. kult.;60;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;;;Korkeakouluopiskelijoiden ateriatuen lakkauttaminen
+KOU-61;koul. os. liik. kult.;61;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;koulumatkatuki;;Koulumatkatuen kokonaisuudistus
+KOU-62;koul. os. liik. kult.;62;Koulutus, kulttuuri ja liikunta;Opintotuki ja koulumatkat;koulumatkatuki;;TAI Koulumatkatuen matkakriteerin pidennys
+KOU-26;koul. os. liik. kult.;26;Koulutus, kulttuuri ja liikunta;Vapaa sivistystyö;vst;;Vapaan sivistystyön rahoituksen vähentäminen
+KOU-27;koul. os. liik. kult.;27;Koulutus, kulttuuri ja liikunta;Vapaa sivistystyö;vst;KOU-29 KOU-30;TAI Vapaan sivistyön rahoituksen lakkauttaminen
+KOU-28;koul. os. liik. kult.;28;Koulutus, kulttuuri ja liikunta;Vapaa sivistystyö;vst;;TAI Vapaan sivistystyön rahoituksen indeksikorotusten poistaminen
+KOU-29;koul. os. liik. kult.;29;Koulutus, kulttuuri ja liikunta;Vapaa sivistystyö;;;Kansanopistovuoden rahoituksen poistaminen
+KOU-30;koul. os. liik. kult.;30;Koulutus, kulttuuri ja liikunta;Vapaa sivistystyö;;;Opintokeskusten rahoituksen lakkauttaminen
+KOU-63;koul. os. liik. kult.;63;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Uusien taiteilijaeläkkeiden myöntämisen lopettaminen
+KOU-64;koul. os. liik. kult.;64;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Indeksikorotusten poistaminen
+KOU-65;koul. os. liik. kult.;65;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Esittävän taiteen ja museoiden rahoituksen vähentäminen
+KOU-66;koul. os. liik. kult.;66;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Esittävän taiteen ja museoiden valtionosuuden indeksikorotuksien poistaminen
+KOU-67;koul. os. liik. kult.;67;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Taiteen perusopetuksen rahoituksen vähentäminen
+KOU-68;koul. os. liik. kult.;68;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Taiteen perusopetuksen valtionosuuden indeksikorotusten poistaminen
+KOU-69;koul. os. liik. kult.;69;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Lainauskorvauksen tason pienentäminen
+KOU-70;koul. os. liik. kult.;70;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Taiteen ja kulttuurin edistämisen avustusten vähentäminen
+KOU-71;koul. os. liik. kult.;71;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Elokuvatuotannon tuen vähentäminen uuden av-maksun tuoton arviota ja sitä kautta tulevaa lisätukea vastaavasti
+KOU-72;koul. os. liik. kult.;72;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Apurahojen myöntämisen vähentäminen
+KOU-73;koul. os. liik. kult.;73;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Kansallisten taidelaitosten rahoituksen indeksikorotusten poistaminen
+KOU-74;koul. os. liik. kult.;74;Koulutus, kulttuuri ja liikunta;Kulttuuri ja taide;;;Aikuisten kirjastokortti maksulliseksi tai varausmaksujen palauttaminen
+KOU-06;koul. os. liik. kult.;6;Koulutus, kulttuuri ja liikunta;Liikunta ja nuoriso;;;Lasten ja nuorten harrastustoiminnan avustusten lakkauttaminen (tai tason alentaminen merkittävästi)
+KOU-75;koul. os. liik. kult.;75;Koulutus, kulttuuri ja liikunta;Liikunta ja nuoriso;;;Uusien urheilijaeläkkeiden myöntämisen lopettaminen
+KOU-76;koul. os. liik. kult.;76;Koulutus, kulttuuri ja liikunta;Liikunta ja nuoriso;;;Liikuntapaikkarakentamisen tuen lakkauttaminen
+KOU-77;koul. os. liik. kult.;77;Koulutus, kulttuuri ja liikunta;Liikunta ja nuoriso;;;Liikunnan ja urheilun edistämisen rahoituksen vähentäminen
+KOU-78;koul. os. liik. kult.;78;Koulutus, kulttuuri ja liikunta;Liikunta ja nuoriso;;;Suomi liikkeelle -ohjelman rahoituksen lopettaminen (tai tason alentaminen merkittävästi)
+KOU-79;koul. os. liik. kult.;79;Koulutus, kulttuuri ja liikunta;Liikunta ja nuoriso;;;Kuntien liikuntatoiminnan valtiononsuuden siirtäminen peruspalvelujen valtionosuuteen
+KOU-80;koul. os. liik. kult.;80;Koulutus, kulttuuri ja liikunta;Liikunta ja nuoriso;;;Kuntien nuorisotoimen valtionosuuden siirtäminen peruspalvelujen valtionosuuteen
+KOU-81;koul. os. liik. kult.;81;Koulutus, kulttuuri ja liikunta;Liikunta ja nuoriso;;;Nuorisokeskusten rahoituksen lakkauttaminen (tai tason alentaminen merkittävästi)
+KOU-82;koul. os. liik. kult.;82;Koulutus, kulttuuri ja liikunta;Liikunta ja nuoriso;;;Nuorten työpajatoiminnan rahoituksen vähentäminen
+KOU-07;koul. os. liik. kult.;7;Koulutus, kulttuuri ja liikunta;Kirkot, järjestöt ja hallinto;;;Järjestöavustusten karsiminen
+KOU-08;koul. os. liik. kult.;8;Koulutus, kulttuuri ja liikunta;Kirkot, järjestöt ja hallinto;;;Avustustasojen laskeminen ja karsinta
+KOU-09;koul. os. liik. kult.;9;Koulutus, kulttuuri ja liikunta;Kirkot, järjestöt ja hallinto;;;Yhteiskunnallisten tehtävien rahoituksen poistaminen hautaustoimen osalta
+KOU-10;koul. os. liik. kult.;10;Koulutus, kulttuuri ja liikunta;Kirkot, järjestöt ja hallinto;;;Evankelis-luterilaisen- ja ortodoksisen kirkon indeksikorotusten poistaminen
+KOU-84;koul. os. liik. kult.;84;Koulutus, kulttuuri ja liikunta;Kirkot, järjestöt ja hallinto;;;Opetushallituksen toiminnan kehittäminen / uudelleenorganisointi
+SOS-05;sosiaaliturvaetuudet;5;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Sisarkorotusten poisto
+SOS-06;sosiaaliturvaetuudet;6;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Alle 3 vuotiaasta lapsesta maksettavan lapsilisän korotuksen poisto
+SOS-07;sosiaaliturvaetuudet;7;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Yksinhuoltajakorotuksen poisto
+SOS-08;sosiaaliturvaetuudet;8;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;SOS-05 SOS-06 SOS-07;Lapsilisän lakkauttaminen
+SOS-09;sosiaaliturvaetuudet;9;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Äitiysavustuksen rajoittaminen yhteen kertaan sekä luopuminen mahdollisuudesta saada äitiysavustus rahana
+SOS-10;sosiaaliturvaetuudet;10;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Elatustuen lakkauttaminen
+SOS-60;sosiaaliturvaetuudet;60;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Osittaisen hoitorahan lakkauttaminen
+SOS-61;sosiaaliturvaetuudet;61;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Joustavan hoitorahan lakkauttaminen
+SOS-62;sosiaaliturvaetuudet;62;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Kotihoidon tuen lakkauttaminen tai rajaaminen
+SOS-63;sosiaaliturvaetuudet;63;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Luopuminen korotettuna maksettavista 16 ensimmäisestä vanhempainrahapäivästä
+SOS-64;sosiaaliturvaetuudet;64;Sosiaaliturvaetuudet;Lapsiperheiden tuet;;;Vanhempainrahan laskentaperusteen muuttaminen
+SOS-11;sosiaaliturvaetuudet;11;Sosiaaliturvaetuudet;Asumistuki, toimeentulo ja työttömyysturva;;;Tuen tason alentaminen nykyisen kuntaryhmän 3 tasolle
+SOS-12;sosiaaliturvaetuudet;12;Sosiaaliturvaetuudet;Asumistuki, toimeentulo ja työttömyysturva;;;Tukiprosentin alentaminen 70 prosentista 60 prosenttiin
+SOS-13;sosiaaliturvaetuudet;13;Sosiaaliturvaetuudet;Asumistuki, toimeentulo ja työttömyysturva;;;Perusosan tason sitominen etuuden saajan ikään
+SOS-14;sosiaaliturvaetuudet;14;Sosiaaliturvaetuudet;Asumistuki, toimeentulo ja työttömyysturva;;;Puolison tuloihin perustuvan tarveharkinnan käyttöön ottaminen yleistuessa
+SOS-15;sosiaaliturvaetuudet;15;Sosiaaliturvaetuudet;Asumistuki, toimeentulo ja työttömyysturva;;;Ansiosidonnaisen keston lyhentäminen 300 päivään
+SOS-16;sosiaaliturvaetuudet;16;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Harkinnanvaraisen kuntoutuksen rahoituksen alentaminen lain mukaiselle vähimmäistasolle
+SOS-17;sosiaaliturvaetuudet;17;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Kelan korvaamaan kuntoutuspsykoterapian rajaaminen
+SOS-18;sosiaaliturvaetuudet;18;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Yksityislääkärikäyntien Kela-korvausten lakkauttaminen
+SOS-19;sosiaaliturvaetuudet;19;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Matkakustannuksen omavastuuosuuden nostaminen 25 eurosta 35 euroon
+SOS-20;sosiaaliturvaetuudet;20;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Vuotuisen omavastuuosuuden (matkakatto) korottaminen 300 eurosta 500 euroon
+SOS-21;sosiaaliturvaetuudet;21;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Itsehoitolääkkeiden korvattavuudesta luopuminen
+SOS-22;sosiaaliturvaetuudet;22;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Alkuomavastuun nosto 70 eurosta 100 euroon
+SOS-23;sosiaaliturvaetuudet;23;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Lääkekorvauksen peruskorvausprosentin laskeminen 40 prosentista 30 prosenttiin
+SOS-24;sosiaaliturvaetuudet;24;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Lääkekorvauksen alemman erityiskorvausryhmän korvausprosentin laskeminen 65 prosentista 60 prosenttiin
+SOS-25;sosiaaliturvaetuudet;25;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Lääkekorvauksen ylemmän erityiskorvausryhmän omavastuun nostaminen 4,5 eurosta 6 euroon
+SOS-26;sosiaaliturvaetuudet;26;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Lääkekorvauksen lisäkorvauksen omavastuun nostaminen 2,5 eurosta 4 euroon
+SOS-65;sosiaaliturvaetuudet;65;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Kela-korvausluokan I korvausasteen laskeminen 60 prosentista 50 prosenttiin
+SOS-66;sosiaaliturvaetuudet;66;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Kela-korvausluokan II korvausasteen laskeminen 50 prosentista 40 prosenttiin
+SOS-67;sosiaaliturvaetuudet;67;Sosiaaliturvaetuudet;Lääkkeet ja muut Kela-korvaukset;;;Kela-korvauksen työntekijäkohtaisten kustannusten enimmäismäärän laskeminen 50 eurolla.
+SOS-32;sosiaaliturvaetuudet;32;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;;;Täyteen kansaneläkkeeseen liittyvän tulorajan poistaminen
+SOS-33;sosiaaliturvaetuudet;33;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;;;Kansaneläkkeen sovitteluprosentin nostaminen 50 prosentista 60 prosenttiin
+SOS-34;sosiaaliturvaetuudet;34;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;;;Kansaneläkkeen ja takuueläkkeen indeksisidonnaisuuden poistaminen
+SOS-35;sosiaaliturvaetuudet;35;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;;;Kansaneläkkeen lapsikorotuksen poistaminen
+SOS-36;sosiaaliturvaetuudet;36;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;takuuelake;;Takuueläke-etuuden lakkauttaminen
+SOS-37;sosiaaliturvaetuudet;37;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;takuuelake;;TAI Takuueläkkeen tason lasku
+SOS-38;sosiaaliturvaetuudet;38;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;takuuelake;;TAI Takuueläkkeen suhteuttaminen asumisaikaan vastaavasti kuin kansaneläke
+SOS-39;sosiaaliturvaetuudet;39;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;takuuelake;;TAI Takuueläkkeen rajaaminen vain alimman vanhuuseläkeiän täyttäneille
+SOS-40;sosiaaliturvaetuudet;40;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;elakkeensaajan-asumistuki;;Eläkkeensaajan asumistuen yhdistäminen yleiseen asumistukeen
+SOS-41;sosiaaliturvaetuudet;41;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;elakkeensaajan-asumistuki;;TAI Kuntoutustuen saajien siirtäminen eläkkeensaajan asumistuesta yleiseen asumistukeen
+SOS-42;sosiaaliturvaetuudet;42;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;elakkeensaajan-asumistuki;;TAI Eläkkeensaajan asumistuen rajaaminen vanhuuseläkkeen saajiin
+SOS-43;sosiaaliturvaetuudet;43;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;;;Alimman tuen tason eli perustuen lakkauttaminen lapsen ja aikuisen vammaistuessa sekä eläkettä saavan hoitotuessa
+SOS-59;sosiaaliturvaetuudet;59;Sosiaaliturvaetuudet;Kansaneläke, takuueläke ja vammaisetuudet;;SOS-34 KOU-55;Kaikkien kansaneläkeindeksiin tai muutoin kuluttajahintoihin sidottujen etuuksien indeksikorotusten jäädyttäminen (pl. elatustuki ja lääkekustannusten alku- ja vuosiomavastuu)
+SOS-44;sosiaaliturvaetuudet;44;Sosiaaliturvaetuudet;Työeläkkeet;;;Luovutaan tutkinnoista karttuvasta eläkkeestä
+SOS-45;sosiaaliturvaetuudet;45;Sosiaaliturvaetuudet;Työeläkkeet;;;Luovutaan alle 3-vuotiaan lapsen hoidon ajalta karttuvasta eläkkeestä
+SOS-46;sosiaaliturvaetuudet;46;Sosiaaliturvaetuudet;Työeläkkeet;;;Luopuminen muiden perhevapaiden kuin kotihoidontuen ajalta kertyvästä eläkkeestä
+SOS-47;sosiaaliturvaetuudet;47;Sosiaaliturvaetuudet;Työeläkkeet;;;Luopuminen ansiosidonnainen työttömyyspäivärahan ajalta kertyvästä eläkkeestä
+SOS-48;sosiaaliturvaetuudet;48;Sosiaaliturvaetuudet;Työeläkkeet;;;Luopuminen muista palkattomien aikojen eläkekarttumista
+SOS-49;sosiaaliturvaetuudet;49;Sosiaaliturvaetuudet;Työeläkkeet;;;Alimman vanhuuseläkeiän nosto 6 kk ikäluokkaa kohti vuodesta 2032 alkaen siten, että eläkeikä olisi 70 vuotta vuonna 2046
+SOS-50;sosiaaliturvaetuudet;50;Sosiaaliturvaetuudet;Työeläkkeet;tyoelakeindeksi;;Työeläkeindeksin muuttaminen täysin kuluttajahintoihin sidotuksi
+SOS-51;sosiaaliturvaetuudet;51;Sosiaaliturvaetuudet;Työeläkkeet;tyoelakeindeksi;;Työeläkeindeksin ja palkkakertoimen määräaikainen jäädytys
+SOS-52;sosiaaliturvaetuudet;52;Sosiaaliturvaetuudet;Työeläkkeet;;;Työeläkejärjestelmän leskeneläkkeen (pl. lapsiperheet) keston rajaaminen 2-vuotiseksi
+SOS-53;sosiaaliturvaetuudet;53;Sosiaaliturvaetuudet;Työeläkkeet;;;Osittaisen varhennetun vanhuuseläkkeen lakkauttaminen tai ehtojen tiukentaminen
+SOS-54;sosiaaliturvaetuudet;54;Sosiaaliturvaetuudet;Työeläkkeet;;;Ikääntyneitä koskevien työkyvyttömyyseläkkeen erityissäännösten poistaminen
+SOS-55;sosiaaliturvaetuudet;55;Sosiaaliturvaetuudet;Työeläkkeet;;;Julkisen sektorin ammatillisen työkyvyttömyyden määritelmästä luopuminen
+SOS-56;sosiaaliturvaetuudet;56;Sosiaaliturvaetuudet;Työeläkkeet;;;Työkyvyttömyyseläkkeiden kertakorotuksen poistaminen
+SOS-57;sosiaaliturvaetuudet;57;Sosiaaliturvaetuudet;Työeläkkeet;;;Karttumaprosentin alentaminen
+SOS-58;sosiaaliturvaetuudet;58;Sosiaaliturvaetuudet;Työeläkkeet;;;Palkkakertoimen painojen muuttaminen
+SOS-27;sosiaaliturvaetuudet;27;Sosiaaliturvaetuudet;Yrittäjien eläkkeet ja lomitus;;;Valtionosuuden lakkauttaminen merenkulkijoiden eläkejärjestelmään
+SOS-28;sosiaaliturvaetuudet;28;Sosiaaliturvaetuudet;Yrittäjien eläkkeet ja lomitus;;;Maatalousyrittäjien ja apurahansaajien eläkejärjestelmän maksuhelpotusten poistaminen (tai pienentäminen)
+SOS-29;sosiaaliturvaetuudet;29;Sosiaaliturvaetuudet;Yrittäjien eläkkeet ja lomitus;;;Välitä viljelijästä -rahoituksen poistaminen
+SOS-30;sosiaaliturvaetuudet;30;Sosiaaliturvaetuudet;Yrittäjien eläkkeet ja lomitus;;;Yrittäjän eläkelain mukaisen työtulon määräytymissääntöjen muuttaminen
+SOS-31;sosiaaliturvaetuudet;31;Sosiaaliturvaetuudet;Yrittäjien eläkkeet ja lomitus;;;Luovutaan valtion maksuosuudesta tapaturmavakuutuksen rahoituksessa
+SOS-68;sosiaaliturvaetuudet;68;Sosiaaliturvaetuudet;Yrittäjien eläkkeet ja lomitus;lomitus;;Luovutaan valtion rahoittamista lomituspalveluista ja niitä koskevista korvauksista
+SOS-69;sosiaaliturvaetuudet;69;Sosiaaliturvaetuudet;Yrittäjien eläkkeet ja lomitus;lomitus;;TAI Kohdennetaan valtion korvaamat lomituspalvelut ruokahuollon ja huoltovarmuuden turvaamisen kannalta keskeiseen ydintoimintaan
+SOT-05;sosiaali ja terveydenhuolto;5;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;;;Lapsen asioista vastaavan sosiaalityöntekijän asiakasmitoitussääntelyn kumoaminen
+SOT-06;sosiaali ja terveydenhuolto;6;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;ymparivuorokautinen-mitoitus;;Iäkkäiden henkilöiden ympärivuorokautisen palveluasumisen vähimmäishenkilöstömitoituksen kumoaminen
+SOT-07;sosiaali ja terveydenhuolto;7;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;ymparivuorokautinen-mitoitus;;TAI Teknologian huomioiminen iäkkäiden henkilöiden ympärivuorokautisen palveluasumisen henkilöstömitoituksessa
+SOT-08;sosiaali ja terveydenhuolto;8;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;;;Opiskeluhuollon henkilöstömitoituksen kumoaminen
+SOT-09;sosiaali ja terveydenhuolto;9;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;;;Alle 23-vuotiaiden perusterveydenhuollon kiireettömän hoidon hoitoon pääsyn enimmäisajan pidentäminen
+SOT-10;sosiaali ja terveydenhuolto;10;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;;;Erikoissairaanhoidon kiireettömän hoidon hoitoonpääsyä koskevan lainsäädännön keventäminen
+SOT-11;sosiaali ja terveydenhuolto;11;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;;;Lasten ja nuorten terapiatakuuta koskevan lainsäädännön kumoaminen
+SOT-14;sosiaali ja terveydenhuolto;14;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;;;Lastensuojelulain täysi-ikäisiä nuoria koskevan jälkihuoltosääntelyn kumoaminen
+SOT-15;sosiaali ja terveydenhuolto;15;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;;;Sosiaalihuollon ammattihenkilöiden välisen työnjaon sääntelyn keventäminen
+SOT-38;sosiaali ja terveydenhuolto;38;Sosiaali- ja terveydenhuolto;Mitoitukset ja hoitotakuut;;;Välittömään asiakastyöhön osallistuvien ammattihenkilöiden välisten osuuksien yhtenäistäminen ympärivuorokautisessa palveluasumisessa
+SOT-16;sosiaali ja terveydenhuolto;16;Sosiaali- ja terveydenhuolto;Asiakasmaksut ja omavastuut;varallisuusmaksu;;Ympärivuorokautisen hoivan varallisuuteen perustuvasta maksusta säätäminen
+SOT-17;sosiaali ja terveydenhuolto;17;Sosiaali- ja terveydenhuolto;Asiakasmaksut ja omavastuut;varallisuusmaksu;;TAI Ympärivuorokautisen hoivan laajemmasta varallisuuteen perustuvasta maksusta säätäminen
+SOT-18;sosiaali ja terveydenhuolto;18;Sosiaali- ja terveydenhuolto;Asiakasmaksut ja omavastuut;varallisuusmaksu;;TAI Ympärivuorokautisen hoivan asunto- ja muuhun varallisuuteen perustuvasta maksusta säätäminen, asuntovarallisuus huomioidaan rajatusti
+SOT-19;sosiaali ja terveydenhuolto;19;Sosiaali- ja terveydenhuolto;Asiakasmaksut ja omavastuut;varallisuusmaksu;;TAI Ympärivuorokautisen hoivan asunto- ja muuhun varallisuuteen perustuvasta maksusta säätäminen , asuntovarallisuus huomioidaan täysimääräisesti
+SOT-20;sosiaali ja terveydenhuolto;20;Sosiaali- ja terveydenhuolto;Asiakasmaksut ja omavastuut;;;Ikääntyneiden kotihoidon varallisuuteen perustuvasta maksusta säätäminen
+SOT-21;sosiaali ja terveydenhuolto;21;Sosiaali- ja terveydenhuolto;Asiakasmaksut ja omavastuut;;;Velvoite hyvinvointialueille periä laissa säädetyt sosiaali- ja terveydenhuollon asiakasmaksut lakisääteisen enimmäistason mukaisina. Yksilökohtainen harkintavalta säilytetään.
+SOT-22;sosiaali ja terveydenhuolto;22;Sosiaali- ja terveydenhuolto;Asiakasmaksut ja omavastuut;;;Vammaispalvelujen maksutuottojen kasvattaminen
+SOT-23;sosiaali ja terveydenhuolto;23;Sosiaali- ja terveydenhuolto;Asiakasmaksut ja omavastuut;;;Perheoikeudellisten sopimusten vahvistamisen säätäminen kokonaan tai osin maksullisiksi
+SOT-24;sosiaali ja terveydenhuolto;24;Sosiaali- ja terveydenhuolto;Asiakasmaksut ja omavastuut;;;Julkiseen palveluvalikoimaan kuuluvien lääkinnällisten apuvälineiden karsiminen ja käytön omavastuuosuus
+SOT-12;sosiaali ja terveydenhuolto;12;Sosiaali- ja terveydenhuolto;Palvelujen rajaaminen;;;Määräaikaisten terveystarkastusten vähentäminen ja kohdentaminen tarveperustaisesti
+SOT-13;sosiaali ja terveydenhuolto;13;Sosiaali- ja terveydenhuolto;Palvelujen rajaaminen;;;Seulontojen kohdentaminen riskiperusteisesti
+SOT-28;sosiaali ja terveydenhuolto;28;Sosiaali- ja terveydenhuolto;Palvelujen rajaaminen;;;Sosiaalipalveluita koskevan lainsäädännön yksinkertaistaminen
+SOT-29;sosiaali ja terveydenhuolto;29;Sosiaali- ja terveydenhuolto;Palvelujen rajaaminen;suun-terveys;;Aikuisten suun terveydenhuollon järjestämisvastuun rajaaminen
+SOT-30;sosiaali ja terveydenhuolto;30;Sosiaali- ja terveydenhuolto;Palvelujen rajaaminen;suun-terveys;;TAI Suun terveydenhuollon omavastuun kasvattaminen
+SOT-34;sosiaali ja terveydenhuolto;34;Sosiaali- ja terveydenhuolto;Palvelujen rajaaminen;;;Vähähyötyisten toimien ja hoitojen vähentäminen
+SOT-39;sosiaali ja terveydenhuolto;39;Sosiaali- ja terveydenhuolto;Palvelujen rajaaminen;;;Ilman huoltajaa maahan tulleiden nuorten aikuistumisen tuen sääntelyn kumoaminen
+SOT-25;sosiaali ja terveydenhuolto;25;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Ympärivuorokautisen päivystysverkon lisätiivistäminen
+SOT-26;sosiaali ja terveydenhuolto;26;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Keskitetään vaativia ja kallista erityisosaamista edellyttäviä erikoissairaanhoidon palveluja nykyistä harvempiin sairaaloihin
+SOT-27;sosiaali ja terveydenhuolto;27;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Velvoite tukipalvelujen yhteistyöaluetasoiseen keskittämiseen
+SOT-31;sosiaali ja terveydenhuolto;31;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Hyvinvointialueiden määrän vähentäminen
+SOT-32;sosiaali ja terveydenhuolto;32;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Hyvinvointialueindeksin jäädyttäminen
+SOT-33;sosiaali ja terveydenhuolto;33;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Sosiaali- ja terveyspalvelujen, hyvinvointialuejaon ja rahoitusjärjestelmän kokonaisuudistus
+SOT-35;sosiaali ja terveydenhuolto;35;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Perustason palveluverkon valtakunnallinen ohjaus
+SOT-36;sosiaali ja terveydenhuolto;36;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Perusterveydenhuollon vuodeosastojen ja ikääntyneiden jatkohoidon palvelurakenteen uudistaminen
+SOT-37;sosiaali ja terveydenhuolto;37;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Myöntämiskriteerien valtakunnallinen yhdenmukaistaminen ja RAI-arviointitiedon aseman vahvistaminen
+SOT-44;sosiaali ja terveydenhuolto;44;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Lapseen kohdistuneiden rikosten selvittämisessä avustavien erillisyksiköiden sulauttaminen osaksi yliopistosairaaloita ja rahoituksen siirtäminen osaksi hyvinvointialueiden yleiskatteista rahoitusta
+SOT-45;sosiaali ja terveydenhuolto;45;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Valtion hyvinvointialueille maksamien erillisten korvausten siirtäminen osaksi hyvinvointialueiden yleiskatteista rahoitusta
+SOT-48;sosiaali ja terveydenhuolto;48;Sosiaali- ja terveydenhuolto;Palveluverkko ja rakenteet;;;Lääkäri- ja lääkintähelikopteritoiminnan järjestämis- ja rahoitusvastuun keskittäminen yhdelle hyvinvointialueelle
+SOT-40;sosiaali ja terveydenhuolto;40;Sosiaali- ja terveydenhuolto;Valtionavustukset ja koulutus;;;Alueellisen sote-järjestötoiminnan sekä terveyden ja hyvinvoinnin edistämisen valtionavustuksesta luopuminen
+SOT-41;sosiaali ja terveydenhuolto;41;Sosiaali- ja terveydenhuolto;Valtionavustukset ja koulutus;;;Kaksiportaisen psykoterapiakoulutuksen erilliskorvauksista luopuminen
+SOT-42;sosiaali ja terveydenhuolto;42;Sosiaali- ja terveydenhuolto;Valtionavustukset ja koulutus;;;Sote-henkilöstön erikoistumiskoulutuksen valtion erilliskorvauksista luopuminen
+SOT-43;sosiaali ja terveydenhuolto;43;Sosiaali- ja terveydenhuolto;Valtionavustukset ja koulutus;;;Pohjanmaan hyvinvointialueen tehtäväksi säädetyistä asiakas- ja potilasturvallisuskeskuksen erillistehtävistä luopuminen ja valtion erilliskorvausten lakkauttaminen
+SOT-46;sosiaali ja terveydenhuolto;46;Sosiaali- ja terveydenhuolto;Valtionavustukset ja koulutus;opiskeluterveys;;Korkeakouluopiskelijoiden opiskeluterveydenhuollon sisällön ja palveluverkon rajaaminen sekä valtion/opiskelijoiden maksuosuuksien muuttaminen
+SOT-47;sosiaali ja terveydenhuolto;47;Sosiaali- ja terveydenhuolto;Valtionavustukset ja koulutus;opiskeluterveys;;TAI [osin päällekkäinen edellisen kanssa]. Korkeakouluopiskelijoiden opiskeluterveydenhuollon valtion rahoitusosuuden laskeminen
+SOT-49;sosiaali ja terveydenhuolto;49;Sosiaali- ja terveydenhuolto;Valtionavustukset ja koulutus;;;Sosiaalialan osaamiskeskuksia koskevan erillislainsäädännön kumoaminen ja valtionavustuksien lakkauttaminen
+HAL-05;järj. turv. hall. uahall.;5;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Edustustoverkon karsiminen
+HAL-06;järj. turv. hall. uahall.;6;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Edustautumisen mallin keventäminen edustustoverkossa
+HAL-07;järj. turv. hall. uahall.;7;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Tulojen lisääminen
+HAL-08;järj. turv. hall. uahall.;8;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Valtion ulkomailla omistamien edustustoverkon kiinteistöjen luopuminen sekä siirtyminen pienempiin tiloihin
+HAL-09;järj. turv. hall. uahall.;9;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Myydään kulttuuri- ja tiedeinstituuttikiinteistöjä
+HAL-10;järj. turv. hall. uahall.;10;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Team Finland -toiminnan priorisointi
+HAL-11;järj. turv. hall. uahall.;11;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Maksullisuuden lisääminen
+HAL-15;järj. turv. hall. uahall.;15;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Rauhanvälitystoiminnan lakkauttaminen (tai tason alentaminen merkittävästi)
+HAL-16;järj. turv. hall. uahall.;16;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Ulkoministeriön myöntämän varsinaisen kehitysyhteistyön lakkauttaminen (tai tason alentaminen merkittävästi)
+HAL-17;järj. turv. hall. uahall.;17;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Ukrainan tukemisen momentin lakkauttaminen
+HAL-18;järj. turv. hall. uahall.;18;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Finfundin pääoman korotuksen lopettaminen
+HAL-19;järj. turv. hall. uahall.;19;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Kehityspoliittisten lainojen ja sijoitusten lakkauttaminen (tai tason alentaminen merkittävästi)
+HAL-20;järj. turv. hall. uahall.;20;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Humanitaarisen katastrofiavun avustusten lakkautttaminen (tai tason alentaminen merkittävästi)
+HAL-21;järj. turv. hall. uahall.;21;Turvallisuus, puolustus ja hallinto;Ulkoasiat ja kehitysyhteistyö;;;Määrärahan lakkauttaminen (tai tason alentaminen merkittävästi)
+HAL-12;järj. turv. hall. uahall.;12;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Arvioidaan aiempaa kriittisemmin Suomen osallistumista kriisinhallintaoperaatioihin
+HAL-13;järj. turv. hall. uahall.;13;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Lakkautetaan siviilikriisinhallintatoiminta huomioiden jo tehdyt sitoumukset siviilikriisinhallintaoperaatioihin
+HAL-14;järj. turv. hall. uahall.;14;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Lakkautetaan siviilikriisinhallintatoiminta huomioiden jo tehdyt sitoumukset siviilikriisinhallintaoperaatioihin
+HAL-48;järj. turv. hall. uahall.;48;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Varusmiespalveluksen lyhentäminen
+HAL-49;järj. turv. hall. uahall.;49;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Puolustusvoimien toimintamenoja koskevista indeksitarkistuksista luopuminen vuosina 2028 - 2031
+HAL-50;järj. turv. hall. uahall.;50;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;nato-aikataulu;;Natossa sovitun puolustusmenojen BKT-osuutta koskevan tavoitteen (3,5 % v. 2035) toimeenpano maltillisemmalla aikataululla
+HAL-51;järj. turv. hall. uahall.;51;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;nato-aikataulu;;TAI Natossa sovitun puolustusmenojen BKT-osuutta koskevan tavoitteen (3,5 % v. 2035) toimeenpano vieläkin maltillisemmalla aikataululla
+HAL-52;järj. turv. hall. uahall.;52;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Puolustusmateriaalihankintoja koskevista indeksitarkistuksista luopuminen vuosina 2028-2031
+HAL-53;järj. turv. hall. uahall.;53;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Kriisinhallintaoperaatioihin osallistumisen vähentäminen
+HAL-54;järj. turv. hall. uahall.;54;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Sotilaallisen kriisinhallinnan kalusto- ja hallintomenoja koskevista indeksitarkistuksista luopuminen vuosina 2028-2031
+HAL-55;järj. turv. hall. uahall.;55;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Puolustusvoimien terveydenhuollon varautumisen rahoituksen siirtäminen puolustusministeriön hallinnonalalle
+HAL-56;järj. turv. hall. uahall.;56;Turvallisuus, puolustus ja hallinto;Puolustus ja kriisinhallinta;;;Puolustusmäärärahoja kohdentaminen nykyistä enemmän T&K-toimintaan
+HAL-22;järj. turv. hall. uahall.;22;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Tuomioistuimien maksullisen toiminnan maksujen korottaminen
+HAL-23;järj. turv. hall. uahall.;23;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Yleisen edunvalvonnan maksujen korottaminen
+HAL-24;järj. turv. hall. uahall.;24;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Valtuutettujen määrän vähentäminen/valtuutettujen yhdistäminen
+HAL-25;järj. turv. hall. uahall.;25;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;tulkkaus;;Käännös- ja tulkkausmenojen vähentäminen
+HAL-26;järj. turv. hall. uahall.;26;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;tulkkaus;;TAI Käännös- ja tulkkausmenojen siirto tuomioistuinten nykyisistä määrärahoista rahoitettavaksi
+HAL-27;järj. turv. hall. uahall.;27;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Avustusten karsiminen
+HAL-28;järj. turv. hall. uahall.;28;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Valtion maksamien rikosvahinkokorvausten lakkauttaminen ja syyttömästi vangittujen tai tuomittujen korvausten alentaminen
+HAL-29;järj. turv. hall. uahall.;29;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Yleinen tuottavuustason nostaminen tuomioistuimissa
+HAL-30;järj. turv. hall. uahall.;30;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Yksityisille oikeusavustajille maksettavien korvausten tason alentaminen (lisäksi kokonaistarkastelu)
+HAL-31;järj. turv. hall. uahall.;31;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Yksityisoikeudellisten velkojen vanhenemisajan lyhentäminen/ulosoton keston lyhentäminen
+HAL-32;järj. turv. hall. uahall.;32;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Yksityisille oikeusavustajille maksettavien matkakorvausten lakkauttaminen
+HAL-33;järj. turv. hall. uahall.;33;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Ulosoton myyntimaksujen nostaminen omakustannusarvon mukaan hinnoiteltavaksi julkisoikeudelliseksi suoritteeksi
+HAL-34;järj. turv. hall. uahall.;34;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Ulosoton häädöstä perimän täytäntöönpanomaksun nostaminen omakustannusarvoon
+HAL-35;järj. turv. hall. uahall.;35;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Sakon muuntorangaistuksen lakkauttaminen
+HAL-36;järj. turv. hall. uahall.;36;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Kanteluiden käsittelyn tehostaminen
+HAL-37;järj. turv. hall. uahall.;37;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Vankien päiväraha​n muuttaminen vastikkeelliseksi
+HAL-38;järj. turv. hall. uahall.;38;Turvallisuus, puolustus ja hallinto;Oikeuslaitos ja ulosotto;;;Suljetuissa vankiloissa olevien vankien vähentäminen ja valvontarangaistuksen käytön lisääminen
+HAL-39;järj. turv. hall. uahall.;39;Turvallisuus, puolustus ja hallinto;Poliisi, rajat ja maahanmuutto;;;Tilapäisen suojelun lakkauttaminen
+HAL-40;järj. turv. hall. uahall.;40;Turvallisuus, puolustus ja hallinto;Poliisi, rajat ja maahanmuutto;;;Poliisin toiminnan kehittäminen
+HAL-41;järj. turv. hall. uahall.;41;Turvallisuus, puolustus ja hallinto;Poliisi, rajat ja maahanmuutto;;;Rajavartiolaitoksen ja Tullin toiminnan ja työnjaon kehittäminen
+HAL-42;järj. turv. hall. uahall.;42;Turvallisuus, puolustus ja hallinto;Poliisi, rajat ja maahanmuutto;;;Poliisien lukumäärän vähentäminen
+HAL-43;järj. turv. hall. uahall.;43;Turvallisuus, puolustus ja hallinto;Poliisi, rajat ja maahanmuutto;;;Poliisin toimitilaverkoston tarkistaminen
+HAL-44;järj. turv. hall. uahall.;44;Turvallisuus, puolustus ja hallinto;Poliisi, rajat ja maahanmuutto;;;Yhden viraston mallin käyttöönotto
+HAL-45;järj. turv. hall. uahall.;45;Turvallisuus, puolustus ja hallinto;Poliisi, rajat ja maahanmuutto;;;Kiintiöpakolaisten vastaanoton lakkauttaminen
+HAL-46;järj. turv. hall. uahall.;46;Turvallisuus, puolustus ja hallinto;Poliisi, rajat ja maahanmuutto;;;Tekoälyn hyödyntäminen
+HAL-47;järj. turv. hall. uahall.;47;Turvallisuus, puolustus ja hallinto;Poliisi, rajat ja maahanmuutto;;;Maahanmuuttoviraston maatietopalvelun yhdistäminen ulkoministeriön toimintoihin
+HAL-57;järj. turv. hall. uahall.;57;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;EU:n kansallisten asiantuntijoiden lukumäärän rajaaminen
+HAL-58;järj. turv. hall. uahall.;58;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtion virastojen ja laitosten matkakulujen kasvun taittaminen ja kulujen vähentäminen
+HAL-59;järj. turv. hall. uahall.;59;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Ministeriö-virasto -työnjaon selkeyttäminen tehtäviä alaiseen hallintoon siirtämällä, ministeriörakenteen yhtenäistäminen ja ministeriöiden sisäisen hallinnon palveluiden työnjaon rationalisointi
+HAL-60;järj. turv. hall. uahall.;60;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Tutkimusorganisaatioiden tehtävienjaon selkeyttäminen (sis. suhde yliopistoihin) ja niiden organisaatiorakenteen uudistaminen
+HAL-61;järj. turv. hall. uahall.;61;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtionavustusten hallinnoinnin tehostaminen
+HAL-62;järj. turv. hall. uahall.;62;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtion konsernipalveluiden rakenteellinen uudelleenjärjestäminen ja palvelujen standarditason määrittäminen
+HAL-63;järj. turv. hall. uahall.;63;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Talous- ja henkilöstöhallinnon palvelujen ja toimintojen nykyistä vahvempi keskittäminen
+HAL-64;järj. turv. hall. uahall.;64;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtion valvontatoiminnan maksullistaminen yhtenäisin periaattein
+HAL-65;järj. turv. hall. uahall.;65;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Kelan toimitilojen siirto Senaatin hallintaan ja muodostuvan tilakokonaisuuden rationalisointi
+HAL-66;järj. turv. hall. uahall.;66;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Hillitään valtion tilakustannuksia ja niiden kasvua tiivistämällä poliisiasema- ja vankilaverkkoa
+HAL-67;järj. turv. hall. uahall.;67;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtion hankintatoimen tehostaminen
+HAL-68;järj. turv. hall. uahall.;68;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtion lupa- ja valvontatehtävien kokoamisen jatkaminen
+HAL-69;järj. turv. hall. uahall.;69;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Tilastotuotannon tehtävien kokoaminen
+HAL-70;järj. turv. hall. uahall.;70;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Holhoustoimen tehtävien siirto Digi- ja väestötietovirastosta Oikeuspalveluvirastoon
+HAL-71;järj. turv. hall. uahall.;71;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Lupa- ja valvontaviraston työsuojeluosaston toimintamenojen ja hallinnon integrointi osaksi virastoa
+HAL-72;järj. turv. hall. uahall.;72;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtion hallinnoimien ICT-konesalien ja niihin liittyvän palvelutuotannon yhdistäminen
+HAL-73;järj. turv. hall. uahall.;73;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Hallinnonalojen tiedonhallinnan ja tietohallinnon vastuiden keskittäminen
+HAL-74;järj. turv. hall. uahall.;74;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Lupa- ja valvontaviraston tehtävien karsiminen
+HAL-75;järj. turv. hall. uahall.;75;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtion maksullisen toiminnan kustannusvastaavuuden parantaminen
+HAL-76;järj. turv. hall. uahall.;76;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Yhteinen kehittämismomentin lakkauttaminen (tai tason alentaminen merkittävästi)
+HAL-77;järj. turv. hall. uahall.;77;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtionhallinnon toimijoille asetettava tuottavuusvaade
+HAL-78;järj. turv. hall. uahall.;78;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Valtion omistajaohjaustehtävien keskittäminen
+HAL-79;järj. turv. hall. uahall.;79;Turvallisuus, puolustus ja hallinto;Valtionhallinnon tehostaminen;;;Karsitaan koordinaatiorakenteita
+IND-05;Indeksisidonnaiset menot;5;Indeksisidonnaiset menot;Yleiset indeksitoimet;indeksit-yleinen;SOS-34 SOS-50 SOS-51 SOS-59 KOU-10 KOU-25 KOU-28 KOU-35 KOU-42 KOU-47 KOU-55 KOU-64 KOU-66 KOU-68 KOU-73 HAL-49 HAL-52 HAL-54 VAL-21;Määräaikainen indeksijäädytys
+IND-06;Indeksisidonnaiset menot;6;Indeksisidonnaiset menot;Yleiset indeksitoimet;indeksit-yleinen;;Indeksisidonnaisuuden purkaminen
+IND-07;Indeksisidonnaiset menot;7;Indeksisidonnaiset menot;Yleiset indeksitoimet;indeksit-yleinen;;Indeksointikäytännön niukentaminen pysyvästi
+VAL-05;Teematark. ulkopuol.;5;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Tasavallan presidentin kanslian vierailuista, kokousmatkoista yms. aiheutuviin harkinnanvaraisiin menoihin osoitetun rahoituksen pienentäminen
+VAL-06;Teematark. ulkopuol.;6;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Tasavallan presidentin kanslian henkilöstömäärän kasvun taittaminen
+VAL-07;Teematark. ulkopuol.;7;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Entisten tasavallan presidenttien menoihin osoitetun rahoituksen pienentäminen
+VAL-08;Teematark. ulkopuol.;8;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Kansanedustajien lukumäärän vähentäminen 200:sta 150:een
+VAL-09;Teematark. ulkopuol.;9;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Eduskuntaryhmien tuen pienentäminen
+VAL-10;Teematark. ulkopuol.;10;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Kansanedustajien sopeutumisrahan määräytysmisperusteiden tiukentaminen
+VAL-11;Teematark. ulkopuol.;11;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Tuloksellisuustarkastusten yksikkökustannuksia laskeva uudistus
+VAL-12;Teematark. ulkopuol.;12;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Eduskunnan joululahjarahakäytännön lakkauttaminen
+VAL-13;Teematark. ulkopuol.;13;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Ministereiden lukumäärän vähentäminen
+VAL-14;Teematark. ulkopuol.;14;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Keskitetyn momentin lakkauttaminen (tai tason alentaminen merkittävästi)
+VAL-15;Teematark. ulkopuol.;15;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Ministereiden valtiosihteereiden ja erityisavustajien määrän vähentäminen
+VAL-16;Teematark. ulkopuol.;16;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;;;Puoluetuen lakkauttaminen (tai tason alentaminen merkittävästi)
+VAL-17;Teematark. ulkopuol.;17;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;ministeriot;;Ministeriöiden lukumäärän vähentäminen kolmella
+VAL-18;Teematark. ulkopuol.;18;Valtion johto, rakenteet ja henkilöstö;Presidentti, eduskunta ja valtioneuvosto;ministeriot;;Ministeriöiden lukumäärän vähentäminen kolmeen
+VAL-20;Teematark. ulkopuol.;20;Valtion johto, rakenteet ja henkilöstö;Kunnat ja valtionosuudet;;;Kuntien tehtävä- ja rakenneuudistus kuntalaisten palvelujen ja kuntien osaavan henkilöstön saatavuuden turvaamiseksi
+VAL-21;Teematark. ulkopuol.;21;Valtion johto, rakenteet ja henkilöstö;Kunnat ja valtionosuudet;;KOU-25;Valtionosuusindeksin jäädyttäminen
+VAL-19;Teematark. ulkopuol.;19;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Perusteettomien vastuiden kartoittaminen ja lakkauttaminen
+VAL-22;Teematark. ulkopuol.;22;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Valtuuden määrän pienentäminen ja kohdentumisen tarkastelu
+VAL-23;Teematark. ulkopuol.;23;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Hallinnonalojen toimintamenojen kokoaminen yhdelle hallinnonalan momentille ja siirtyvän erän tason normalisointi
+VAL-24;Teematark. ulkopuol.;24;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Valtionavustustoiminnan kokonaisuudistus
+VAL-25;Teematark. ulkopuol.;25;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Ministerivaliokuntien määrän vähentäminen
+VAL-26;Teematark. ulkopuol.;26;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Julkisen talouden suunnitelman ja talousarvioesityksen valmistelun yhdistäminen
+VAL-27;Teematark. ulkopuol.;27;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Valtion talousarvion toimeenpanon aiempaa tiukempi kontrolli ja toimeenpano
+VAL-28;Teematark. ulkopuol.;28;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Lasketaan jakamattoman varauksen mitoitusta ja/tai maltillistetaan harkinnanvaraista hintakorjausta
+VAL-29;Teematark. ulkopuol.;29;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Rahaston toiminnan lakkautaminen
+VAL-30;Teematark. ulkopuol.;30;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Valtion sopimuskorotusten rahoittaminen osin nykyisin määrärahoin tuottavuutta kehittämällä
+VAL-31;Teematark. ulkopuol.;31;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Suomen kansainvälisten järjestöjen jäsenyyksien välttämättömyyden arviointi
+VAL-32;Teematark. ulkopuol.;32;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Valtionavustuksista annettujen erillislakien kumoaminen ja erillisrahoituksen lakkauttaminen
+VAL-33;Teematark. ulkopuol.;33;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Ruoka-aputoiminnan erillisen tukimomentin lakkauttaminen
+VAL-34;Teematark. ulkopuol.;34;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Yksityisen sektorin työeläkelaitosten yhdistäminen
+VAL-35;Teematark. ulkopuol.;35;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Automaattisen vakauttajan käyttöönotto
+VAL-36;Teematark. ulkopuol.;36;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Myöntövaltuuksien supistaminen
+VAL-37;Teematark. ulkopuol.;37;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Takausmaksujen tasojen ja kattavuuden nostaminen
+VAL-38;Teematark. ulkopuol.;38;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Takauksia koskevien vastuiden ottaminen osaksi talousarvioesitystä
+VAL-39;Teematark. ulkopuol.;39;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Luovutaan nykyisenkaltaisesta tulosohjauksesta
+VAL-40;Teematark. ulkopuol.;40;Valtion johto, rakenteet ja henkilöstö;Budjetointi ja valtion rakenteet;;;Toteutetaan toimintopohjainen menojen tarkastelu kaikissa valtion virastoissa ja laitoksissa
+VAL-41;Teematark. ulkopuol.;41;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;henkilosto;;Henkilötyövuosien vähentäminen 1 prosentilla
+VAL-42;Teematark. ulkopuol.;42;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;henkilosto;;Henkilöstömäärään vähentäminen eläkepoistumaa hyödyntäen
+VAL-43;Teematark. ulkopuol.;43;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;tyoaika;;1 tunnin pidennys vuosityöaikaan​
+VAL-44;Teematark. ulkopuol.;44;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;tyoaika;;24 tunnin pidennys vuosityöaikaan​
+VAL-45;Teematark. ulkopuol.;45;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;;;Ensimmäinen sairauspäivä palkattomaksi
+VAL-46;Teematark. ulkopuol.;46;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;;;Helatorstain ja loppiaisen muuttaminen työpäiviksi
+VAL-47;Teematark. ulkopuol.;47;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;;;Merkkipäivät (50- ja 60-vuotispäivät) työpäiviksi
+VAL-48;Teematark. ulkopuol.;48;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;vuosilomat;;Pitkien vuosilomien leikkaaminen 38->30 pv
+VAL-49;Teematark. ulkopuol.;49;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;vuosilomat;;Pitkien vuosilomien leikkaaminen 38->36 pv​
+VAL-50;Teematark. ulkopuol.;50;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;lomarahat;;Lomarahan tason lasku 6 prosentista 5 prosenttiin
+VAL-51;Teematark. ulkopuol.;51;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;lomarahat;;Kaikkien lomarahojen leikkaus puoleen nykyisestä
+VAL-52;Teematark. ulkopuol.;52;Valtion johto, rakenteet ja henkilöstö;Julkisen sektorin henkilöstö;;;Palkkojen alentaminen yhdellä prosentilla

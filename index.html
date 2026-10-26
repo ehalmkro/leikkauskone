@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leikkauskone</title>
+  <meta name="description" content="Valtion budjetti on 12 miljardia alijäämäinen. Mistä sinä leikkaisit tai mitä verottaisit? Kokeile valtiovarainministeriön omilla luvuilla.">
+  <meta property="og:title" content="Leikkauskone – mistä sinä ottaisit 8–11 miljardia?">
+  <meta property="og:description" content="Kokeile itse, miten valtion talous saataisiin tasapainoon valtiovarainministeriön omilla luvuilla.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="tila-helppo">
+  <header class="sivun-otsikko">
+    <div class="leveys">
+      <div class="otsikkorivi">
+        <h1>Leikkauskone</h1>
+        <div class="tilanvaihto" role="group" aria-label="Näkymä">
+          <button type="button" data-tila="helppo" aria-pressed="true">Helppo</button>
+          <button type="button" data-tila="tarkka" aria-pressed="false">Tarkka</button>
+        </div>
+      </div>
+
+      <div class="vain-helppo">
+        <p class="ingressi">
+          Valtion budjetti on ensi vuonna noin <strong>12 miljardia euroa alijäämäinen</strong>, eli valtio ottaa sen verran lisää velkaa.
+          Seuraavan hallituksen on tarkoitus vahvistaa julkista taloutta <strong>8–11 miljardilla eurolla</strong> vuoteen 2031 mennessä.
+        </p>
+        <p class="ingressi kysymys">Mistä sinä ottaisit rahat? Vastaa kysymyksiin, niin mittari näyttää, riittääkö.</p>
+      </div>
+
+      <div class="vain-tarkka">
+        <p class="ingressi">
+          Valtiovarainministeriö listasi noin 400 tapaa vahvistaa julkista taloutta ja noin 60 verovaihtoehtoa. Valitse yksittäisiä
+          toimenpiteitä tai kokonaisia ryhmiä ja katso, riittävätkö ne sopeutustavoitteeseen tai jopa valtion budjetin tasapainottamiseen.
+        </p>
+        <details class="ohje">
+          <summary>Näin kone toimii ja näin luvut luetaan</summary>
+          <ul>
+            <li><strong>Valitse kokonainen ryhmä</strong> yhdellä napilla tai avaa ryhmä ja valitse yksittäisiä toimenpiteitä. Ryhmävalinta poimii vaihtoehdoista sen, joka säästää eniten.</li>
+            <li>Osa toimenpiteistä on <strong>toistensa vaihtoehtoja tai päällekkäisiä</strong>. Jos valitset sellaisen, kone poistaa ristiriitaisen valinnan automaattisesti ja kertoo siitä.</li>
+            <li>Luvut ovat VM:n arvioita siitä, paljonko toimi vahvistaisi <strong>valtion ja paikallishallinnon</strong> (kunnat ja hyvinvointialueet) taloutta valittuna vuonna, milj. euroa vuodessa. Halutessasi voit laskea mukaan myös sosiaaliturvarahastot (esim. työeläkerahastot).</li>
+            <li>Moni toimi alkaa pienenä ja kasvaa vuosien mittaan. Vaihda tarkasteluvuotta nähdäksesi kehityksen.</li>
+            <li>VM korostaa, ettei kartoitus ole sen suositus.</li>
+            <li>Summat ovat suuntaa antavia: VM ei ole arvioinut kaikkien toimien yhteisvaikutuksia, eikä kone tunnista kaikkia päällekkäisyyksiä.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <section class="mittari" aria-label="Säästöjen kertymä">
+    <div class="leveys">
+      <div class="mittari-rivi">
+        <div class="kokonaissumma">
+          <span class="kokonaissumma-otsikko">Kasassa vuonna <span id="vuosi-teksti"></span></span>
+          <span class="kokonaissumma-luku" id="kokonaissumma">0 €</span>
+        </div>
+        <p class="seuraava" id="seuraava" aria-live="polite"></p>
+        <div class="saatimet">
+          <label class="saadin vain-tarkka">
+            <span>Vuosi</span>
+            <select id="vuosi"></select>
+          </label>
+          <label class="saadin kytkin vain-tarkka">
+            <input type="checkbox" id="rahastot">
+            <span><span class="vain-leveat">Sosiaaliturva</span><span class="vain-kapeat">Sotu-</span>rahastot mukaan</span>
+          </label>
+          <button type="button" class="nappi toissijainen" id="tyhjenna">Tyhjennä</button>
+        </div>
+      </div>
+      <div class="palkki-kehys">
+        <div class="palkki" id="palkki" role="img"></div>
+        <div class="virstat" id="virstat"></div>
+      </div>
+      <ul class="virstalista" id="virstalista"></ul>
+    </div>
+  </section>
+
+  <!-- Helppo tila: isot kysymykset -->
+  <main class="leveys helppo vain-helppo" id="helppo"></main>
+
+  <!-- Tarkka tila: kaikki toimenpiteet -->
+  <main class="leveys asettelu vain-tarkka">
+    <div class="toimenpiteet">
+      <div class="haku">
+        <label for="haku" class="nakymaton">Hae toimenpiteitä</label>
+        <input type="search" id="haku" placeholder="Hae toimenpidettä, esim. lapsilisä, Yle, poliisi…" autocomplete="off">
+      </div>
+      <div id="paaluokat"></div>
+    </div>
+
+    <aside class="yhteenveto" aria-label="Valintasi">
+      <div class="yhteenveto-sisalto">
+        <h2>Valintasi</h2>
+        <p class="hiljainen" id="valintojen-maara">Et ole vielä valinnut mitään.</p>
+        <table class="jakauma" id="jakauma">
+          <caption class="nakymaton">Säästöt pääluokittain</caption>
+          <tbody></tbody>
+        </table>
+        <ol class="valitut" id="valitut"></ol>
+        <button type="button" class="nappi" id="kopioi" data-jaa>Kopioi linkki valintoihin</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="leveys alatunniste">
+    <h2>Lähteet</h2>
+    <ul id="lahteet"></ul>
+    <p class="hiljainen" id="lahde-teksti"></p>
+  </footer>
+
+  <div class="ilmoitus" id="ilmoitus" role="status" aria-live="polite"></div>
+
+  <script src="asetukset.js"></script>
+  <script src="data.js"></script>
+  <script src="helppo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
