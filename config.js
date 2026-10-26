@@ -3,8 +3,11 @@
 // Texts are given per language as { fi: "...", en: "..." }.
 
 window.CONFIG = {
-  // Languages offered in the language switch; the first one is the fallback.
-  languages: ["fi", "en"],
+  // Languages in the language menu; the first one is the fallback. UI strings for each are in i18n.js.
+  languages: [
+    { code: "fi", name: "Suomi" },
+    { code: "en", name: "English" },
+  ],
 
   // Year whose figures are shown by default (2028–2035).
   // 2031 = last year of the next parliamentary term, which the fiscal adjustment target refers to.
@@ -56,8 +59,6 @@ window.CONFIG = {
       },
     },
   ],
-
-  // Category colours come, in order, from the --series-1 … --series-8 variables in style.css.
 
   // Short notes shown under categories (keyed by category id).
   categoryDescriptions: {

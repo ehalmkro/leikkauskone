@@ -1,176 +1,164 @@
 // Leikkauskone – application logic.
-// Data comes from data.js (window.CUTS_DATA), settings from config.js (window.CONFIG),
-// UI strings from i18n.js (window.STRINGS) and easy-mode questions from questions.js (window.QUESTIONS).
+//
+// The visitor's choices live in one place, `state.selected` (measure id -> count). Everything on the page is
+// derived from it: update() re-syncs the DOM after every change. Easy-mode answers are not stored separately –
+// a question's answer is whichever of its levels matches the current selection.
+//
+// Inputs: data.js (CUTS_DATA), config.js (CONFIG), i18n.js (STRINGS), questions.js (QUESTIONS).
 // All amounts are million euros per year.
 
 (function () {
   "use strict";
 
-  const DATA = window.CUTS_DATA;
-  const CONFIG = window.CONFIG;
-  const STRINGS = window.STRINGS;
-  const Q = window.QUESTIONS;
+  const { CUTS_DATA: DATA, CONFIG, STRINGS, QUESTIONS } = window;
   const M = DATA.measures;
   const YEARS = DATA.years;
+  const QS = QUESTIONS.questions;
+  const RESULT_STEP = QS.length; // wizard steps 0 … QS.length - 1 are questions, QS.length is the result page
+  const STORAGE_KEY = "leikkauskone:v1";
+  const AUTO_ADVANCE_MS = 600;
 
-  // Easy-mode levels: "VER-74*3" -> { id: "VER-74", count: 3 }
-  for (const q of Q.questions) {
+  // Expand easy-mode levels: "VER-74*3" -> { id: "VER-74", count: 3 }
+  for (const q of QS) {
     for (const level of q.levels) {
       level.items = level.measures.map((s) => {
         const [id, count] = s.split("*");
-        if (!M[id]) console.warn(`questions.js: unknown measure ${id} (${q.id})`);
         return { id, count: Number(count) || 1 };
       });
+      level.items.filter((x) => !M[x.id]).forEach((x) => console.warn(`questions.js: unknown measure ${x.id} in ${q.id}`));
+      level.items = level.items.filter((x) => M[x.id]);
     }
-    q.allIds = [...new Set(q.levels.flatMap((l) => l.items.map((x) => x.id)))].filter((id) => M[id]);
+    q.ids = [...new Set(q.levels.flatMap((l) => l.items.map((x) => x.id)))];
   }
 
-  // Browser language decides the default: Finnish browsers get Finnish, everyone else English.
-  const detectedLang = (navigator.languages || [navigator.language || ""]).some((l) => /^fi\b/i.test(l))
-    ? "fi"
-    : CONFIG.languages.find((l) => l !== "fi") || "fi";
-
-  // selected = Map(id -> count). A regular measure has count 1, unit-yield measures the number of steps.
   const state = {
-    lang: detectedLang,
-    mode: "easy", // "easy" or "advanced"
-    easyView: "wizard", // easy mode: "wizard" (one question at a time) or "list" (all at once)
-    step: 0, // wizard step; Q.questions.length = result page
-    answered: new Set(), // questions answered in the wizard ("No change" is only marked once chosen)
+    lang: browserLanguage(),
+    mode: "easy", // "easy" | "advanced"
+    easyView: "wizard", // "wizard" (one question at a time) | "list" (all at once)
+    step: 0,
+    answered: new Set(), // questions answered in the wizard, so that "No change" shows as chosen only once picked
     year: CONFIG.defaultYear,
     includeFunds: false,
-    selected: new Map(),
-    expanded: new Set(), // expanded groups
+    selected: new Map(), // measure id -> count (1, or the number of steps for adjustable tax measures)
+    expanded: new Set(), // open groups in the detailed view
     query: "",
   };
+
+  // ---------- Helpers ----------
 
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
   const esc = (s) =>
     String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const truncate = (s, n) => (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s);
+  const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ---------- Translations ----------
+  function browserLanguage() {
+    const codes = CONFIG.languages.map((l) => l.code);
+    const preferred = (navigator.languages || [navigator.language || ""]).map((l) => l.slice(0, 2).toLowerCase());
+    return preferred.find((l) => codes.includes(l)) || codes[0];
+  }
 
-  // UI string with {placeholders}; falls back to Finnish if a key is missing.
+  // UI string with {placeholders}; falls back to the first language if a key is missing.
   function t(key, vars = {}) {
-    const s = STRINGS[state.lang]?.[key] ?? STRINGS.fi[key] ?? key;
+    const fallback = STRINGS[CONFIG.languages[0].code];
+    const s = STRINGS[state.lang]?.[key] ?? fallback[key] ?? key;
     return s.replace(/\{(\w+)\}/g, (_, k) => (k in vars ? vars[k] : `{${k}}`));
   }
 
-  // A text from config.js / questions.js: either a plain string or { fi, en }.
-  const loc = (v) => (v == null || typeof v === "string" ? v ?? "" : v[state.lang] ?? v.fi ?? "");
+  // A text from config.js or questions.js: either a plain string or { fi: …, en: … }.
+  const loc = (v) => (v == null || typeof v === "string" ? v ?? "" : v[state.lang] ?? v[CONFIG.languages[0].code] ?? "");
 
+  // Measures, groups and categories have a Finnish `name` and an English `nameEn`.
   const nameOf = (x) => (state.lang !== "fi" && x.nameEn ? x.nameEn : x.name);
 
-  function applyStaticTexts() {
-    document.documentElement.lang = state.lang;
-    document.title = t("pageTitle");
-    $$("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
-    $$("[data-i18n-html]").forEach((el) => (el.innerHTML = t(el.dataset.i18nHtml)));
-    $$("[data-i18n-placeholder]").forEach((el) => (el.placeholder = t(el.dataset.i18nPlaceholder)));
-    $$("[data-i18n-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
-    $$(".lang-switch [data-lang]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === state.lang)));
+  const numberFormats = {};
+  function formatNumber(value, maxDecimals, minDecimals = 0) {
+    const key = `${state.lang}:${maxDecimals}:${minDecimals}`;
+    numberFormats[key] ??= new Intl.NumberFormat(state.lang === "fi" ? "fi-FI" : "en-GB", {
+      minimumFractionDigits: minDecimals,
+      maximumFractionDigits: maxDecimals,
+    });
+    return numberFormats[key].format(value);
   }
 
-  // ---------- Numbers and formatting ----------
-
-  const LOCALES = { fi: "fi-FI", en: "en-GB" };
-  const formatters = {};
-  function nf(kind) {
-    const key = `${state.lang}:${kind}`;
-    if (!formatters[key]) {
-      const opts = {
-        billions: { minimumFractionDigits: 1, maximumFractionDigits: 1 },
-        millions: { maximumFractionDigits: 0 },
-        small: { maximumFractionDigits: 1 },
-      }[kind];
-      formatters[key] = new Intl.NumberFormat(LOCALES[state.lang] || "fi-FI", opts);
-    }
-    return formatters[key];
-  }
-
+  // Finnish "1,2 mrd €" / "350 milj. €", English "€1.2bn" / "€350m"
   function formatEur(millions) {
     const a = Math.abs(millions);
     const sign = millions < 0 ? "−" : "";
     if (a === 0) return state.lang === "fi" ? "0 €" : "€0";
-    const [num, unit] =
-      a >= 1000 ? [nf("billions").format(a / 1000), t("billions")] : [nf(a < 10 ? "small" : "millions").format(a), t("millions")];
-    // Finnish: "1,2 mrd €", English: "€1.2bn"
+    const [num, unit] = a >= 1000 ? [formatNumber(a / 1000, 1, 1), t("billions")] : [formatNumber(a, a < 10 ? 1 : 0), t("millions")];
     return state.lang === "fi" ? `${sign}${num} ${unit}` : `${sign}€${num}${unit}`;
   }
 
+  // ---------- Calculations ----------
+
   const yearIndex = () => YEARS.indexOf(state.year);
 
-  // Impact of one measure (or one unit step) in the given year; null = no euro estimate.
-  function impact(m, i = yearIndex(), includeFunds = state.includeFunds) {
+  // Impact of one measure (or one step of an adjustable measure); null = no euro estimate.
+  function impact(m, i = yearIndex()) {
     const gov = m.government[i];
-    const funds = includeFunds ? m.funds[i] : null;
+    const funds = state.includeFunds ? m.funds[i] : null;
     if (gov == null && funds == null) return null;
     return (gov || 0) + (funds || 0);
   }
 
   const hasEstimate = (m) => m.government.some((x) => x != null) || m.funds.some((x) => x != null);
+  const selectedImpact = (id) => (impact(M[id]) || 0) * (state.selected.get(id) || 0);
+  const savesMoney = (m) => YEARS.reduce((sum, _, i) => sum + (impact(m, i) || 0), 0) > 0;
 
-  function selectedImpact(id) {
-    const a = impact(M[id]);
-    return a == null ? 0 : a * (state.selected.get(id) || 0);
+  function totals() {
+    let spending = 0;
+    let taxes = 0;
+    for (const id of state.selected.keys()) {
+      if (M[id].type === "tax") taxes += selectedImpact(id);
+      else spending += selectedImpact(id);
+    }
+    const byCategory = {};
+    for (const c of DATA.categories) {
+      byCategory[c.id] = c.groups.flatMap((g) => g.measures).reduce((sum, id) => sum + selectedImpact(id), 0);
+    }
+    return { spending, taxes, total: spending + taxes, byCategory };
   }
 
-  function totalImpact() {
-    let sum = 0;
-    for (const id of state.selected.keys()) sum += selectedImpact(id);
-    return sum;
-  }
+  // ---------- Selection rules ----------
 
-  // Does the measure save anything over the years with the current settings (used by group selection).
-  function savesMoney(m) {
-    return YEARS.reduce((sum, _, i) => sum + (impact(m, i) || 0), 0) > 0;
-  }
+  const selectedConflicts = (id) => M[id].conflicts.filter((c) => state.selected.has(c));
 
-  // ---------- Selection ----------
-
-  function selectedConflicts(id) {
-    return M[id].conflicts.filter((c) => state.selected.has(c));
-  }
-
-  // Selects a measure and removes conflicting selections. Returns the removed ids.
+  // Selects a measure (count 0 removes it) and drops conflicting selections. Returns the dropped ids.
   function select(id, count = 1) {
-    const removed = selectedConflicts(id);
+    const removed = count > 0 ? selectedConflicts(id) : [];
     removed.forEach((c) => state.selected.delete(c));
     if (count > 0) state.selected.set(id, count);
     else state.selected.delete(id);
     return removed;
   }
 
-  // Group "package": saving measures from largest to smallest, skipping conflicting ones.
-  // Among alternatives, the one that saves the most gets picked.
+  // Measures a "Select group" click would add: savers from largest to smallest, skipping conflicts,
+  // so that among alternatives the one that saves the most wins.
   function packageFor(group, selected = state.selected) {
-    const toAdd = [];
     const taken = new Set(selected.keys());
-    const order = [...group.measures].sort((a, b) => (impact(M[b]) || 0) - (impact(M[a]) || 0));
-    for (const id of order) {
+    const toAdd = [];
+    const byImpact = [...group.measures].sort((a, b) => (impact(M[b]) || 0) - (impact(M[a]) || 0));
+    for (const id of byImpact) {
       const m = M[id];
-      if (taken.has(id) || !savesMoney(m)) continue;
-      if (m.conflicts.some((c) => taken.has(c))) continue;
+      if (taken.has(id) || !savesMoney(m) || m.conflicts.some((c) => taken.has(c))) continue;
       toAdd.push(id);
       taken.add(id);
     }
     return toAdd;
   }
 
-  // Largest possible saving of a group starting from an empty selection (sum of its package).
-  function potential(group) {
-    return packageFor(group, new Map()).reduce((sum, id) => sum + (impact(M[id]) || 0), 0);
-  }
+  const potential = (group) => packageFor(group, new Map()).reduce((sum, id) => sum + (impact(M[id]) || 0), 0);
 
-  // ---------- Easy-mode levels ----------
+  // ---------- Easy-mode questions ----------
 
-  const levelTotal = (level) => level.items.reduce((sum, x) => sum + (M[x.id] ? (impact(M[x.id]) || 0) * x.count : 0), 0);
+  const levelTotal = (level) => level.items.reduce((sum, x) => sum + (impact(M[x.id]) || 0) * x.count, 0);
   const levelName = (q, n) => (n === 0 ? t("noChange") : loc(q.levels[n - 1].name) || t(n === 1 ? "levelLow" : "levelHigh"));
 
-  // 0 = no change, 1.. = level, -1 = selection was modified in the detailed view
+  // 0 = no change, 1… = level, -1 = the selection matches no level (edited in the detailed view)
   function currentLevel(q) {
-    const chosen = q.allIds.filter((id) => state.selected.has(id));
+    const chosen = q.ids.filter((id) => state.selected.has(id));
     if (!chosen.length) return 0;
     const n = q.levels.findIndex(
       (l) => l.items.length === chosen.length && l.items.every((x) => state.selected.get(x.id) === x.count)
@@ -179,21 +167,13 @@
   }
 
   function setLevel(q, n) {
-    q.allIds.forEach((id) => state.selected.delete(id));
-    if (n === 0) return;
-    const removed = q.levels[n - 1].items.filter((x) => M[x.id]).flatMap((x) => select(x.id, x.count));
-    notifyRemoved(removed);
+    q.ids.forEach((id) => state.selected.delete(id));
+    if (n > 0) notifyRemoved(q.levels[n - 1].items.flatMap((x) => select(x.id, x.count)));
   }
 
-  // ---------- Persistence: URL (shareable link) and localStorage (survives leaving the page) ----------
+  // ---------- Saving and share links ----------
 
-  const STORAGE_KEY = "leikkauskone:v1";
-
-  function addSelection(id, count) {
-    if (M[id]) state.selected.set(id, Math.max(1, Math.min(Number(count) || 1, M[id].unit?.max || 1)));
-  }
-
-  function saveToStorage() {
+  function save() {
     try {
       localStorage.setItem(
         STORAGE_KEY,
@@ -209,85 +189,75 @@
         })
       );
     } catch {
-      // Storage may be unavailable (private mode, blocked site data) – the URL still keeps the state.
+      // Storage can be unavailable (private browsing, blocked site data); the page still works.
     }
   }
 
-  function readStorage() {
+  function load() {
+    let saved;
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-      return saved && typeof saved === "object" ? saved : null;
+      saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
     } catch {
-      return null;
-    }
-  }
-
-  // Restores where the visitor left off in easy mode.
-  function restoreProgress(saved) {
-    if (saved.easyView === "list") state.easyView = "list";
-    if (Number.isInteger(saved.step)) state.step = Math.max(0, Math.min(saved.step, Q.questions.length));
-    if (Array.isArray(saved.answered)) saved.answered.forEach((id) => state.answered.add(id));
-  }
-
-  function loadFromStorage() {
-    const saved = readStorage();
-    if (!saved) return;
-    if (CONFIG.languages.includes(saved.lang)) state.lang = saved.lang;
-    if (saved.mode === "advanced") state.mode = "advanced";
-    restoreProgress(saved);
-    if (YEARS.includes(saved.year)) state.year = saved.year;
-    state.includeFunds = saved.includeFunds === true;
-    if (Array.isArray(saved.selected)) saved.selected.forEach(([id, count]) => addSelection(id, count));
-  }
-
-  function saveToUrl() {
-    const parts = [];
-    if (state.lang !== detectedLang) parts.push(`lang=${state.lang}`);
-    if (state.mode === "advanced") parts.push("view=advanced");
-    if (state.year !== CONFIG.defaultYear) parts.push(`year=${state.year}`);
-    if (state.includeFunds) parts.push("funds=1");
-    if (state.selected.size) {
-      const s = [...state.selected].map(([id, count]) => (count > 1 ? `${id}*${count}` : id)).join(",");
-      parts.push(`s=${s}`);
-    }
-    history.replaceState(null, "", parts.length ? "#" + parts.join("&") : location.pathname + location.search);
-  }
-
-  function loadFromUrl() {
-    const p = new URLSearchParams(location.hash.slice(1));
-    if (CONFIG.languages.includes(p.get("lang"))) state.lang = p.get("lang");
-    if (p.get("view") === "advanced") state.mode = "advanced";
-    const y = Number(p.get("year"));
-    if (YEARS.includes(y)) state.year = y;
-    state.includeFunds = p.get("funds") === "1";
-    for (const part of (p.get("s") || "").split(",").filter(Boolean)) {
-      const [id, count] = part.split("*");
-      addSelection(id, count);
-    }
-    // A link with selections (e.g. shared by a friend) opens on the result page
-    if (state.selected.size) state.step = Q.questions.length;
-  }
-
-  // A link with state wins; otherwise continue from where the visitor left off.
-  // If the link's selections match what this browser saved, it is the visitor's own page (e.g. a reload),
-  // so their progress is restored instead of jumping to the result page meant for shared links.
-  function loadState() {
-    if (location.hash.length <= 1) {
-      loadFromStorage();
       return;
     }
-    loadFromUrl();
-    const saved = readStorage();
-    const key = (entries) => entries.map(([id, count]) => `${id}*${count}`).sort().join(",");
-    if (saved && Array.isArray(saved.selected) && key(saved.selected) === key([...state.selected])) {
-      state.step = 0;
-      restoreProgress(saved);
-    }
+    if (!saved) return;
+    if (CONFIG.languages.some((l) => l.code === saved.lang)) state.lang = saved.lang;
+    if (saved.mode === "advanced") state.mode = "advanced";
+    if (saved.easyView === "list") state.easyView = "list";
+    if (Number.isInteger(saved.step)) state.step = Math.max(0, Math.min(saved.step, RESULT_STEP));
+    if (YEARS.includes(saved.year)) state.year = saved.year;
+    state.includeFunds = saved.includeFunds === true;
+    (saved.answered || []).forEach((id) => state.answered.add(id));
+    (saved.selected || []).forEach(([id, count]) => M[id] && select(id, Math.min(count, M[id].unit?.max || 1)));
   }
 
-  function saveState() {
-    saveToUrl();
-    saveToStorage();
+  // Share links pack the selection into a fixed-size code: one bit per measure (three bits for adjustable
+  // ones), measures in id order, six bits per URL-safe character. About 85 characters whatever is selected.
+  // The code is tied to the data: if measures are added or removed, older links decode differently.
+  const LINK_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+  const LINK_ORDER = Object.keys(M).sort();
+  const bitsFor = (id) => (M[id].unit ? 3 : 1);
+
+  function encodeSelection() {
+    const bits = [];
+    for (const id of LINK_ORDER) {
+      const count = state.selected.get(id) || 0;
+      for (let b = bitsFor(id) - 1; b >= 0; b--) bits.push((count >> b) & 1);
+    }
+    let code = "";
+    for (let i = 0; i < bits.length; i += 6) {
+      code += LINK_CHARS[bits.slice(i, i + 6).reduce((v, bit, j) => v | (bit << (5 - j)), 0)];
+    }
+    return code.replace(/A+$/, ""); // trailing zeros are implied
+  }
+
+  function decodeSelection(code) {
+    const bits = [...code].flatMap((ch) => {
+      const v = Math.max(0, LINK_CHARS.indexOf(ch));
+      return [5, 4, 3, 2, 1, 0].map((b) => (v >> b) & 1);
+    });
+    const selected = new Map();
+    let pos = 0;
+    for (const id of LINK_ORDER) {
+      let count = 0;
+      for (let b = 0; b < bitsFor(id); b++) count = (count << 1) | (bits[pos++] || 0);
+      if (count) selected.set(id, Math.min(count, M[id].unit?.max || 1));
+    }
+    return selected;
+  }
+
+  const shareUrl = () => `${location.href.split("#")[0]}#s=${encodeSelection()}`;
+
+  // A shared link opens the sender's choices on the result page; the code is then removed from the address bar.
+  function loadSharedLink() {
+    const code = new URLSearchParams(location.hash.slice(1)).get("s");
+    if (code == null) return;
+    state.selected = decodeSelection(code);
+    state.answered = new Set(QS.map((q) => q.id));
+    state.mode = "easy";
+    state.easyView = "wizard";
+    state.step = RESULT_STEP;
+    history.replaceState(null, "", location.pathname + location.search);
   }
 
   // ---------- Toast ----------
@@ -303,45 +273,20 @@
 
   function notifyRemoved(removed) {
     if (!removed.length) return;
-    const names = removed.map((id) => `”${truncate(nameOf(M[id]), 70)}”`).join(", ");
-    toast(t("toastRemoved", { names }));
+    toast(t("toastRemoved", { names: removed.map((id) => `”${truncate(nameOf(M[id]), 70)}”`).join(", ") }));
   }
-
-  const truncate = (s, n) => (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s);
 
   // ---------- Rendering (on start and when the language changes) ----------
 
-  function renderStructure() {
-    // Year selector
+  function renderAll() {
+    document.documentElement.lang = state.lang;
+    document.title = t("pageTitle");
+    $$("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
+    $$("[data-i18n-html]").forEach((el) => (el.innerHTML = t(el.dataset.i18nHtml)));
+    $$("[data-i18n-placeholder]").forEach((el) => (el.placeholder = t(el.dataset.i18nPlaceholder)));
+    $$("[data-i18n-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
+    $("#lang").value = state.lang;
     $("#year").innerHTML = YEARS.map((y) => `<option value="${y}">${y}</option>`).join("");
-
-    // Quick links to categories
-    const jumpLinks = DATA.categories
-      .map(
-        (c, i) =>
-          `<a href="#cat-${c.id}"><span class="swatch" style="background:var(--series-${i + 1})"></span>${esc(nameOf(c))}</a>`
-      )
-      .join("");
-
-    const descriptions = CONFIG.categoryDescriptions || {};
-    $("#categories").innerHTML =
-      `<nav class="jump-nav" aria-label="${esc(t("categoriesNav"))}">${jumpLinks}</nav>` +
-      DATA.categories
-        .map(
-          (c, i) => `
-      <section class="category" id="cat-${c.id}" data-category="${c.id}">
-        <div class="category-header">
-          <h2><span class="swatch" style="background:var(--series-${i + 1})"></span>${esc(nameOf(c))}</h2>
-          <span class="category-total" data-category-total></span>
-        </div>
-        ${descriptions[c.id] ? `<p class="category-description">${esc(loc(descriptions[c.id]))}</p>` : ""}
-        ${c.groups.map(renderGroup).join("")}
-      </section>`
-        )
-        .join("") +
-      `<p class="no-results" id="no-results" hidden>${esc(t("noResults"))}</p>`;
-
-    // Sources
     $("#sources").innerHTML = CONFIG.sources
       .map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(loc(s.name))}</a></li>`)
       .join("");
@@ -349,6 +294,118 @@
       t("sourceNote", { source: DATA.source.name, date: DATA.source.date }) +
       (DATA.source.taxes ? t("sourceNoteTaxes") : ".") +
       t("sourceNoteInterpretation");
+    renderEasy();
+    renderDetailed();
+  }
+
+  // Easy mode: the same question markup serves both views; CSS and update() decide what is shown.
+  function renderEasy() {
+    const option = (q, n) => `
+      <label class="option">
+        <input type="radio" name="q-${q.id}" value="${n}">
+        <span class="option-text">
+          <span class="option-head">
+            <span class="option-name">${esc(levelName(q, n))}</span>
+            <span class="option-amount" data-level-amount></span>
+          </span>
+          <span class="option-description">${esc(n === 0 ? t("noChangeDescription") : loc(q.levels[n - 1].description))}</span>
+        </span>
+      </label>`;
+
+    const question = (q) => `
+      <fieldset class="question" data-question="${q.id}">
+        <legend><h3 tabindex="-1">${esc(loc(q.title))}</h3></legend>
+        <p class="question-description">${esc(loc(q.description))}</p>
+        <p class="notice-text" data-edited hidden>${esc(t("modifiedInAdvanced"))}</p>
+        <div class="options">${[0, ...q.levels.map((_, i) => i + 1)].map((n) => option(q, n)).join("")}</div>
+        <p class="chosen-description" data-chosen-description></p>
+        <details class="card-details" data-card-details="${q.id}">
+          <summary>${esc(t("cardDetails"))}</summary>
+          <div class="card-details-body"></div>
+        </details>
+      </fieldset>`;
+
+    $("#easy").innerHTML = `
+      <div class="segmented easy-view-switch" role="group" aria-label="${esc(t("easyViewLabel"))}">
+        <button type="button" data-easy-view="wizard">${esc(t("viewOneByOne"))}</button>
+        <button type="button" data-easy-view="list">${esc(t("viewAll"))}</button>
+      </div>
+
+      <div class="wizard-progress" data-wizard-only>
+        <p data-progress-text></p>
+        <div class="progress" aria-hidden="true"><div data-progress-bar></div></div>
+      </div>
+
+      ${QUESTIONS.sections
+        .map(
+          (s) => `
+        <section class="question-section" data-section="${s.id}">
+          <h2>${esc(loc(s.title))}</h2>
+          ${QS.filter((q) => q.section === s.id).map(question).join("")}
+        </section>`
+        )
+        .join("")}
+
+      <nav class="wizard-nav" data-wizard-only aria-label="${esc(t("wizardNav"))}">
+        <button type="button" class="btn secondary big" data-step-by="-1">${esc(t("previous"))}</button>
+        <button type="button" class="btn big" data-step-by="1"></button>
+      </nav>
+
+      <section class="result" id="result">
+        <h2 tabindex="-1">${esc(t("resultTitle"))}</h2>
+        <p class="result-text" data-result-text></p>
+        <div class="actions">
+          <button type="button" class="btn" data-share-image>${esc(t("shareImage"))}</button>
+          <button type="button" class="btn secondary" data-share>${esc(t("share"))}</button>
+        </div>
+        <h3 class="answers-title">${esc(t("yourAnswers"))}</h3>
+        <p class="muted answers-hint">${esc(t("answersHint"))}</p>
+        <ol class="answers" data-answers></ol>
+        <div class="actions">
+          <button type="button" class="btn secondary" data-start-over>${esc(t("startOver"))}</button>
+          <button type="button" class="btn secondary" data-mode="advanced">${esc(t("toAdvanced", { n: Object.keys(M).length }))}</button>
+        </div>
+      </section>`;
+  }
+
+  function renderCardDetails(q) {
+    return q.levels
+      .map(
+        (l, i) => `
+        <p class="details-title">${esc(levelName(q, i + 1))}:</p>
+        <ul>${l.items
+          .map((x) => {
+            const a = impact(M[x.id]);
+            const steps = M[x.id].unit ? ` (+${x.count} × ${esc(M[x.id].unit.step)})` : "";
+            return `<li><span>${esc(nameOf(M[x.id]))}${steps}</span><span class="num">${a == null ? "–" : formatEur(a * x.count)}</span></li>`;
+          })
+          .join("")}</ul>`
+      )
+      .join("");
+  }
+
+  // Detailed view: categories → groups → individual measures.
+  function renderDetailed() {
+    const descriptions = CONFIG.categoryDescriptions || {};
+    const swatch = (i) => `<span class="swatch" style="background:var(--series-${i + 1})"></span>`;
+    $("#categories").innerHTML = `
+      <nav class="jump-nav" aria-label="${esc(t("categoriesNav"))}">
+        ${DATA.categories.map((c, i) => `<a href="#cat-${c.id}">${swatch(i)}${esc(nameOf(c))}</a>`).join("")}
+      </nav>
+      ${DATA.categories
+        .map(
+          (c, i) => `
+        <section class="category" id="cat-${c.id}" data-category="${c.id}">
+          <div class="category-header">
+            <h2>${swatch(i)}${esc(nameOf(c))}</h2>
+            <span class="category-total" data-category-total></span>
+          </div>
+          ${descriptions[c.id] ? `<p class="category-description">${esc(loc(descriptions[c.id]))}</p>` : ""}
+          ${c.groups.map(renderGroup).join("")}
+        </section>`
+        )
+        .join("")}
+      <p class="no-results" id="no-results" hidden>${esc(t("noResults"))}</p>`;
   }
 
   function renderGroup(g) {
@@ -363,9 +420,7 @@
             </span>
           </button>
           <div class="group-figures" data-group-figures></div>
-          <div class="group-actions">
-            <button type="button" class="btn small" data-package="${g.id}"></button>
-          </div>
+          <button type="button" class="btn small" data-package="${g.id}"></button>
         </div>
         <ul class="measure-list" id="list-${g.id}" hidden>
           ${g.measures.map((id) => renderMeasure(M[id])).join("")}
@@ -375,24 +430,20 @@
 
   function renderMeasure(m) {
     const badges = [];
-    if (m.alternative) badges.push(`<span class="badge">${esc(t("badgeAlternative"))}</span>`);
-    if (!hasEstimate(m)) badges.push(`<span class="badge">${esc(t("badgeNoEstimate"))}</span>`);
-    if (m.type === "tax" && m.fromYear > YEARS[0]) badges.push(`<span class="badge">${esc(t("badgeFrom", { year: m.fromYear }))}</span>`);
-    if (m.funds.some((x) => x > 0)) {
-      badges.push(`<span class="badge notice" data-funds-badge>${esc(t("badgeFunds"))}</span>`);
-    }
-    // The budget item ("kohde") is only meaningful in Finnish
-    const target = state.lang === "fi" && m.target && m.type === "spending" ? `<span>${esc(m.target)}</span>` : "";
+    if (m.alternative) badges.push(t("badgeAlternative"));
+    if (!hasEstimate(m)) badges.push(t("badgeNoEstimate"));
+    if (m.type === "tax" && m.fromYear > YEARS[0]) badges.push(t("badgeFrom", { year: m.fromYear }));
+    const fundsBadge = m.funds.some((x) => x > 0) ? `<span class="badge notice" data-funds-badge>${esc(t("badgeFunds"))}</span>` : "";
+    // The budget item ("kohde") only makes sense in Finnish
+    const target = state.lang === "fi" && m.type === "spending" && m.target ? `<span>${esc(m.target)}</span>` : "";
 
     const control = m.unit
-      ? `<div class="measure-select">
-           <span class="measure-name">${esc(nameOf(m))}</span>
-         </div>
-         <div class="stepper" role="group" aria-label="${esc(t("stepperLabel"))}">
+      ? `<span class="measure-select"><span class="measure-name" id="name-${m.id}">${esc(nameOf(m))}</span></span>
+         <span class="stepper" role="group" aria-labelledby="name-${m.id}">
            <button type="button" data-step="-1" data-id="${m.id}" aria-label="${esc(t("decrease"))}">−</button>
-           <output data-count></output>
+           <output data-count aria-live="polite"></output>
            <button type="button" data-step="1" data-id="${m.id}" aria-label="${esc(t("increase"))}">+</button>
-         </div>`
+         </span>`
       : `<label class="measure-select">
            <input type="checkbox" data-select="${m.id}">
            <span class="measure-name">${esc(nameOf(m))}</span>
@@ -404,7 +455,7 @@
           ${control}
           <span class="measure-amount" data-amount></span>
         </div>
-        <div class="measure-meta">${target}${badges.join("")}</div>
+        <div class="measure-meta">${target}${badges.map((b) => `<span class="badge">${esc(b)}</span>`).join("")}${fundsBadge}</div>
         <p class="measure-conflict" data-conflict hidden></p>
         <details class="measure-details" data-details="${m.id}">
           <summary>${esc(t("details"))}</summary>
@@ -413,188 +464,143 @@
       </li>`;
   }
 
-  // ---------- Easy mode ----------
-  // Two ways to answer: one question at a time ("wizard", default) or all questions at once ("list").
-  // Wizard steps are 0 … questions.length - 1, and questions.length is the result page.
-
-  const RESULT_STEP = Q.questions.length;
-  const AUTO_ADVANCE_MS = 600;
-  let advanceTimer;
-
-  function renderEasy() {
-    const card = (q) => `
-      <article class="card" data-question="${q.id}">
-        <h3>${esc(loc(q.title))}</h3>
-        <p class="card-description">${esc(loc(q.description))}</p>
-        <div class="levels" role="radiogroup" aria-label="${esc(loc(q.title))}">
-          ${[0, ...q.levels.map((_, i) => i + 1)]
-            .map(
-              (n) => `
-            <button type="button" class="level" role="radio" aria-checked="false" data-question="${q.id}" data-level="${n}">
-              <span class="level-name">${esc(levelName(q, n))}</span>
-              <span class="level-amount" data-level-amount></span>
-            </button>`
-            )
-            .join("")}
-        </div>
-        <p class="level-description" data-level-description></p>
-        <details class="card-details" data-card-details="${q.id}">
-          <summary>${esc(t("cardDetails"))}</summary>
-          <div class="card-details-body"></div>
-        </details>
-      </article>`;
-
-    $("#easy").innerHTML = `
-      <div class="easy-view-switch" role="group" aria-label="${esc(t("easyViewLabel"))}">
-        <button type="button" data-easy-view="wizard">${esc(t("viewOneByOne"))}</button>
-        <button type="button" data-easy-view="list">${esc(t("viewAll"))}</button>
-      </div>
-
-      <section class="wizard" id="wizard" aria-live="polite"></section>
-
-      <div class="list-view" id="list-view">
-        ${Q.sections
-          .map(
-            (s) => `
-          <section class="section">
-            <h2>${esc(loc(s.title))}</h2>
-            <div class="cards">${Q.questions.filter((q) => q.section === s.id).map(card).join("")}</div>
-          </section>`
-          )
-          .join("")}
-      </div>
-
-      <section class="result" id="result">
-        <h2 tabindex="-1">${esc(t("resultTitle"))}</h2>
-        <p class="result-text" data-result-text></p>
-        <div class="result-actions">
-          <button type="button" class="btn" data-share-image>${esc(t("shareImage"))}</button>
-          <button type="button" class="btn secondary" data-share>${esc(t("share"))}</button>
-        </div>
-        <h3 class="answers-title">${esc(t("yourAnswers"))}</h3>
-        <p class="muted answers-hint">${esc(t("answersHint"))}</p>
-        <ol class="answers" data-answers></ol>
-        <div class="result-actions">
-          <button type="button" class="btn secondary" data-start-over>${esc(t("startOver"))}</button>
-          <button type="button" class="btn secondary" data-mode="advanced">${esc(t("toAdvanced", { n: Object.keys(M).length }))}</button>
-        </div>
-      </section>`;
+  // Filled in only when opened.
+  function renderMeasureDetails(m) {
+    const fmt = (x) => (x == null ? "–" : formatNumber(x, 1));
+    const meur = state.lang === "fi" ? "milj. €" : "€m";
+    const now = yearIndex();
+    const cell = (x, i, tag = "td") => `<${tag}${i === now ? ' class="current"' : ""}>${tag === "th" ? x : fmt(x)}</${tag}>`;
+    let html;
+    if (m.type === "tax") {
+      const value = m.government.some((x) => x != null) ? Math.max(...m.government.map((x) => x || 0)) : null;
+      const basis = state.lang !== "fi" && m.basisEn ? m.basisEn : m.basis;
+      html = `<p><strong>${esc(t("taxEstimate"))}:</strong> ${esc(m.vmEstimate || "–")} ${meur}<br>
+        <strong>${esc(t("taxUsed"))}:</strong> ${value == null ? t("noEstimate") : formatEur(value)}${m.unit ? ` (${esc(t("perStep", { step: m.unit.step }))})` : ""} – ${esc(basis)}.<br>
+        ${esc(t("taxConstant"))}${m.fromYear > YEARS[0] ? esc(t("taxFrom", { year: m.fromYear })) : ""}.</p>`;
+    } else {
+      html = `<div class="table-scroll"><table class="year-table">
+        <thead><tr><th scope="col">${meur}</th>${YEARS.map((y, i) => cell(y, i, "th")).join("")}</tr></thead>
+        <tbody>
+          <tr><th scope="row">${esc(t("governmentRow"))}</th>${m.government.map((x, i) => cell(x, i)).join("")}</tr>
+          <tr><th scope="row">${esc(t("fundsRow"))}</th>${m.funds.map((x, i) => cell(x, i)).join("")}</tr>
+        </tbody></table></div>`;
+    }
+    // VM's background texts exist only in Finnish
+    if (m.background || m.memo) {
+      if (state.lang !== "fi") html += `<p><em>${esc(t("backgroundFinnishOnly"))}</em></p>`;
+      if (m.background) html += `<p lang="fi">${esc(m.background)}</p>`;
+      if (m.memo) html += `<p lang="fi"><strong>${esc(t("memo"))}:</strong> ${esc(m.memo)}</p>`;
+    }
+    if (m.conflicts.length) {
+      html += `<p><strong>${esc(t("cannotCombine"))}:</strong> ${m.conflicts.map((c) => esc(truncate(nameOf(M[c]), 80))).join("; ")}</p>`;
+    }
+    return html;
   }
 
-  function renderCardDetails(q) {
-    return q.levels
-      .map(
-        (l, i) => `
-        <p class="details-title">${esc(levelName(q, i + 1))}:</p>
-        <ul>${l.items
-          .filter((x) => M[x.id])
-          .map((x) => {
-            const a = impact(M[x.id]);
-            const steps = M[x.id].unit ? ` (+${x.count} × ${esc(M[x.id].unit.step)})` : "";
-            return `<li><span>${esc(nameOf(M[x.id]))}${steps}</span><span class="num">${a == null ? "–" : formatEur(a * x.count)}</span></li>`;
-          })
-          .join("")}</ul>`
+  // ---------- Update (after every change) ----------
+
+  function update() {
+    document.body.dataset.mode = state.mode;
+    $$(".mode-switch [data-mode]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === state.mode)));
+    $("#year").value = String(state.year);
+    $("#funds").checked = state.includeFunds;
+    $("#year-label").textContent = state.year;
+
+    const sums = totals();
+    updateMeter(sums);
+    updateEasy(sums);
+    updateDetailed(sums);
+    $$("details[open][data-details]").forEach((d) => ($(".measure-details-body", d).innerHTML = renderMeasureDetails(M[d.dataset.details])));
+    $$("details[open][data-card-details]").forEach(
+      (d) => ($(".card-details-body", d).innerHTML = renderCardDetails(QS.find((q) => q.id === d.dataset.cardDetails)))
+    );
+    save();
+  }
+
+  function updateMeter({ total, byCategory }) {
+    $("#total").textContent = formatEur(total);
+    const max = Math.max(CONFIG.scaleMax, total * 1.05);
+    const milestones = CONFIG.milestones;
+
+    $("#bar").innerHTML = DATA.categories
+      .map((c, i) =>
+        byCategory[c.id] > 0
+          ? `<div class="bar-segment" style="width:${(byCategory[c.id] / max) * 100}%;background:var(--series-${i + 1})" title="${esc(nameOf(c))}: ${formatEur(byCategory[c.id])}"></div>`
+          : ""
       )
       .join("");
-  }
+    $("#bar").setAttribute("aria-label", t("barAria", { total: formatEur(total), max: formatEur(max) }));
 
-  // One question with big answer options; each option shows what it means before choosing.
-  function renderWizardStep() {
-    const step = state.step;
-    const q = Q.questions[step];
-    const current = currentLevel(q);
-    const options = [0, ...q.levels.map((_, i) => i + 1)]
-      .map((n) => {
-        const desc = n === 0 ? t("noChangeDescription") : loc(q.levels[n - 1].description);
-        const amount = n === 0 ? "" : formatEur(levelTotal(q.levels[n - 1]));
-        const checked = n === current && (n > 0 || state.answered.has(q.id));
-        return `
-          <button type="button" class="option" role="radio" aria-checked="${checked}" data-question="${q.id}" data-level="${n}">
-            <span class="option-head">
-              <span class="option-name">${esc(levelName(q, n))}</span>
-              <span class="option-amount">${amount}</span>
-            </span>
-            <span class="option-description">${esc(desc)}</span>
-          </button>`;
+    $("#milestones").innerHTML = milestones
+      .map((ms, n) => {
+        const left = (ms.value / max) * 100;
+        const classes = ["milestone", total >= ms.value && "reached", left > 85 && "align-right", n % 2 && "upper"].filter(Boolean).join(" ");
+        return `<div class="${classes}" style="left:${left}%"><span>${esc(loc(ms.short))}</span></div>`;
       })
       .join("");
-    const isLast = step === RESULT_STEP - 1;
 
-    $("#wizard").innerHTML = `
-      <div class="wizard-progress">
-        <span>${esc(t("questionOf", { n: step + 1, total: RESULT_STEP }))}</span>
-        <span class="muted">${esc(loc(Q.sections.find((s) => s.id === q.section).title))}</span>
-      </div>
-      <div class="progress" aria-hidden="true"><div style="width:${(step / RESULT_STEP) * 100}%"></div></div>
-      <article class="wizard-card">
-        <h2 tabindex="-1">${esc(loc(q.title))}</h2>
-        <p class="wizard-description">${esc(loc(q.description))}</p>
-        ${current === -1 ? `<p class="notice-text">${esc(t("modifiedInAdvanced"))}</p>` : ""}
-        <div class="options" role="radiogroup" aria-label="${esc(loc(q.title))}">${options}</div>
-        <details class="card-details" data-card-details="${q.id}">
-          <summary>${esc(t("cardDetails"))}</summary>
-          <div class="card-details-body"></div>
-        </details>
-      </article>
-      <div class="wizard-nav">
-        <button type="button" class="btn secondary big" data-goto="${step - 1}" ${step === 0 ? "disabled" : ""}>${esc(t("previous"))}</button>
-        <button type="button" class="btn big" data-goto="${step + 1}">${esc(isLast ? t("toResult") : t("next"))}</button>
-      </div>`;
+    $("#milestone-list").innerHTML = milestones
+      .map((ms) => {
+        const ok = total >= ms.value;
+        return `<li class="${ok ? "reached" : ""}" title="${esc(loc(ms.description))}">
+          <span class="icon" aria-hidden="true">${ok ? "✓" : ""}</span>
+          <span>${esc(loc(ms.name))}: ${formatEur(ms.value)}${ok ? ` – ${esc(t("reached"))}` : ""}</span></li>`;
+      })
+      .join("");
+
+    const next = milestones.find((ms) => total < ms.value);
+    const previous = milestones.filter((ms) => total >= ms.value).pop();
+    let text;
+    if (!next) text = t("allReachedHtml");
+    else if (previous) text = t("reachedNextHtml", { reached: esc(loc(previous.name)), next: esc(loc(next.name)), missing: formatEur(next.value - total) });
+    else text = t("nextHtml", { next: esc(loc(next.name)), missing: formatEur(next.value - total) });
+    if (state.year !== CONFIG.defaultYear) text += ` <span class="year-note">${esc(t("yearNote", { year: CONFIG.defaultYear }))}</span>`;
+    $("#next-goal").innerHTML = text;
   }
 
-  function goToStep(step) {
-    clearTimeout(advanceTimer);
-    state.step = Math.max(0, Math.min(step, RESULT_STEP));
-    update();
-    // Bring the new question (or the result) into view below the sticky meter, and move focus to its heading
-    const target = state.step === RESULT_STEP ? $("#result") : $("#wizard");
-    const meterHeight = $(".meter").getBoundingClientRect().height;
-    const top = target.getBoundingClientRect().top + window.scrollY - meterHeight - 12;
-    if (target.getBoundingClientRect().top < meterHeight || target.getBoundingClientRect().top > window.innerHeight * 0.6) {
-      window.scrollTo({ top, behavior: "smooth" });
-    }
-    $("h2", target)?.focus({ preventScroll: true });
-  }
-
-  function updateEasy() {
+  function updateEasy({ spending, taxes, total }) {
     const wizard = state.easyView === "wizard";
-    $$(".easy-view-switch [data-easy-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.easyView === state.easyView)));
-    $("#list-view").hidden = wizard;
-    $("#wizard").hidden = !wizard || state.step === RESULT_STEP;
-    $("#result").hidden = wizard && state.step !== RESULT_STEP;
-    if (wizard && state.step < RESULT_STEP) renderWizardStep();
+    const onResult = wizard && state.step === RESULT_STEP;
+    $("#easy").dataset.view = state.easyView;
+    $$("[data-easy-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.easyView === state.easyView)));
 
-    // All-at-once cards
-    for (const q of Q.questions) {
-      const el = $(`.card[data-question="${q.id}"]`);
+    // Which parts are visible
+    $$("[data-wizard-only]").forEach((el) => (el.hidden = !wizard || onResult));
+    $$(".question").forEach((el, i) => (el.hidden = wizard && i !== state.step));
+    $$(".question-section").forEach((el) => (el.hidden = !$$(".question", el).some((q) => !q.hidden)));
+    $("#result").hidden = wizard && !onResult;
+
+    if (wizard && !onResult) {
+      const q = QS[state.step];
+      const section = QUESTIONS.sections.find((s) => s.id === q.section);
+      $("[data-progress-text]").textContent = `${t("questionOf", { n: state.step + 1, total: RESULT_STEP })} · ${loc(section.title)}`;
+      $("[data-progress-bar]").style.width = `${(state.step / RESULT_STEP) * 100}%`;
+      $('[data-step-by="-1"]').disabled = state.step === 0;
+      $('[data-step-by="1"]').textContent = state.step === RESULT_STEP - 1 ? t("toResult") : t("next");
+    }
+
+    // Answers
+    for (const q of QS) {
+      const el = $(`.question[data-question="${q.id}"]`);
       const current = currentLevel(q);
-      el.classList.toggle("selected", current !== 0);
-      $$(".level", el).forEach((b) => {
-        const n = Number(b.dataset.level);
-        b.setAttribute("aria-checked", String(n === current));
-        $("[data-level-amount]", b).textContent = n === 0 ? "" : formatEur(levelTotal(q.levels[n - 1]));
+      // In the wizard, "No change" is marked only once the visitor has actually picked it
+      const showNoChange = !wizard || state.answered.has(q.id);
+      $$("input", el).forEach((input) => {
+        const n = Number(input.value);
+        input.checked = n === current && (n > 0 || showNoChange);
+        const amount = $("[data-level-amount]", input.closest(".option"));
+        amount.textContent = n === 0 ? "" : formatEur(levelTotal(q.levels[n - 1]));
       });
-      $("[data-level-description]", el).textContent =
-        current > 0 ? loc(q.levels[current - 1].description) : current === -1 ? t("modifiedInAdvanced") : "";
+      el.classList.toggle("answered", current !== 0);
+      $("[data-edited]", el).hidden = current !== -1;
+      $("[data-chosen-description]", el).textContent = current > 0 ? loc(q.levels[current - 1].description) : "";
     }
-    $$("details[data-card-details]").forEach((d) => {
-      if (d.open) $(".card-details-body", d).innerHTML = renderCardDetails(Q.questions.find((x) => x.id === d.dataset.cardDetails));
-    });
 
-    // Result summary
-    let spending = 0;
-    let taxes = 0;
-    for (const id of state.selected.keys()) {
-      if (M[id].type === "tax") taxes += selectedImpact(id);
-      else spending += selectedImpact(id);
-    }
-    const total = spending + taxes;
+    // Result page
     const milestones = CONFIG.milestones;
     const reached = milestones.filter((ms) => total >= ms.value);
-    let text;
-    if (!state.selected.size) {
-      text = t("resultNothing");
-    } else {
+    let text = t("resultNothing");
+    if (state.selected.size) {
       text = t("resultSplit", { spending: formatEur(spending), taxes: formatEur(taxes), total: formatEur(total) });
       if (!reached.length) text += t("resultNone", { first: formatEur(milestones[0].value) });
       else if (reached.length === milestones.length) text += t("resultAll");
@@ -603,60 +609,170 @@
     }
     $("[data-result-text]").textContent = text;
 
-    // Answers: tap one to jump back to that question
-    $("[data-answers]").innerHTML = Q.questions
-      .map((q, i) => {
-        const n = currentLevel(q);
-        const answer = n === -1 ? t("modified") : levelName(q, n);
-        const amount = n > 0 ? formatEur(levelTotal(q.levels[n - 1])) : n === -1 ? formatEur(q.allIds.reduce((s, id) => s + selectedImpact(id), 0)) : "";
-        return `<li><button type="button" class="answer" data-goto="${i}">
+    $("[data-answers]").innerHTML = QS.map((q, i) => {
+      const n = currentLevel(q);
+      const answer = n === -1 ? t("modified") : levelName(q, n);
+      const amount = n === 0 ? "" : formatEur(q.ids.reduce((sum, id) => sum + selectedImpact(id), 0));
+      return `<li><button type="button" class="answer" data-go-to-step="${i}">
           <span class="answer-question">${esc(loc(q.title))}</span>
           <span class="answer-choice${n === 0 ? " muted" : ""}">${esc(answer)}${amount ? ` · ${amount}` : ""}</span>
         </button></li>`;
+    }).join("");
+  }
+
+  function updateDetailed({ total, byCategory }) {
+    const i = yearIndex();
+    for (const li of $$(".measure")) {
+      const id = li.dataset.id;
+      const m = M[id];
+      const count = state.selected.get(id) || 0;
+      li.classList.toggle("selected", count > 0);
+
+      const checkbox = $("input[data-select]", li);
+      if (checkbox) checkbox.checked = count > 0;
+      if (m.unit) {
+        $("[data-count]", li).textContent = count ? `+${count} × ${m.unit.step}` : t("noIncrease");
+        $('[data-step="-1"]', li).disabled = count === 0;
+        $('[data-step="1"]', li).disabled = count >= m.unit.max;
+      }
+
+      const a = impact(m, i);
+      const amountEl = $("[data-amount]", li);
+      amountEl.classList.toggle("empty", a == null);
+      amountEl.classList.toggle("negative", a != null && a < 0);
+      amountEl.textContent = a == null ? t("noEstimate") : m.unit && count <= 1 ? `${formatEur(a)} / ${m.unit.step}` : formatEur(a * Math.max(count, 1));
+      amountEl.title = a != null && a < 0 ? t("negativeTitle") : "";
+
+      const fundsBadge = $("[data-funds-badge]", li);
+      if (fundsBadge) fundsBadge.hidden = state.includeFunds;
+
+      const conflicts = count ? [] : selectedConflicts(id);
+      li.classList.toggle("blocked", conflicts.length > 0);
+      const conflictEl = $("[data-conflict]", li);
+      conflictEl.hidden = !conflicts.length;
+      conflictEl.textContent = conflicts.length ? t("conflictNote", { names: conflicts.map((c) => truncate(nameOf(M[c]), 60)).join("; ") }) : "";
+    }
+
+    for (const c of DATA.categories) {
+      let categoryPotential = 0;
+      for (const g of c.groups) {
+        const el = $(`[data-group="${g.id}"]`);
+        const chosen = g.measures.filter((id) => state.selected.has(id));
+        const groupTotal = chosen.reduce((sum, id) => sum + selectedImpact(id), 0);
+        const pot = potential(g);
+        categoryPotential += pot;
+        el.classList.toggle("has-selection", chosen.length > 0);
+        $("[data-group-status]", el).textContent =
+          t("measuresCount", { n: g.measures.length }) + (chosen.length ? ` · ${t("selectedCount", { n: chosen.length })}` : "");
+        $("[data-group-figures]", el).innerHTML = chosen.length
+          ? `<strong>${formatEur(groupTotal)}</strong>${esc(t("selectedFigure"))}`
+          : `<strong>${formatEur(pot)}</strong>${esc(t("maxFigure"))}`;
+
+        const btn = $("[data-package]", el);
+        const canAdd = packageFor(g).length > 0;
+        btn.textContent = canAdd ? (chosen.length ? t("selectRest") : t("selectGroup")) : t("removeSelections");
+        btn.classList.toggle("secondary", !canAdd);
+        btn.disabled = !canAdd && !chosen.length;
+        btn.dataset.action = canAdd ? "add" : "remove";
+      }
+      $(`[data-category="${c.id}"] [data-category-total]`).innerHTML = byCategory[c.id]
+        ? t("categorySelected", { total: formatEur(byCategory[c.id]), max: formatEur(categoryPotential) })
+        : t("categoryMax", { max: formatEur(categoryPotential) });
+    }
+
+    // Sidebar summary
+    const n = state.selected.size;
+    $("#selection-count").textContent = n ? t("selectionCount", { n, total: formatEur(total), year: state.year }) : t("nothingSelectedAdvanced");
+    $("#breakdown tbody").innerHTML = DATA.categories
+      .map((c, idx) =>
+        byCategory[c.id]
+          ? `<tr><td><span class="swatch" style="background:var(--series-${idx + 1})"></span>${esc(nameOf(c))}</td><td>${formatEur(byCategory[c.id])}</td></tr>`
+          : ""
+      )
+      .join("");
+    const chosen = [...state.selected.keys()].sort((a, b) => selectedImpact(b) - selectedImpact(a));
+    $("#selected-list").innerHTML = chosen
+      .map((id) => {
+        const m = M[id];
+        const count = state.selected.get(id);
+        const name = truncate(nameOf(m), 90) + (m.unit ? ` (+${count} × ${m.unit.step})` : "");
+        return `<li><span class="name">${esc(name)}</span><span class="amount">${formatEur(selectedImpact(id))}</span>
+          <button type="button" data-remove="${id}" aria-label="${esc(t("removeNamed", { name: nameOf(m) }))}">×</button></li>`;
       })
       .join("");
+    $("#selected-title").hidden = !n;
+    $("#summary-actions").hidden = !n;
+
+    applySearch();
   }
 
-  function setMode(mode) {
-    state.mode = mode;
-    document.body.classList.toggle("mode-easy", mode === "easy");
-    document.body.classList.toggle("mode-advanced", mode === "advanced");
-    $$(".mode-switch [data-mode]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
+  function setExpanded(groupEl, expanded) {
+    $(".group-toggle", groupEl).setAttribute("aria-expanded", String(expanded));
+    $(".measure-list", groupEl).hidden = !expanded;
   }
 
-  function setLang(lang) {
-    state.lang = lang;
-    applyStaticTexts();
-    renderStructure();
-    renderEasy();
+  function applySearch() {
+    const query = state.query.trim().toLowerCase();
+    let matches = 0;
+    for (const cat of $$(".category")) {
+      let catMatches = 0;
+      for (const g of $$(".group", cat)) {
+        const groupName = $(".group-name", g).textContent;
+        let groupMatches = 0;
+        for (const li of $$(".measure", g)) {
+          const m = M[li.dataset.id];
+          // Both languages are searched, so Finnish terms work in the English view too
+          li.hidden = !!query && ![m.name, m.nameEn, m.target, groupName].join(" ").toLowerCase().includes(query);
+          if (!li.hidden) groupMatches++;
+        }
+        g.hidden = !!query && !groupMatches;
+        setExpanded(g, query ? groupMatches > 0 : state.expanded.has(g.dataset.group));
+        catMatches += groupMatches;
+      }
+      cat.hidden = !!query && !catMatches;
+      matches += catMatches;
+    }
+    $("#no-results").hidden = !query || matches > 0;
+    $(".jump-nav").hidden = !!query;
+  }
+
+  // ---------- Wizard navigation ----------
+
+  let advanceTimer;
+
+  function goToStep(step) {
+    clearTimeout(advanceTimer);
+    state.step = Math.max(0, Math.min(step, RESULT_STEP));
     update();
+    // Bring the new question below the sticky meter and move focus to its heading
+    const heading = state.step === RESULT_STEP ? $("#result h2") : $$(".question h3")[state.step];
+    const meterHeight = $(".meter").getBoundingClientRect().height;
+    const top = heading.getBoundingClientRect().top;
+    if (top < meterHeight || top > window.innerHeight * 0.5) {
+      window.scrollTo({ top: top + window.scrollY - meterHeight - 60, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    }
+    heading.focus({ preventScroll: true });
   }
+
+  // ---------- Sharing ----------
 
   async function share() {
-    const text = t("shareText", { total: formatEur(totalImpact()) });
+    const text = t("shareText", { total: formatEur(totals().total) });
+    const url = shareUrl();
     try {
       if (navigator.share) {
-        await navigator.share({ title: t("appName"), text, url: location.href });
+        await navigator.share({ title: t("appName"), text, url });
         return;
       }
-      await navigator.clipboard.writeText(`${text} ${location.href}`);
+      await navigator.clipboard.writeText(`${text} ${url}`);
       toast(t("toastCopied"));
     } catch (e) {
       if (e?.name !== "AbortError") toast(t("toastCopyFailed"));
     }
   }
 
-  // ---------- Share image ----------
-
-  // Texts and numbers for share-image.js
   function imageData() {
-    let cuts = 0;
-    let taxes = 0;
-    for (const id of state.selected.keys()) {
-      if (M[id].type === "tax") taxes += selectedImpact(id);
-      else cuts += selectedImpact(id);
-    }
-    const total = cuts + taxes;
+    const { spending, taxes, total, byCategory } = totals();
     const milestones = CONFIG.milestones;
     const reached = milestones.filter((ms) => total >= ms.value);
     const next = milestones.find((ms) => total < ms.value);
@@ -664,16 +780,6 @@
     if (!next) status = t("imageAllReached");
     else if (reached.length) status = t("imageReached", { name: loc(reached[reached.length - 1].name) });
     else status = t("imageMissing", { target: formatEur(next.value), missing: formatEur(next.value - total) });
-
-    const categoryTotals = DATA.categories.map((c, i) => ({
-      value: c.groups.flatMap((g) => g.measures).reduce((sum, id) => sum + selectedImpact(id), 0),
-      colorIndex: i,
-    }));
-    const top = [...state.selected.keys()]
-      .sort((a, b) => selectedImpact(b) - selectedImpact(a))
-      .slice(0, 3)
-      .map((id) => ({ name: nameOf(M[id]), amount: formatEur(selectedImpact(id)) }));
-    // Only show the address when the page is actually hosted somewhere
     const hosted = /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 
     return {
@@ -685,14 +791,17 @@
       status,
       statusReached: reached.length > 0,
       scaleMax: CONFIG.scaleMax,
-      segments: categoryTotals,
+      segments: DATA.categories.map((c, i) => ({ value: byCategory[c.id], colorIndex: i })),
       milestones: milestones.map((ms) => ({ value: ms.value, label: loc(ms.short), reached: total >= ms.value })),
       cutsLabel: t("imageCuts"),
-      cuts: formatEur(cuts),
+      cuts: formatEur(spending),
       taxesLabel: t("imageTaxes"),
       taxes: formatEur(taxes),
       topLabel: t("imageTop"),
-      top,
+      top: [...state.selected.keys()]
+        .sort((a, b) => selectedImpact(b) - selectedImpact(a))
+        .slice(0, 3)
+        .map((id) => ({ name: nameOf(M[id]), amount: formatEur(selectedImpact(id)) })),
       cta: t("imageCta"),
       source: t("imageSource"),
       url: hosted ? (location.host + location.pathname).replace(/\/(index\.html)?$/, "") : "",
@@ -716,259 +825,30 @@
 
     const img = $("#share-image");
     img.src = imageUrl;
-    img.alt = t("imageAlt", { total: formatEur(totalImpact()), year: state.year });
-    const download = $("#image-download");
-    download.href = imageUrl;
-    download.download = t("imageFileName");
-    // Sharing files works on most phones (WhatsApp etc.); elsewhere the image is downloaded
-    $("#image-share").hidden = !(navigator.canShare && navigator.canShare({ files: [imageFile] }));
+    img.alt = t("imageAlt", { total: formatEur(totals().total), year: state.year });
+    $("#image-download").href = imageUrl;
+    $("#image-download").download = t("imageFileName");
+    // Phones can share the file directly (e.g. to WhatsApp); elsewhere it is downloaded
+    $("#image-share").hidden = !navigator.canShare?.({ files: [imageFile] });
     $("#image-dialog").showModal();
   }
 
   async function shareImageFile() {
     try {
-      await navigator.share({ files: [imageFile], text: `${t("shareText", { total: formatEur(totalImpact()) })} ${location.href}` });
+      await navigator.share({ files: [imageFile], text: `${t("shareText", { total: formatEur(totals().total) })} ${shareUrl()}` });
     } catch (e) {
       if (e?.name !== "AbortError") toast(t("toastCopyFailed"));
     }
   }
 
-  // Measure details are rendered only when opened.
-  function renderMeasureDetails(m) {
-    const fmt = (x) => (x == null ? "–" : nf("small").format(x));
-    const now = yearIndex();
-    let html = "";
-    if (m.type === "tax") {
-      const value = m.government.find((x) => x != null) != null ? Math.max(...m.government.map((x) => x || 0)) : null;
-      const used = value == null ? t("noEstimate") : formatEur(value);
-      const basis = state.lang !== "fi" && m.basisEn ? m.basisEn : m.basis;
-      html += `<p><strong>${esc(t("taxEstimate"))}:</strong> ${esc(m.vmEstimate || "–")} ${esc(state.lang === "fi" ? "milj. €" : "€m")}<br>
-               <strong>${esc(t("taxUsed"))}:</strong> ${used}${m.unit ? ` (${esc(t("perStep", { step: m.unit.step }))})` : ""} – ${esc(basis)}.<br>
-               ${esc(t("taxConstant"))}${m.fromYear > YEARS[0] ? esc(t("taxFrom", { year: m.fromYear })) : ""}.</p>`;
-    } else {
-      html += `<div class="table-scroll"><table class="year-table">
-        <thead><tr><th>${esc(state.lang === "fi" ? "milj. €" : "€m")}</th>${YEARS.map((y, i) => `<th class="${i === now ? "current" : ""}">${y}</th>`).join("")}</tr></thead>
-        <tbody>
-          <tr><td>${esc(t("governmentRow"))}</td>${m.government.map((x, i) => `<td class="${i === now ? "current" : ""}">${fmt(x)}</td>`).join("")}</tr>
-          <tr><td>${esc(t("fundsRow"))}</td>${m.funds.map((x, i) => `<td class="${i === now ? "current" : ""}">${fmt(x)}</td>`).join("")}</tr>
-        </tbody></table></div>`;
-    }
-    // VM's background texts are only available in Finnish
-    if (m.background || m.memo) {
-      if (state.lang !== "fi") html += `<p><em>${esc(t("backgroundFinnishOnly"))}</em></p>`;
-      if (m.background) html += `<p lang="fi">${esc(m.background)}</p>`;
-      if (m.memo) html += `<p lang="fi"><strong>${esc(t("memo"))}:</strong> ${esc(m.memo)}</p>`;
-    }
-    if (m.conflicts.length) {
-      html += `<p><strong>${esc(t("cannotCombine"))}:</strong> ${m.conflicts.map((c) => esc(truncate(nameOf(M[c]), 80))).join("; ")}</p>`;
-    }
-    return html;
-  }
-
-  // ---------- Update (on every state change) ----------
-
-  function update() {
-    const i = yearIndex();
-    $("#year").value = String(state.year);
-    $("#funds").checked = state.includeFunds;
-    $("#year-label").textContent = state.year;
-
-    // Measure rows
-    for (const li of $$(".measure")) {
-      const id = li.dataset.id;
-      const m = M[id];
-      const count = state.selected.get(id) || 0;
-      li.classList.toggle("selected", count > 0);
-
-      const checkbox = $("input[data-select]", li);
-      if (checkbox) checkbox.checked = count > 0;
-      if (m.unit) {
-        $("[data-count]", li).textContent = count ? `+${count} × ${m.unit.step}` : t("noIncrease");
-        $('[data-step="-1"]', li).disabled = count === 0;
-        $('[data-step="1"]', li).disabled = count >= m.unit.max;
-      }
-
-      const a = impact(m, i);
-      const amountEl = $("[data-amount]", li);
-      amountEl.classList.toggle("empty", a == null);
-      amountEl.classList.toggle("negative", a != null && a < 0);
-      if (a == null) amountEl.textContent = t("noEstimate");
-      else if (m.unit) amountEl.textContent = count > 1 ? formatEur(a * count) : `${formatEur(a)} / ${m.unit.step}`;
-      else amountEl.textContent = formatEur(a);
-      amountEl.title = a != null && a < 0 ? t("negativeTitle") : "";
-
-      const fundsBadge = $("[data-funds-badge]", li);
-      if (fundsBadge) fundsBadge.hidden = state.includeFunds;
-
-      const conflicts = count ? [] : selectedConflicts(id);
-      li.classList.toggle("blocked", conflicts.length > 0);
-      const conflictEl = $("[data-conflict]", li);
-      conflictEl.hidden = !conflicts.length;
-      if (conflicts.length) {
-        conflictEl.textContent = t("conflictNote", { names: conflicts.map((c) => truncate(nameOf(M[c]), 60)).join("; ") });
-      }
-
-      const details = $("details[data-details]", li);
-      if (details.open) $(".measure-details-body", details).innerHTML = renderMeasureDetails(m);
-    }
-
-    // Groups and categories
-    const categoryTotals = {};
-    DATA.categories.forEach((c) => {
-      let categoryTotal = 0;
-      let categoryPotential = 0;
-      for (const g of c.groups) {
-        const el = $(`[data-group="${g.id}"]`);
-        const chosen = g.measures.filter((id) => state.selected.has(id));
-        const total = chosen.reduce((sum, id) => sum + selectedImpact(id), 0);
-        const pot = potential(g);
-        categoryTotal += total;
-        categoryPotential += pot;
-        el.classList.toggle("has-selection", chosen.length > 0);
-        $("[data-group-status]", el).textContent =
-          t("measuresCount", { n: g.measures.length }) + (chosen.length ? ` · ${t("selectedCount", { n: chosen.length })}` : "");
-        $("[data-group-figures]", el).innerHTML = chosen.length
-          ? `<strong>${formatEur(total)}</strong>${esc(t("selectedFigure"))}`
-          : `<strong>${formatEur(pot)}</strong>${esc(t("maxFigure"))}`;
-
-        const btn = $("[data-package]", el);
-        const toAdd = packageFor(g);
-        btn.textContent = toAdd.length ? (chosen.length ? t("selectRest") : t("selectGroup")) : t("removeSelections");
-        btn.classList.toggle("secondary", !toAdd.length);
-        btn.disabled = !toAdd.length && !chosen.length;
-        btn.dataset.action = toAdd.length ? "add" : "remove";
-      }
-      categoryTotals[c.id] = categoryTotal;
-      $(`[data-category="${c.id}"] [data-category-total]`).innerHTML = categoryTotal
-        ? t("categorySelected", { total: formatEur(categoryTotal), max: formatEur(categoryPotential) })
-        : t("categoryMax", { max: formatEur(categoryPotential) });
-    });
-
-    updateMeter(categoryTotals);
-    updateSummary(categoryTotals);
-    updateEasy();
-    applySearch();
-    saveState();
-  }
-
-  function updateMeter(categoryTotals) {
-    const total = totalImpact();
-    $("#total").textContent = formatEur(total);
-
-    const max = Math.max(CONFIG.scaleMax, total * 1.05);
-    const pct = (x) => `${Math.max(0, (x / max) * 100)}%`;
-
-    // Bar: one segment per category, fixed colour order
-    $("#bar").innerHTML = DATA.categories
-      .map((c, i) =>
-        categoryTotals[c.id] > 0
-          ? `<div class="bar-segment" style="width:${pct(categoryTotals[c.id])};background:var(--series-${i + 1})" title="${esc(nameOf(c))}: ${formatEur(categoryTotals[c.id])}"></div>`
-          : ""
-      )
-      .join("");
-    $("#bar").setAttribute("aria-label", t("barAria", { total: formatEur(total), max: formatEur(max) }));
-
-    const milestones = CONFIG.milestones;
-    $("#milestones").innerHTML = milestones
-      .map((ms, n) => {
-        const left = (ms.value / max) * 100;
-        const classes = ["milestone", total >= ms.value ? "reached" : "", left > 85 ? "align-right" : "", n % 2 ? "upper" : ""].join(" ");
-        return `<div class="${classes}" style="left:${left}%"><span>${esc(loc(ms.short))}</span></div>`;
-      })
-      .join("");
-
-    $("#milestone-list").innerHTML = milestones
-      .map((ms) => {
-        const ok = total >= ms.value;
-        return `<li class="${ok ? "reached" : ""}" title="${esc(loc(ms.description))}">
-          <span class="icon" aria-hidden="true">${ok ? "✓" : ""}</span>
-          <span>${esc(loc(ms.name))}: ${formatEur(ms.value)}${ok ? ` – ${esc(t("reached"))}` : ""}</span></li>`;
-      })
-      .join("");
-
-    const next = milestones.find((ms) => total < ms.value);
-    const previous = [...milestones].reverse().find((ms) => total >= ms.value);
-    let text;
-    if (!next) {
-      text = t("allReachedHtml");
-    } else if (previous) {
-      text = t("reachedNextHtml", { reached: esc(loc(previous.name)), next: esc(loc(next.name)), missing: formatEur(next.value - total) });
-    } else {
-      text = t("nextHtml", { next: esc(loc(next.name)), missing: formatEur(next.value - total) });
-    }
-    if (state.year !== CONFIG.defaultYear) {
-      text += ` <span class="year-note">${esc(t("yearNote", { year: CONFIG.defaultYear }))}</span>`;
-    }
-    $("#next-goal").innerHTML = text;
-  }
-
-  function updateSummary(categoryTotals) {
-    const n = state.selected.size;
-    $("#selection-count").textContent = n
-      ? t("selectionCount", { n, total: formatEur(totalImpact()), year: state.year })
-      : t("nothingSelectedAdvanced");
-
-    $("#breakdown tbody").innerHTML = DATA.categories
-      .map((c, i) =>
-        categoryTotals[c.id]
-          ? `<tr><td><span class="swatch" style="background:var(--series-${i + 1})"></span>${esc(nameOf(c))}</td><td>${formatEur(categoryTotals[c.id])}</td></tr>`
-          : ""
-      )
-      .join("");
-
-    const chosen = [...state.selected.keys()].sort((a, b) => selectedImpact(b) - selectedImpact(a));
-    $("#selected-list").innerHTML = chosen.length
-      ? `<li class="selected-list-title">${esc(t("largestFirst"))}</li>` +
-        chosen
-          .map((id) => {
-            const m = M[id];
-            const count = state.selected.get(id);
-            const name = truncate(nameOf(m), 90) + (m.unit && count ? ` (+${count} × ${m.unit.step})` : "");
-            return `<li><span class="name">${esc(name)}</span><span class="amount">${formatEur(selectedImpact(id))}</span>
-              <button type="button" data-remove="${id}" aria-label="${esc(t("removeNamed", { name: nameOf(m) }))}" title="${esc(t("remove"))}">×</button></li>`;
-          })
-          .join("")
-      : "";
-    $("#summary-actions").hidden = !n;
-  }
-
-  // ---------- Search and expanding groups ----------
-
-  function setExpanded(groupEl, expanded) {
-    $(".group-toggle", groupEl).setAttribute("aria-expanded", String(expanded));
-    $(".measure-list", groupEl).hidden = !expanded;
-  }
-
-  function applySearch() {
-    const query = state.query.trim().toLowerCase();
-    let matches = 0;
-    for (const cat of $$(".category")) {
-      let catMatches = 0;
-      for (const g of $$(".group", cat)) {
-        let groupMatches = 0;
-        const groupName = $(".group-name", g).textContent;
-        for (const li of $$(".measure", g)) {
-          const m = M[li.dataset.id];
-          // Search both languages so e.g. "Yle" or a Finnish term works in the English view too
-          const haystack = [m.name, m.nameEn, m.target, groupName].join(" ").toLowerCase();
-          const visible = !query || haystack.includes(query);
-          li.hidden = !visible;
-          if (visible) groupMatches++;
-        }
-        g.hidden = query && !groupMatches;
-        setExpanded(g, query ? groupMatches > 0 : state.expanded.has(g.dataset.group));
-        catMatches += groupMatches;
-      }
-      cat.hidden = query && !catMatches;
-      matches += catMatches;
-    }
-    $("#no-results").hidden = !query || matches > 0;
-    $(".jump-nav").hidden = !!query;
-  }
-
   // ---------- Events ----------
 
   function bindEvents() {
+    $("#lang").addEventListener("change", (e) => {
+      state.lang = e.target.value;
+      renderAll();
+      update();
+    });
     $("#year").addEventListener("change", (e) => {
       state.year = Number(e.target.value);
       update();
@@ -980,15 +860,9 @@
     $("#clear").addEventListener("click", () => {
       if (!state.selected.size) return;
       state.selected.clear();
+      state.answered.clear();
       update();
       toast(t("toastCleared"));
-    });
-
-    $("#image-close").addEventListener("click", () => $("#image-dialog").close());
-    $("#image-share").addEventListener("click", shareImageFile);
-    // Clicking the backdrop closes the dialog
-    $("#image-dialog").addEventListener("click", (e) => {
-      if (e.target === e.currentTarget) e.currentTarget.close();
     });
 
     let searchTimer;
@@ -1000,89 +874,80 @@
       }, 120);
     });
 
+    // Auto-advance only follows a pointer choice; keyboard users move on with the Next button.
+    let pointerChoice = false;
+    document.addEventListener("pointerdown", (e) => (pointerChoice = !!e.target.closest(".option")));
+
     document.addEventListener("change", (e) => {
-      const id = e.target.dataset?.select;
-      if (!id) return;
-      if (e.target.checked) notifyRemoved(select(id));
-      else state.selected.delete(id);
-      update();
-    });
-
-    document.addEventListener("click", (e) => {
-      const langBtn = e.target.closest("[data-lang]");
-      if (langBtn) {
-        if (langBtn.dataset.lang !== state.lang) setLang(langBtn.dataset.lang);
-        return;
-      }
-
-      const levelBtn = e.target.closest("[data-level]");
-      if (levelBtn) {
-        const q = Q.questions.find((x) => x.id === levelBtn.dataset.question);
+      const input = e.target;
+      if (input.matches(".question input[type=radio]")) {
+        const q = QS.find((x) => `q-${x.id}` === input.name);
         state.answered.add(q.id);
-        setLevel(q, Number(levelBtn.dataset.level));
+        setLevel(q, Number(input.value));
         update();
-        // In the wizard, move on once the choice has had a moment to show
-        if (levelBtn.classList.contains("option")) {
+        if (state.easyView === "wizard" && pointerChoice) {
           const step = state.step;
           clearTimeout(advanceTimer);
-          advanceTimer = setTimeout(() => {
-            if (state.step === step && state.mode === "easy") goToStep(step + 1);
-          }, AUTO_ADVANCE_MS);
+          advanceTimer = setTimeout(() => state.step === step && goToStep(step + 1), AUTO_ADVANCE_MS);
         }
-        return;
-      }
-
-      const gotoBtn = e.target.closest("[data-goto]");
-      if (gotoBtn) {
-        state.easyView = "wizard";
-        goToStep(Number(gotoBtn.dataset.goto));
-        return;
-      }
-
-      const viewBtn = e.target.closest("[data-easy-view]");
-      if (viewBtn) {
-        clearTimeout(advanceTimer);
-        state.easyView = viewBtn.dataset.easyView;
+        pointerChoice = false;
+      } else if (input.matches("[data-select]")) {
+        if (input.checked) notifyRemoved(select(input.dataset.select));
+        else select(input.dataset.select, 0);
         update();
-        return;
       }
+    });
 
-      if (e.target.closest("[data-start-over]")) {
+    // Buttons declare what they do with a data attribute; the first match wins.
+    const actions = {
+      "data-mode": (el) => {
+        state.mode = el.dataset.mode;
+        update();
+        if (!el.closest(".mode-switch")) window.scrollTo({ top: 0 });
+      },
+      "data-easy-view": (el) => {
+        clearTimeout(advanceTimer);
+        state.easyView = el.dataset.easyView;
+        update();
+      },
+      "data-step-by": (el) => goToStep(state.step + Number(el.dataset.stepBy)),
+      "data-go-to-step": (el) => {
+        state.easyView = "wizard";
+        goToStep(Number(el.dataset.goToStep));
+      },
+      "data-start-over": () => {
         state.selected.clear();
         state.answered.clear();
         state.easyView = "wizard";
         goToStep(0);
-        return;
-      }
-
-      const modeBtn = e.target.closest("[data-mode]");
-      if (modeBtn) {
-        const fromPageBody = !modeBtn.closest(".mode-switch");
-        setMode(modeBtn.dataset.mode);
-        update();
-        if (fromPageBody) window.scrollTo({ top: 0 });
-        return;
-      }
-
-      if (e.target.closest("[data-share]")) {
-        share();
-        return;
-      }
-
-      if (e.target.closest("[data-share-image]")) {
-        openImageDialog();
-        return;
-      }
-
-      const stepBtn = e.target.closest("[data-step]");
-      if (stepBtn) {
-        const id = stepBtn.dataset.id;
-        const count = Math.max(0, Math.min((state.selected.get(id) || 0) + Number(stepBtn.dataset.step), M[id].unit.max));
+      },
+      "data-share": () => share(),
+      "data-share-image": () => openImageDialog(),
+      "data-step": (el) => {
+        const id = el.dataset.id;
+        const count = Math.max(0, Math.min((state.selected.get(id) || 0) + Number(el.dataset.step), M[id].unit.max));
         notifyRemoved(select(id, count));
         update();
-        return;
-      }
+      },
+      "data-package": (el) => {
+        const group = DATA.categories.flatMap((c) => c.groups).find((g) => g.id === el.dataset.package);
+        if (el.dataset.action === "remove") {
+          group.measures.forEach((id) => state.selected.delete(id));
+        } else {
+          const toAdd = packageFor(group);
+          toAdd.forEach((id) => state.selected.set(id, 1));
+          const skipped = group.measures.filter((id) => !state.selected.has(id) && hasEstimate(M[id]) && savesMoney(M[id]));
+          if (skipped.length) toast(t("toastPackage", { added: toAdd.length, skipped: skipped.length }));
+        }
+        update();
+      },
+      "data-remove": (el) => {
+        state.selected.delete(el.dataset.remove);
+        update();
+      },
+    };
 
+    document.addEventListener("click", (e) => {
       const toggle = e.target.closest(".group-toggle");
       if (toggle) {
         const g = toggle.closest(".group");
@@ -1092,53 +957,37 @@
         setExpanded(g, expanded);
         return;
       }
-
-      const pkgBtn = e.target.closest("[data-package]");
-      if (pkgBtn) {
-        const group = DATA.categories.flatMap((c) => c.groups).find((g) => g.id === pkgBtn.dataset.package);
-        if (pkgBtn.dataset.action === "remove") {
-          group.measures.forEach((id) => state.selected.delete(id));
-        } else {
-          const toAdd = packageFor(group);
-          toAdd.forEach((id) => state.selected.set(id, 1));
-          const skipped = group.measures.filter((id) => !state.selected.has(id) && hasEstimate(M[id]) && savesMoney(M[id]));
-          if (skipped.length) toast(t("toastPackage", { added: toAdd.length, skipped: skipped.length }));
-        }
-        update();
-        return;
-      }
-
-      const removeBtn = e.target.closest("[data-remove]");
-      if (removeBtn) {
-        state.selected.delete(removeBtn.dataset.remove);
-        update();
+      for (const [attr, run] of Object.entries(actions)) {
+        const el = e.target.closest(`button[${attr}]`);
+        if (el) return run(el);
       }
     });
+
+    $("#image-close").addEventListener("click", () => $("#image-dialog").close());
+    $("#image-share").addEventListener("click", shareImageFile);
+    $("#image-dialog").addEventListener("click", (e) => e.target === e.currentTarget && e.currentTarget.close());
 
     // Details are filled in when opened
     document.addEventListener(
       "toggle",
       (e) => {
         const d = e.target;
-        if (d.matches?.("details[data-details]") && d.open) {
-          $(".measure-details-body", d).innerHTML = renderMeasureDetails(M[d.dataset.details]);
-        }
-        if (d.matches?.("details[data-card-details]") && d.open) {
-          const q = Q.questions.find((x) => x.id === d.dataset.cardDetails);
-          $(".card-details-body", d).innerHTML = renderCardDetails(q);
+        if (!d.open) return;
+        if (d.matches("[data-details]")) $(".measure-details-body", d).innerHTML = renderMeasureDetails(M[d.dataset.details]);
+        if (d.matches("[data-card-details]")) {
+          $(".card-details-body", d).innerHTML = renderCardDetails(QS.find((q) => q.id === d.dataset.cardDetails));
         }
       },
       true
     );
   }
 
-  // ---------- Startup ----------
+  // ---------- Start ----------
 
-  loadState();
-  applyStaticTexts();
-  renderStructure();
-  renderEasy();
-  setMode(state.mode);
+  load();
+  loadSharedLink();
+  $("#lang").innerHTML = CONFIG.languages.map((l) => `<option value="${l.code}" lang="${l.code}">${esc(l.name)}</option>`).join("");
+  renderAll();
   bindEvents();
   update();
 })();

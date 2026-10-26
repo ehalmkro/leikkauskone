@@ -7,15 +7,14 @@ review* (26 Oct 2026) and the options in its *tax review*.
 The page has two views:
 
 - **Easy** (default): 17 big questions ("Cut support for families with children?") answered with
-  *No change / A little / A lot*. Questions are shown one at a time, voting-advice-application style
-  (each option explains what it means, choosing moves on, you can always go back), ending in a result page
-  with a shareable image. All questions can also be shown at once.
+  *No change / A little / A lot*, one at a time or all at once. Each option explains what it means and what
+  it saves. The result page lists the answers and can be shared as a link or an image.
 - **Detailed**: all 459 measures, grouped and individually selectable.
 
 Both views share the same selections: easy-mode answers show up as individual measures in the detailed view.
 
-The product UI is in Finnish, with an English translation behind the FI/EN switch. The repository (code,
-comments, file names, docs) is in English.
+The UI is in Finnish and English. Choices are saved in the browser (localStorage), so the page continues
+where it was left.
 
 ## Running
 
@@ -67,6 +66,16 @@ In `questions.js` every question has two levels ("A little" and "A lot"), each l
 (for per-unit tax yields, the number of steps after an asterisk, e.g. `"VER-74*3"`). Euro amounts are calculated
 automatically. Avoid putting conflicting measures in different questions – otherwise answering one question
 clears another.
+
+## How it works
+
+The visitor's choices are a single map from measure id to count. Everything else – totals, easy-mode answers,
+the meter – is derived from it on each change, so the two views can never disagree.
+
+Share links (`#s=…`) encode the choices as a bitmask over all measures in id order: one bit per measure, three
+bits for adjustable tax measures, six bits per character. A link is about 85 characters regardless of how much
+is selected. The encoding depends on the set of measures, so links made before the data changes may not
+open correctly afterwards.
 
 ## How the numbers work
 

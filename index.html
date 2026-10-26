@@ -10,21 +10,26 @@
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="style.css">
 </head>
-<!-- Texts marked with data-i18n* are filled in from i18n.js; the Finnish text here is only a fallback. -->
-<body class="mode-easy">
+<!-- Elements with data-i18n* attributes get their text from i18n.js. -->
+<body data-mode="easy">
+  <a class="skip-link" href="#main" data-i18n="skipToContent"></a>
+
   <header class="page-header">
     <div class="container">
       <div class="title-row">
         <h1 data-i18n="appName">Leikkauskone</h1>
-        <div class="switches">
-          <div class="mode-switch" role="group" data-i18n-aria="modeLabel">
-            <button type="button" data-mode="easy" aria-pressed="true" data-i18n="modeEasy">Helppo</button>
-            <button type="button" data-mode="advanced" aria-pressed="false" data-i18n="modeAdvanced">Tarkka</button>
+        <div class="header-controls">
+          <div class="segmented mode-switch" role="group" data-i18n-aria="modeLabel">
+            <button type="button" data-mode="easy" aria-pressed="true" data-i18n="modeEasy"></button>
+            <button type="button" data-mode="advanced" aria-pressed="false" data-i18n="modeAdvanced"></button>
           </div>
-          <div class="lang-switch" role="group" data-i18n-aria="langLabel">
-            <button type="button" data-lang="fi" lang="fi" aria-pressed="true">FI</button>
-            <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
-          </div>
+          <label class="lang-select">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>
+            </svg>
+            <span class="visually-hidden">Kieli / Language</span>
+            <select id="lang"></select>
+          </label>
         </div>
       </div>
 
@@ -46,10 +51,10 @@
   <section class="meter" data-i18n-aria="meterLabel">
     <div class="container">
       <div class="meter-row">
-        <div class="total">
+        <p class="total">
           <span class="total-label"><span data-i18n="totalLabel"></span> <span id="year-label"></span></span>
-          <span class="total-value" id="total">0 €</span>
-        </div>
+          <span class="total-value" id="total"></span>
+        </p>
         <p class="next-goal" id="next-goal" aria-live="polite"></p>
         <div class="controls">
           <label class="control advanced-only">
@@ -65,40 +70,43 @@
       </div>
       <div class="bar-frame">
         <div class="bar" id="bar" role="img"></div>
-        <div class="milestones" id="milestones"></div>
+        <div class="milestones" id="milestones" aria-hidden="true"></div>
       </div>
       <ul class="milestone-list" id="milestone-list"></ul>
     </div>
   </section>
 
-  <!-- Easy mode: big questions -->
-  <main class="container easy easy-only" id="easy"></main>
+  <main id="main" tabindex="-1">
+    <!-- Easy mode: big questions -->
+    <div class="container easy easy-only" id="easy"></div>
 
-  <!-- Advanced mode: all measures -->
-  <main class="container layout advanced-only">
-    <div class="measures">
-      <div class="search">
-        <label for="search" class="visually-hidden" data-i18n="searchLabel"></label>
-        <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" autocomplete="off">
-      </div>
-      <div id="categories"></div>
-    </div>
-
-    <aside class="summary" data-i18n-aria="summaryTitle">
-      <div class="summary-body">
-        <h2 data-i18n="summaryTitle"></h2>
-        <p class="muted" id="selection-count"></p>
-        <table class="breakdown" id="breakdown">
-          <caption class="visually-hidden" data-i18n="breakdownCaption"></caption>
-          <tbody></tbody>
-        </table>
-        <ol class="selected-list" id="selected-list"></ol>
-        <div class="summary-actions" id="summary-actions">
-          <button type="button" class="btn" data-share-image data-i18n="shareImage"></button>
-          <button type="button" class="btn secondary" data-share data-i18n="copyLink"></button>
+    <!-- Detailed mode: all measures -->
+    <div class="container layout advanced-only">
+      <div class="measures">
+        <div class="search">
+          <label for="search" class="visually-hidden" data-i18n="searchLabel"></label>
+          <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" autocomplete="off">
         </div>
+        <div id="categories"></div>
       </div>
-    </aside>
+
+      <aside class="summary" data-i18n-aria="summaryTitle">
+        <div class="summary-body">
+          <h2 data-i18n="summaryTitle"></h2>
+          <p class="muted" id="selection-count"></p>
+          <table class="breakdown" id="breakdown">
+            <caption class="visually-hidden" data-i18n="breakdownCaption"></caption>
+            <tbody></tbody>
+          </table>
+          <p class="selected-list-title" id="selected-title" data-i18n="largestFirst"></p>
+          <ol class="selected-list" id="selected-list"></ol>
+          <div class="actions" id="summary-actions">
+            <button type="button" class="btn" data-share-image data-i18n="shareImage"></button>
+            <button type="button" class="btn secondary" data-share data-i18n="copyLink"></button>
+          </div>
+        </div>
+      </aside>
+    </div>
   </main>
 
   <footer class="container page-footer">
@@ -112,7 +120,7 @@
   <dialog class="image-dialog" id="image-dialog" aria-labelledby="image-dialog-title">
     <h2 id="image-dialog-title" data-i18n="imageDialogTitle"></h2>
     <img id="share-image" alt="">
-    <div class="dialog-actions">
+    <div class="actions">
       <button type="button" class="btn" id="image-share" data-i18n="imageShare"></button>
       <a class="btn secondary" id="image-download" data-i18n="imageDownload"></a>
       <button type="button" class="btn secondary" id="image-close" data-i18n="close"></button>

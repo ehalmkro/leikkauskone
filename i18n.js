@@ -5,11 +5,11 @@
 window.STRINGS = {
   fi: {
     pageTitle: "Leikkauskone",
+    skipToContent: "Siirry sisältöön",
     appName: "Leikkauskone",
     modeLabel: "Näkymä",
     modeEasy: "Helppo",
     modeAdvanced: "Tarkka",
-    langLabel: "Kieli",
     easyLeadHtml:
       "Valtion budjetti on ensi vuonna noin <strong>12 miljardia euroa alijäämäinen</strong>, eli valtio ottaa sen verran lisää velkaa. " +
       "Seuraavan hallituksen on tarkoitus vahvistaa julkista taloutta <strong>8–11 miljardilla eurolla</strong> vuoteen 2031 mennessä.",
@@ -66,7 +66,6 @@ window.STRINGS = {
     badgeNoEstimate: "Ei euroarviota",
     badgeFrom: "Alkaen {year}",
     badgeFunds: "Säästöä myös sosiaaliturvarahastoihin",
-    stepperLabel: "Korotuksen määrä",
     decrease: "Vähennä",
     increase: "Lisää",
     noIncrease: "ei korotusta",
@@ -87,7 +86,6 @@ window.STRINGS = {
     selectionCount: "{n} toimenpidettä, yhteensä {total} vuonna {year}.",
     nothingSelectedAdvanced: "Et ole vielä valinnut mitään. Aloita valitsemalla kokonainen ryhmä tai yksittäisiä toimenpiteitä.",
     largestFirst: "Suurimmasta pienimpään",
-    remove: "Poista",
     removeNamed: "Poista {name}",
     sourceNote: "Toimenpiteet ja euroarviot: {source}, {date}",
     sourceNoteTaxes: " sekä VM:n verokartoituksen liite 1.",
@@ -99,6 +97,7 @@ window.STRINGS = {
     levelLow: "Vähän",
     levelHigh: "Paljon",
     easyViewLabel: "Kysymysten näyttötapa",
+    wizardNav: "Kysymysten selaus",
     viewOneByOne: "Yksi kerrallaan",
     viewAll: "Kaikki kerralla",
     questionOf: "Kysymys {n}/{total}",
@@ -151,11 +150,11 @@ window.STRINGS = {
 
   en: {
     pageTitle: "Budget Cutter – Finland's budget, your choices",
+    skipToContent: "Skip to content",
     appName: "Budget Cutter",
     modeLabel: "View",
     modeEasy: "Easy",
     modeAdvanced: "Detailed",
-    langLabel: "Language",
     easyLeadHtml:
       "Next year the Finnish central government budget runs a <strong>deficit of about €12 billion</strong> – the state borrows that much more. " +
       "The next government aims to strengthen public finances by <strong>€8–11 billion</strong> by 2031.",
@@ -209,7 +208,6 @@ window.STRINGS = {
     badgeNoEstimate: "No euro estimate",
     badgeFrom: "From {year}",
     badgeFunds: "Also saves in social security funds",
-    stepperLabel: "Size of increase",
     decrease: "Decrease",
     increase: "Increase",
     noIncrease: "no increase",
@@ -230,7 +228,6 @@ window.STRINGS = {
     selectionCount: "{n} measures, {total} in total in {year}.",
     nothingSelectedAdvanced: "Nothing selected yet. Start by selecting a whole group or individual measures.",
     largestFirst: "Largest first",
-    remove: "Remove",
     removeNamed: "Remove {name}",
     sourceNote: "Measures and euro estimates: {source}, {date}",
     sourceNoteTaxes: ", and Annex 1 of VM's tax review.",
@@ -241,6 +238,7 @@ window.STRINGS = {
     levelLow: "A little",
     levelHigh: "A lot",
     easyViewLabel: "How to show the questions",
+    wizardNav: "Question navigation",
     viewOneByOne: "One at a time",
     viewAll: "All at once",
     questionOf: "Question {n} of {total}",
