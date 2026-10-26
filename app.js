@@ -182,7 +182,45 @@
     notifyRemoved(removed);
   }
 
-  // ---------- URL (selections in a shareable link) ----------
+  // ---------- Persistence: URL (shareable link) and localStorage (survives leaving the page) ----------
+
+  const STORAGE_KEY = "leikkauskone:v1";
+
+  function addSelection(id, count) {
+    if (M[id]) state.selected.set(id, Math.max(1, Math.min(Number(count) || 1, M[id].unit?.max || 1)));
+  }
+
+  function saveToStorage() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          lang: state.lang,
+          mode: state.mode,
+          year: state.year,
+          includeFunds: state.includeFunds,
+          selected: [...state.selected],
+        })
+      );
+    } catch {
+      // Storage may be unavailable (private mode, blocked site data) – the URL still keeps the state.
+    }
+  }
+
+  function loadFromStorage() {
+    let saved;
+    try {
+      saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    } catch {
+      return;
+    }
+    if (!saved || typeof saved !== "object") return;
+    if (CONFIG.languages.includes(saved.lang)) state.lang = saved.lang;
+    if (saved.mode === "advanced") state.mode = "advanced";
+    if (YEARS.includes(saved.year)) state.year = saved.year;
+    state.includeFunds = saved.includeFunds === true;
+    if (Array.isArray(saved.selected)) saved.selected.forEach(([id, count]) => addSelection(id, count));
+  }
 
   function saveToUrl() {
     const parts = [];
@@ -206,8 +244,19 @@
     state.includeFunds = p.get("funds") === "1";
     for (const part of (p.get("s") || "").split(",").filter(Boolean)) {
       const [id, count] = part.split("*");
-      if (M[id]) state.selected.set(id, Math.max(1, Math.min(Number(count) || 1, M[id].unit?.max || 1)));
+      addSelection(id, count);
     }
+  }
+
+  // A link with state (e.g. a shared one) wins; otherwise continue from where the visitor left off.
+  function loadState() {
+    if (location.hash.length > 1) loadFromUrl();
+    else loadFromStorage();
+  }
+
+  function saveState() {
+    saveToUrl();
+    saveToStorage();
   }
 
   // ---------- Toast ----------
@@ -578,7 +627,7 @@
     updateSummary(categoryTotals);
     updateEasy();
     applySearch();
-    saveToUrl();
+    saveState();
   }
 
   function updateMeter(categoryTotals) {
@@ -820,7 +869,7 @@
 
   // ---------- Startup ----------
 
-  loadFromUrl();
+  loadState();
   applyStaticTexts();
   renderStructure();
   renderEasy();
