@@ -451,6 +451,28 @@ body.mode-advanced .easy-only { display: none !important; }
 .selected-list button:hover { color: var(--text); }
 .selected-list-title { font-size: 0.8rem; font-weight: 600; color: var(--text-2); margin: 4px 0 2px; }
 
+.summary-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- Share image dialog ---------- */
+
+.image-dialog {
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+.image-dialog::backdrop { background: rgb(0 0 0 / 0.55); }
+.image-dialog h2 { font-size: 1.1rem; margin-bottom: 12px; }
+.image-dialog img {
+  display: block; width: 100%; height: auto; max-height: calc(100vh - 200px); object-fit: contain;
+  border-radius: 8px; background: var(--surface-2);
+}
+.dialog-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.dialog-actions a.btn { text-decoration: none; display: inline-flex; align-items: center; }
+
 /* ---------- Footer & toast ---------- */
 
 .page-footer { padding-top: 16px; padding-bottom: 48px; border-top: 1px solid var(--border); font-size: 0.88rem; }

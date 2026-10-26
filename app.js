@@ -421,7 +421,8 @@
         <h2>${esc(t("resultTitle"))}</h2>
         <p data-result-text></p>
         <div class="result-actions">
-          <button type="button" class="btn" data-share>${esc(t("share"))}</button>
+          <button type="button" class="btn" data-share-image>${esc(t("shareImage"))}</button>
+          <button type="button" class="btn secondary" data-share>${esc(t("share"))}</button>
           <button type="button" class="btn secondary" data-mode="advanced">${esc(t("toAdvanced", { n: Object.keys(M).length }))}</button>
         </div>
       </section>`;
@@ -507,6 +508,93 @@
       }
       await navigator.clipboard.writeText(`${text} ${location.href}`);
       toast(t("toastCopied"));
+    } catch (e) {
+      if (e?.name !== "AbortError") toast(t("toastCopyFailed"));
+    }
+  }
+
+  // ---------- Share image ----------
+
+  // Texts and numbers for share-image.js
+  function imageData() {
+    let cuts = 0;
+    let taxes = 0;
+    for (const id of state.selected.keys()) {
+      if (M[id].type === "tax") taxes += selectedImpact(id);
+      else cuts += selectedImpact(id);
+    }
+    const total = cuts + taxes;
+    const milestones = CONFIG.milestones;
+    const reached = milestones.filter((ms) => total >= ms.value);
+    const next = milestones.find((ms) => total < ms.value);
+    let status;
+    if (!next) status = t("imageAllReached");
+    else if (reached.length) status = t("imageReached", { name: loc(reached[reached.length - 1].name) });
+    else status = t("imageMissing", { target: formatEur(next.value), missing: formatEur(next.value - total) });
+
+    const categoryTotals = DATA.categories.map((c, i) => ({
+      value: c.groups.flatMap((g) => g.measures).reduce((sum, id) => sum + selectedImpact(id), 0),
+      colorIndex: i,
+    }));
+    const top = [...state.selected.keys()]
+      .sort((a, b) => selectedImpact(b) - selectedImpact(a))
+      .slice(0, 3)
+      .map((id) => ({ name: nameOf(M[id]), amount: formatEur(selectedImpact(id)) }));
+    // Only show the address when the page is actually hosted somewhere
+    const hosted = /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+
+    return {
+      appName: t("appName"),
+      year: state.year,
+      headline: t("imageHeadline"),
+      total: formatEur(total),
+      totalValue: total,
+      status,
+      statusReached: reached.length > 0,
+      scaleMax: CONFIG.scaleMax,
+      segments: categoryTotals,
+      milestones: milestones.map((ms) => ({ value: ms.value, label: loc(ms.short), reached: total >= ms.value })),
+      cutsLabel: t("imageCuts"),
+      cuts: formatEur(cuts),
+      taxesLabel: t("imageTaxes"),
+      taxes: formatEur(taxes),
+      topLabel: t("imageTop"),
+      top,
+      cta: t("imageCta"),
+      source: t("imageSource"),
+      url: hosted ? (location.host + location.pathname).replace(/\/(index\.html)?$/, "") : "",
+    };
+  }
+
+  let imageFile = null;
+  let imageUrl = null;
+
+  async function openImageDialog() {
+    let blob;
+    try {
+      blob = await window.ShareImage.render(imageData());
+    } catch {
+      toast(t("imageFailed"));
+      return;
+    }
+    if (imageUrl) URL.revokeObjectURL(imageUrl);
+    imageUrl = URL.createObjectURL(blob);
+    imageFile = new File([blob], t("imageFileName"), { type: "image/png" });
+
+    const img = $("#share-image");
+    img.src = imageUrl;
+    img.alt = t("imageAlt", { total: formatEur(totalImpact()), year: state.year });
+    const download = $("#image-download");
+    download.href = imageUrl;
+    download.download = t("imageFileName");
+    // Sharing files works on most phones (WhatsApp etc.); elsewhere the image is downloaded
+    $("#image-share").hidden = !(navigator.canShare && navigator.canShare({ files: [imageFile] }));
+    $("#image-dialog").showModal();
+  }
+
+  async function shareImageFile() {
+    try {
+      await navigator.share({ files: [imageFile], text: `${t("shareText", { total: formatEur(totalImpact()) })} ${location.href}` });
     } catch (e) {
       if (e?.name !== "AbortError") toast(t("toastCopyFailed"));
     }
@@ -708,7 +796,7 @@
           })
           .join("")
       : "";
-    $("#copy-link").hidden = !n;
+    $("#summary-actions").hidden = !n;
   }
 
   // ---------- Search and expanding groups ----------
@@ -763,6 +851,13 @@
       toast(t("toastCleared"));
     });
 
+    $("#image-close").addEventListener("click", () => $("#image-dialog").close());
+    $("#image-share").addEventListener("click", shareImageFile);
+    // Clicking the backdrop closes the dialog
+    $("#image-dialog").addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.close();
+    });
+
     let searchTimer;
     $("#search").addEventListener("input", (e) => {
       clearTimeout(searchTimer);
@@ -806,6 +901,11 @@
 
       if (e.target.closest("[data-share]")) {
         share();
+        return;
+      }
+
+      if (e.target.closest("[data-share-image]")) {
+        openImageDialog();
         return;
       }
 

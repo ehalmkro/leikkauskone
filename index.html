@@ -93,7 +93,10 @@
           <tbody></tbody>
         </table>
         <ol class="selected-list" id="selected-list"></ol>
-        <button type="button" class="btn" id="copy-link" data-share data-i18n="copyLink"></button>
+        <div class="summary-actions" id="summary-actions">
+          <button type="button" class="btn" data-share-image data-i18n="shareImage"></button>
+          <button type="button" class="btn secondary" data-share data-i18n="copyLink"></button>
+        </div>
       </div>
     </aside>
   </main>
@@ -106,10 +109,21 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <dialog class="image-dialog" id="image-dialog" aria-labelledby="image-dialog-title">
+    <h2 id="image-dialog-title" data-i18n="imageDialogTitle"></h2>
+    <img id="share-image" alt="">
+    <div class="dialog-actions">
+      <button type="button" class="btn" id="image-share" data-i18n="imageShare"></button>
+      <a class="btn secondary" id="image-download" data-i18n="imageDownload"></a>
+      <button type="button" class="btn secondary" id="image-close" data-i18n="close"></button>
+    </div>
+  </dialog>
+
   <script src="config.js"></script>
   <script src="i18n.js"></script>
   <script src="data.js"></script>
   <script src="questions.js"></script>
+  <script src="share-image.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -29,6 +29,7 @@ Open `index.html` in a browser – double-clicking is enough. No build step, no 
 | `questions.js` | Easy-mode questions and their levels (which measures each level selects) | Yes |
 | `config.js` | Milestones, default year, category notes, source links | Yes |
 | `app.js` | Application logic | When needed |
+| `share-image.js` | Draws the shareable PNG result image (canvas) | When needed |
 | `data/grouping.csv` | Categories and groups of spending measures, alternatives and overlaps | Yes (e.g. in Excel) |
 | `data/taxes.csv` | Tax measures, the figure used and where it comes from | Yes (e.g. in Excel) |
 | `data/translations_en.csv` | English names for measures, groups, categories and tax bases | Yes (e.g. in Excel) |
