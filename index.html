@@ -9,65 +9,39 @@
   <meta property="og:description" content="Kokeile itse, miten valtion talous saataisiin tasapainoon valtiovarainministeriön omilla luvuilla.">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="style.css">
+  <script type="module" src="src/main.js"></script>
 </head>
-<!-- Elements with data-i18n* attributes get their text from i18n.js. -->
-<body data-mode="easy">
+<!-- Elements with data-i18n* attributes get their text from content/strings.js. -->
+<body data-view="intro">
   <a class="skip-link" href="#main" data-i18n="skipToContent"></a>
 
-  <header class="page-header">
-    <div class="container">
-      <div class="title-row">
-        <h1 data-i18n="appName">Leikkauskone</h1>
-        <div class="header-controls">
-          <div class="segmented mode-switch" role="group" data-i18n-aria="modeLabel">
-            <button type="button" data-mode="easy" aria-pressed="true" data-i18n="modeEasy"></button>
-            <button type="button" data-mode="advanced" aria-pressed="false" data-i18n="modeAdvanced"></button>
-          </div>
-          <label class="lang-select">
-            <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
-              <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>
-            </svg>
-            <span class="visually-hidden">Kieli / Language</span>
-            <select id="lang"></select>
-          </label>
-        </div>
-      </div>
-
-      <div class="easy-only">
-        <p class="lead" data-i18n-html="easyLeadHtml"></p>
-        <p class="lead lead-question" data-i18n="easyQuestion"></p>
-      </div>
-
-      <div class="advanced-only">
-        <p class="lead" data-i18n="advancedLead"></p>
-        <details class="help">
-          <summary data-i18n="helpSummary"></summary>
-          <ul data-i18n-html="helpItemsHtml"></ul>
-        </details>
-      </div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <button type="button" class="wordmark" data-view-link="intro" data-i18n-aria="homeLink">
+        <span data-i18n="appName">Leikkauskone</span>
+      </button>
+      <nav class="tabs" data-i18n-aria="navLabel">
+        <button type="button" data-view-link="questions" data-i18n="navQuestions"></button>
+        <button type="button" data-view-link="measures" data-i18n="navMeasures"></button>
+      </nav>
+      <label class="lang-select">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>
+        </svg>
+        <span class="visually-hidden">Kieli / Language</span>
+        <select id="lang"></select>
+      </label>
     </div>
   </header>
 
   <section class="meter" data-i18n-aria="meterLabel">
-    <div class="container">
-      <div class="meter-row">
-        <p class="total">
-          <span class="total-label"><span data-i18n="totalLabel"></span> <span id="year-label"></span></span>
-          <span class="total-value" id="total"></span>
-        </p>
-        <p class="next-goal" id="next-goal" aria-live="polite"></p>
-        <div class="controls">
-          <label class="control advanced-only">
-            <span data-i18n="year"></span>
-            <select id="year"></select>
-          </label>
-          <label class="control toggle advanced-only">
-            <input type="checkbox" id="funds">
-            <span class="wide-only" data-i18n="fundsWide"></span><span class="narrow-only" data-i18n="fundsNarrow"></span>
-          </label>
-          <button type="button" class="btn secondary" id="clear" data-i18n="clear"></button>
-        </div>
-      </div>
+    <div class="container meter-inner">
+      <p class="total">
+        <span class="total-label"><span data-i18n="totalLabel"></span> <span id="year-label"></span></span>
+        <span class="total-value" id="total"></span>
+      </p>
+      <p class="next-goal" id="next-goal" aria-live="polite"></p>
+      <button type="button" class="btn secondary small" id="clear" data-i18n="clear"></button>
       <div class="bar-frame">
         <div class="bar" id="bar" role="img"></div>
         <div class="milestones" id="milestones" aria-hidden="true"></div>
@@ -77,42 +51,62 @@
   </section>
 
   <main id="main" tabindex="-1">
-    <!-- Easy mode: big questions -->
-    <div class="container easy easy-only" id="easy"></div>
+    <section class="container intro" id="intro" data-view-section="intro"></section>
 
-    <!-- Detailed mode: all measures -->
-    <div class="container layout advanced-only">
-      <div class="measures">
-        <div class="search">
-          <label for="search" class="visually-hidden" data-i18n="searchLabel"></label>
-          <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" autocomplete="off">
-        </div>
-        <div id="categories"></div>
-      </div>
+    <section class="container questions" id="questions" data-view-section="questions" hidden></section>
 
-      <aside class="summary" data-i18n-aria="summaryTitle">
-        <div class="summary-body">
-          <h2 data-i18n="summaryTitle"></h2>
-          <p class="muted" id="selection-count"></p>
-          <table class="breakdown" id="breakdown">
-            <caption class="visually-hidden" data-i18n="breakdownCaption"></caption>
-            <tbody></tbody>
-          </table>
-          <p class="selected-list-title" id="selected-title" data-i18n="largestFirst"></p>
-          <ol class="selected-list" id="selected-list"></ol>
-          <div class="actions" id="summary-actions">
-            <button type="button" class="btn" data-share-image data-i18n="shareImage"></button>
-            <button type="button" class="btn secondary" data-share data-i18n="copyLink"></button>
+    <section class="container measures" id="measures" data-view-section="measures" hidden>
+      <h1 data-i18n="navMeasures"></h1>
+      <p class="lead" data-i18n="measuresLead"></p>
+      <details class="help">
+        <summary data-i18n="helpSummary"></summary>
+        <ul data-i18n-html="helpItemsHtml"></ul>
+      </details>
+      <div class="layout">
+        <div>
+          <div class="search">
+            <label for="search" class="visually-hidden" data-i18n="searchLabel"></label>
+            <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" autocomplete="off">
           </div>
+          <div class="settings">
+            <label class="control">
+              <span data-i18n="year"></span>
+              <select id="year"></select>
+            </label>
+            <label class="control">
+              <input type="checkbox" id="funds">
+              <span data-i18n="fundsWide"></span>
+            </label>
+          </div>
+          <div id="categories"></div>
         </div>
-      </aside>
-    </div>
+        <aside class="summary" data-i18n-aria="summaryTitle">
+          <div class="summary-body">
+            <h2 data-i18n="summaryTitle"></h2>
+            <p class="muted" id="selection-count"></p>
+            <table class="breakdown" id="breakdown">
+              <caption class="visually-hidden" data-i18n="breakdownCaption"></caption>
+              <tbody></tbody>
+            </table>
+            <p class="selected-list-title" id="selected-title" data-i18n="largestFirst"></p>
+            <ol class="selected-list" id="selected-list"></ol>
+            <div class="actions" id="summary-actions">
+              <button type="button" class="btn" data-share-image data-i18n="shareImage"></button>
+              <button type="button" class="btn secondary" data-share-link data-i18n="copyLink"></button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
   </main>
 
-  <footer class="container page-footer">
-    <h2 data-i18n="sources"></h2>
-    <ul id="sources"></ul>
-    <p class="muted" id="source-note"></p>
+  <footer class="container site-footer">
+    <p data-i18n="introSource"></p>
+    <details>
+      <summary data-i18n="sourcesSummary"></summary>
+      <ul id="sources"></ul>
+      <p id="source-note"></p>
+    </details>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -126,12 +120,5 @@
       <button type="button" class="btn secondary" id="image-close" data-i18n="close"></button>
     </div>
   </dialog>
-
-  <script src="config.js"></script>
-  <script src="i18n.js"></script>
-  <script src="data.js"></script>
-  <script src="questions.js"></script>
-  <script src="share-image.js"></script>
-  <script src="app.js"></script>
 </body>
 </html>

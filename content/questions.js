@@ -1,13 +1,13 @@
-// Easy-mode questions – safe to edit.
+// The questions – safe to edit.
 //
 // Every question has the options "No change" (added automatically), "A little" (first level) and "A lot" (second level).
 // Each level selects Ministry of Finance measures behind the scenes (ids are listed in data/grouping.csv and
-// data/taxes.csv), so easy-mode choices show up as such in the detailed view.
+// data/taxes.csv), so answers show up as individual measures in the All measures view.
 // Unit-yield measures take a step count after an asterisk, e.g. "VER-74*3".
 // Euro amounts are calculated from the data automatically – do not write them into the texts.
 // Texts are given per language as { fi: "...", en: "..." }.
 
-window.QUESTIONS = {
+export const QUESTIONS = {
   sections: [
     { id: "spending", title: { fi: "Mistä leikataan?", en: "Where do we cut?" } },
     { id: "tax", title: { fi: "Mitä verotetaan enemmän?", en: "What do we tax more?" } },

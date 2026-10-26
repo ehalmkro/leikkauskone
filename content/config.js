@@ -2,7 +2,7 @@
 // All amounts are in million euros per year.
 // Texts are given per language as { fi: "...", en: "..." }.
 
-window.CONFIG = {
+export const CONFIG = {
   // Languages in the language menu; the first one is the fallback. UI strings for each are in i18n.js.
   languages: [
     { code: "fi", name: "Suomi" },

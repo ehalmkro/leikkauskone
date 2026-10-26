@@ -1,20 +1,35 @@
 // UI strings in Finnish and English – safe to edit.
-// Placeholders like {total} are filled in by app.js. Keys ending in "Html" may contain HTML.
-// Texts for questions, milestones and categories live in questions.js and config.js.
+// Placeholders like {total} are filled in by the code. Keys ending in "Html" may contain HTML.
+// Texts for questions, milestones and categories are in questions.js and config.js.
 
-window.STRINGS = {
+export const STRINGS = {
   fi: {
     pageTitle: "Leikkauskone",
     skipToContent: "Siirry sisältöön",
+    navLabel: "Näkymät",
+    navQuestions: "Kysymykset",
+    navMeasures: "Kaikki toimenpiteet",
+    homeLink: "Leikkauskone – etusivulle",
+    introEyebrow: "Valtion talous 2028–2031",
+    introFactDeficitValue: "12,3 mrd €",
+    introFactDeficit: "valtion budjetin alijäämä 2027",
+    introFactTargetValue: "8–11 mrd €",
+    introFactTarget: "sopeutustavoite vuoteen 2031",
+    introFactQuestions: "kysymystä, noin 5 minuuttia",
+    introStart: "Aloita",
+    introContinue: "Jatka siitä, mihin jäit",
+    introRestart: "Aloita alusta",
+    introBrowse: "Tai selaa kaikkia {n} toimenpidettä",
+    introSource: "Luvut: valtiovarainministeriön meno- ja rakennekartoitus sekä verokartoitus 26.10.2026.",
+    showAll: "Näytä kaikki kysymykset",
+    showOneByOne: "Näytä yksi kerrallaan",
+    sourcesSummary: "Lähteet ja laskentatapa",
     appName: "Leikkauskone",
-    modeLabel: "Näkymä",
-    modeEasy: "Helppo",
-    modeAdvanced: "Tarkka",
-    easyLeadHtml:
+    introLeadHtml:
       "Valtion budjetti on ensi vuonna noin <strong>12 miljardia euroa alijäämäinen</strong>, eli valtio ottaa sen verran lisää velkaa. " +
       "Seuraavan hallituksen on tarkoitus vahvistaa julkista taloutta <strong>8–11 miljardilla eurolla</strong> vuoteen 2031 mennessä.",
-    easyQuestion: "Mistä sinä ottaisit rahat? Vastaa kysymyksiin, niin mittari näyttää, riittääkö.",
-    advancedLead:
+    introQuestion: "Mistä sinä ottaisit rahat? Vastaa kysymyksiin, niin mittari näyttää, riittääkö.",
+    measuresLead:
       "Valtiovarainministeriö listasi noin 400 tapaa vahvistaa julkista taloutta ja noin 60 verovaihtoehtoa. Valitse yksittäisiä " +
       "toimenpiteitä tai kokonaisia ryhmiä ja katso, riittävätkö ne sopeutustavoitteeseen tai jopa valtion budjetin tasapainottamiseen.",
     helpSummary: "Näin kone toimii ja näin luvut luetaan",
@@ -29,7 +44,6 @@ window.STRINGS = {
     totalLabel: "Kasassa vuonna",
     year: "Vuosi",
     fundsWide: "Sosiaaliturvarahastot mukaan",
-    fundsNarrow: "Sotu-rahastot mukaan",
     clear: "Tyhjennä",
     searchLabel: "Hae toimenpiteitä",
     searchPlaceholder: "Hae toimenpidettä, esim. lapsilisä, Yle, poliisi…",
@@ -50,7 +64,7 @@ window.STRINGS = {
     nextHtml: "Seuraava tavoite: {next} – puuttuu vielä <strong>{missing}</strong>.",
     yearNote: "Huom: sopeutustavoite koskee vuotta {year}.",
 
-    // Advanced view
+    // All measures view
     categoriesNav: "Pääluokat",
     noResults: "Ei osumia haulle.",
     selectGroup: "Valitse ryhmä",
@@ -84,22 +98,19 @@ window.STRINGS = {
     backgroundFinnishOnly: "",
     cannotCombine: "Ei voi valita yhdessä",
     selectionCount: "{n} toimenpidettä, yhteensä {total} vuonna {year}.",
-    nothingSelectedAdvanced: "Et ole vielä valinnut mitään. Aloita valitsemalla kokonainen ryhmä tai yksittäisiä toimenpiteitä.",
+    nothingSelectedMeasures: "Et ole vielä valinnut mitään. Aloita valitsemalla kokonainen ryhmä tai yksittäisiä toimenpiteitä.",
     largestFirst: "Suurimmasta pienimpään",
     removeNamed: "Poista {name}",
     sourceNote: "Toimenpiteet ja euroarviot: {source}, {date}",
     sourceNoteTaxes: " sekä VM:n verokartoituksen liite 1.",
     sourceNoteInterpretation: " Ryhmittely ja vaihtoehtojen yhteensopivuus on tämän sivun tekijän tulkinta.",
 
-    // Easy view
+    // Questions view
     noChange: "Ei muutosta",
     noChangeDescription: "Pidetään ennallaan.",
     levelLow: "Vähän",
     levelHigh: "Paljon",
-    easyViewLabel: "Kysymysten näyttötapa",
-    wizardNav: "Kysymysten selaus",
-    viewOneByOne: "Yksi kerrallaan",
-    viewAll: "Kaikki kerralla",
+    stepNavLabel: "Kysymysten selaus",
     questionOf: "Kysymys {n}/{total}",
     previous: "← Edellinen",
     next: "Seuraava →",
@@ -109,7 +120,7 @@ window.STRINGS = {
     startOver: "Aloita alusta",
     modified: "Muokattu",
     cardDetails: "Mitä VM:n toimenpiteitä tähän kuuluu?",
-    modifiedInAdvanced: "Valintoja on muokattu tarkassa tilassa.",
+    editedInMeasures: "Valintoja on muokattu Kaikki toimenpiteet -näkymässä.",
     resultTitle: "Sinun budjettisi",
     resultNothing: "Et ole vielä valinnut mitään. Vastaa ylläoleviin kysymyksiin.",
     resultSplit: "Leikkauksia {spending} ja veronkorotuksia {taxes}, yhteensä {total} vuodessa. ",
@@ -118,7 +129,7 @@ window.STRINGS = {
     resultSome: "Saavutit tavoitteen: {name}.",
     resultQuestion: " Olisitko valmis puolustamaan näitä valintoja vaalikentillä?",
     share: "Jaa valintasi",
-    toAdvanced: "Valitse tarkemmin: kaikki {n} toimenpidettä",
+    toMeasures: "Valitse tarkemmin: kaikki {n} toimenpidettä",
 
     // Toasts and sharing
     toastRemoved: "Poistettiin vaihtoehtoinen tai päällekkäinen valinta: {names}",
@@ -151,15 +162,30 @@ window.STRINGS = {
   en: {
     pageTitle: "Budget Cutter – Finland's budget, your choices",
     skipToContent: "Skip to content",
+    navLabel: "Views",
+    navQuestions: "Questions",
+    navMeasures: "All measures",
+    homeLink: "Budget Cutter – back to start",
+    introEyebrow: "Finland's public finances 2028–2031",
+    introFactDeficitValue: "€12.3bn",
+    introFactDeficit: "state budget deficit in 2027",
+    introFactTargetValue: "€8–11bn",
+    introFactTarget: "adjustment target by 2031",
+    introFactQuestions: "questions, about 5 minutes",
+    introStart: "Start",
+    introContinue: "Continue where you left off",
+    introRestart: "Start over",
+    introBrowse: "Or browse all {n} measures",
+    introSource: "Figures: Finnish Ministry of Finance spending and tax reviews, 26 Oct 2026.",
+    showAll: "Show all questions",
+    showOneByOne: "Show one at a time",
+    sourcesSummary: "Sources and method",
     appName: "Budget Cutter",
-    modeLabel: "View",
-    modeEasy: "Easy",
-    modeAdvanced: "Detailed",
-    easyLeadHtml:
+    introLeadHtml:
       "Next year the Finnish central government budget runs a <strong>deficit of about €12 billion</strong> – the state borrows that much more. " +
       "The next government aims to strengthen public finances by <strong>€8–11 billion</strong> by 2031.",
-    easyQuestion: "Where would you find the money? Answer the questions and the meter shows whether it is enough.",
-    advancedLead:
+    introQuestion: "Where would you find the money? Answer the questions and the meter shows whether it is enough.",
+    measuresLead:
       "The Finnish Ministry of Finance (VM) listed some 400 ways to strengthen public finances and about 60 tax options. Pick individual " +
       "measures or whole groups and see whether they reach the adjustment target – or even balance the state budget.",
     helpSummary: "How it works and how to read the figures",
@@ -174,7 +200,6 @@ window.STRINGS = {
     totalLabel: "Collected in",
     year: "Year",
     fundsWide: "Include social security funds",
-    fundsNarrow: "Incl. social funds",
     clear: "Clear",
     searchLabel: "Search measures",
     searchPlaceholder: "Search measures, e.g. child benefit, Yle, police…",
@@ -226,7 +251,7 @@ window.STRINGS = {
     backgroundFinnishOnly: "Original background text from the Ministry of Finance (in Finnish):",
     cannotCombine: "Cannot be combined with",
     selectionCount: "{n} measures, {total} in total in {year}.",
-    nothingSelectedAdvanced: "Nothing selected yet. Start by selecting a whole group or individual measures.",
+    nothingSelectedMeasures: "Nothing selected yet. Start by selecting a whole group or individual measures.",
     largestFirst: "Largest first",
     removeNamed: "Remove {name}",
     sourceNote: "Measures and euro estimates: {source}, {date}",
@@ -237,10 +262,7 @@ window.STRINGS = {
     noChangeDescription: "Keep things as they are.",
     levelLow: "A little",
     levelHigh: "A lot",
-    easyViewLabel: "How to show the questions",
-    wizardNav: "Question navigation",
-    viewOneByOne: "One at a time",
-    viewAll: "All at once",
+    stepNavLabel: "Question navigation",
     questionOf: "Question {n} of {total}",
     previous: "← Previous",
     next: "Next →",
@@ -250,7 +272,7 @@ window.STRINGS = {
     startOver: "Start over",
     modified: "Edited",
     cardDetails: "Which VM measures does this include?",
-    modifiedInAdvanced: "Choices have been edited in the detailed view.",
+    editedInMeasures: "Choices have been edited in the All measures view.",
     resultTitle: "Your budget",
     resultNothing: "Nothing selected yet. Answer the questions above.",
     resultSplit: "Spending cuts {spending} and tax increases {taxes}, {total} a year in total. ",
@@ -259,7 +281,7 @@ window.STRINGS = {
     resultSome: "You reached the target: {name}.",
     resultQuestion: " Would you be ready to defend these choices on the campaign trail?",
     share: "Share your choices",
-    toAdvanced: "Choose in detail: all {n} measures",
+    toMeasures: "Choose in detail: all {n} measures",
 
     toastRemoved: "Removed an alternative or overlapping selection: {names}",
     toastCleared: "All selections removed.",
