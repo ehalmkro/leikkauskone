@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fi">
+<html lang="fi" class="loading">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -42,10 +42,7 @@
       </p>
       <p class="next-goal" id="next-goal" aria-live="polite"></p>
       <button type="button" class="btn secondary small" id="clear" data-i18n="clear"></button>
-      <div class="bar-frame">
-        <div class="bar" id="bar" role="img"></div>
-        <div class="milestones" id="milestones" aria-hidden="true"></div>
-      </div>
+      <div class="bar-frame" id="bar-frame"></div>
       <ul class="milestone-list" id="milestone-list"></ul>
     </div>
   </section>
@@ -92,7 +89,6 @@
             <ol class="selected-list" id="selected-list"></ol>
             <div class="actions" id="summary-actions">
               <button type="button" class="btn" data-share-image data-i18n="shareImage"></button>
-              <button type="button" class="btn secondary" data-share-link data-i18n="copyLink"></button>
             </div>
           </div>
         </aside>

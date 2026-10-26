@@ -1,30 +1,16 @@
-// Sharing: a link to the current choices, and a result image in a preview dialog.
+// Sharing the result as an image: preview dialog, native share sheet on phones, download elsewhere.
 
 import { CONFIG } from "../../content/config.js";
 import { DATA } from "../../data/measures.js";
-import { state, shareUrl } from "../state.js";
+import { state } from "../state.js";
 import { M, totals, selectedImpact } from "../model.js";
 import { t, loc, nameOf, formatEur } from "../text.js";
 import { $, toast } from "../ui.js";
 import { renderShareImage } from "../share-image.js";
 
-export async function shareLink() {
-  const text = t("shareText", { total: formatEur(totals().total) });
-  const url = shareUrl();
-  try {
-    if (navigator.share) {
-      await navigator.share({ title: t("appName"), text, url });
-      return;
-    }
-    await navigator.clipboard.writeText(`${text} ${url}`);
-    toast(t("toastCopied"));
-  } catch (e) {
-    if (e?.name !== "AbortError") toast(t("toastCopyFailed"));
-  }
-}
-
 function imageData() {
   const { spending, taxes, total, byCategory } = totals();
+  const { scaleMax, target, markers } = CONFIG.meter;
   const milestones = CONFIG.milestones;
   const reached = milestones.filter((ms) => total >= ms.value);
   const next = milestones.find((ms) => total < ms.value);
@@ -43,9 +29,10 @@ function imageData() {
     totalValue: total,
     status,
     statusReached: reached.length > 0,
-    scaleMax: CONFIG.scaleMax,
+    scaleMax,
     segments: DATA.categories.map((c, i) => ({ value: byCategory[c.id], colorIndex: i })),
-    milestones: milestones.map((ms) => ({ value: ms.value, label: loc(ms.short), reached: total >= ms.value })),
+    target: { from: target.from, to: target.to, label: loc(target.label), reached: total >= target.from },
+    markers: markers.map((m) => ({ value: m.value, label: loc(m.label), reached: total >= m.value })),
     cutsLabel: t("imageCuts"),
     cuts: formatEur(spending),
     taxesLabel: t("imageTaxes"),
@@ -64,7 +51,7 @@ function imageData() {
 let imageFile = null;
 let imageUrl = null;
 
-export async function openImageDialog() {
+async function openImageDialog() {
   let blob;
   try {
     blob = await renderShareImage(imageData());
@@ -81,16 +68,18 @@ export async function openImageDialog() {
   img.alt = t("imageAlt", { total: formatEur(totals().total), year: state.year });
   $("#image-download").href = imageUrl;
   $("#image-download").download = t("imageFileName");
-  // Phones can share the file directly (e.g. to WhatsApp); elsewhere it is downloaded
   $("#image-share").hidden = !navigator.canShare?.({ files: [imageFile] });
   $("#image-dialog").showModal();
 }
 
+// Only the file is shared: several apps (WhatsApp on iOS in particular) fail when a file comes with text.
 async function shareImageFile() {
   try {
-    await navigator.share({ files: [imageFile], text: `${t("shareText", { total: formatEur(totals().total) })} ${shareUrl()}` });
+    await navigator.share({ files: [imageFile] });
   } catch (e) {
-    if (e?.name !== "AbortError") toast(t("toastCopyFailed"));
+    if (e?.name === "AbortError") return;
+    $("#image-download").click();
+    toast(t("imageShareFailed"));
   }
 }
 
@@ -99,9 +88,6 @@ export function bind() {
   $("#image-close").addEventListener("click", () => dialog.close());
   $("#image-share").addEventListener("click", shareImageFile);
   dialog.addEventListener("click", (e) => e.target === dialog && dialog.close());
-  // Share buttons appear in several views
-  document.addEventListener("click", (e) => {
-    if (e.target.closest("[data-share-link]")) shareLink();
-    if (e.target.closest("[data-share-image]")) openImageDialog();
-  });
+  // The share button appears on the result page and in the measures view
+  document.addEventListener("click", (e) => e.target.closest("[data-share-image]") && openImageDialog());
 }

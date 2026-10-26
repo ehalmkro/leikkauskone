@@ -3,7 +3,7 @@
 // Texts are given per language as { fi: "...", en: "..." }.
 
 export const CONFIG = {
-  // Languages in the language menu; the first one is the fallback. UI strings for each are in i18n.js.
+  // Languages in the language menu; the first one is the fallback. UI strings for each are in strings.js.
   languages: [
     { code: "fi", name: "Suomi" },
     { code: "en", name: "English" },
@@ -13,14 +13,21 @@ export const CONFIG = {
   // 2031 = last year of the next parliamentary term, which the fiscal adjustment target refers to.
   defaultYear: 2031,
 
-  // Upper end of the meter scale (M€). Grows automatically if the selection exceeds it.
-  scaleMax: 14000,
+  // The meter bar ends where the state budget is in balance (and grows if the selection goes beyond it).
+  // The adjustment target is drawn as a band, other reference points as markers.
+  meter: {
+    scaleMax: 12300,
+    target: { from: 8000, to: 11000, label: { fi: "Tavoite 8–11 mrd", en: "Target €8–11bn" } },
+    markers: [
+      { value: 4500, label: { fi: "EU:n 3 %:n raja", en: "EU 3% limit" } },
+      { value: 12300, label: { fi: "Tasapaino", en: "Balance" } },
+    ],
+  },
 
-  // Meter milestones, smallest first.
+  // Milestones for the texts about the next target, smallest first.
   milestones: [
     {
       value: 4500,
-      short: { fi: "EU 3 %", en: "EU 3%" },
       name: { fi: "Alijäämä EU:n 3 %:n rajan alle", en: "Deficit below the EU 3% limit" },
       description: {
         fi:
@@ -33,7 +40,6 @@ export const CONFIG = {
     },
     {
       value: 8000,
-      short: { fi: "8 mrd", en: "€8bn" },
       name: { fi: "Sopeutustavoitteen alaraja", en: "Lower end of the adjustment target" },
       description: {
         fi: "Parlamentaarisen työryhmän alustava tavoite: julkista taloutta vahvistetaan noin 8–11 mrd euroa vuoteen 2031 mennessä.",
@@ -42,7 +48,6 @@ export const CONFIG = {
     },
     {
       value: 11000,
-      short: { fi: "11 mrd", en: "€11bn" },
       name: { fi: "Sopeutustavoitteen yläraja", en: "Upper end of the adjustment target" },
       description: {
         fi: "Sopeutustarpeen haarukan yläpää (VM:n laskelmat, Valtioneuvoston julkaisuja 2026:17).",
@@ -51,7 +56,6 @@ export const CONFIG = {
     },
     {
       value: 12300,
-      short: { fi: "Tasapaino", en: "Balance" },
       name: { fi: "Valtion budjetti tasapainoon", en: "State budget in balance" },
       description: {
         fi: "Vuoden 2027 talousarvioesityksessä valtion menot ovat 92,5 mrd € ja tulot 80,2 mrd €, eli alijäämä on noin 12,3 mrd €.",

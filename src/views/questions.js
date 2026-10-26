@@ -67,7 +67,6 @@ export function render() {
       <p class="result-text" data-result-text></p>
       <div class="actions">
         <button type="button" class="btn" data-share-image>${esc(t("shareImage"))}</button>
-        <button type="button" class="btn secondary" data-share-link>${esc(t("share"))}</button>
       </div>
       <h3 class="answers-title">${esc(t("yourAnswers"))}</h3>
       <p class="muted answers-hint">${esc(t("answersHint"))}</p>

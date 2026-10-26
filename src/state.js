@@ -1,4 +1,4 @@
-// Application state, saving it in the browser, and share links.
+// Application state and saving it in the browser.
 
 import { DATA } from "../data/measures.js";
 import { CONFIG } from "../content/config.js";
@@ -85,55 +85,4 @@ export function load() {
   state.includeFunds = saved.includeFunds === true;
   (saved.answered || []).forEach((id) => state.answered.add(id));
   (saved.selected || []).forEach(([id, count]) => M[id] && state.selected.set(id, Math.min(count, maxCount(id))));
-}
-
-// ---------- Share links ----------
-// The selection is packed into a fixed-size code: one bit per measure (three bits for adjustable ones),
-// measures in id order, six bits per URL-safe character – about 85 characters whatever is selected.
-// The code is tied to the data: if measures are added or removed, older links decode differently.
-
-const LINK_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
-const LINK_ORDER = Object.keys(M).sort();
-const bitsFor = (id) => (M[id].unit ? 3 : 1);
-
-function encodeSelection() {
-  const bits = [];
-  for (const id of LINK_ORDER) {
-    const count = state.selected.get(id) || 0;
-    for (let b = bitsFor(id) - 1; b >= 0; b--) bits.push((count >> b) & 1);
-  }
-  let code = "";
-  for (let i = 0; i < bits.length; i += 6) {
-    code += LINK_CHARS[bits.slice(i, i + 6).reduce((v, bit, j) => v | (bit << (5 - j)), 0)];
-  }
-  return code.replace(/A+$/, ""); // trailing zeros are implied
-}
-
-function decodeSelection(code) {
-  const bits = [...code].flatMap((ch) => {
-    const v = Math.max(0, LINK_CHARS.indexOf(ch));
-    return [5, 4, 3, 2, 1, 0].map((b) => (v >> b) & 1);
-  });
-  const selected = new Map();
-  let pos = 0;
-  for (const id of LINK_ORDER) {
-    let count = 0;
-    for (let b = 0; b < bitsFor(id); b++) count = (count << 1) | (bits[pos++] || 0);
-    if (count) selected.set(id, Math.min(count, maxCount(id)));
-  }
-  return selected;
-}
-
-export const shareUrl = () => `${location.href.split("#")[0]}#s=${encodeSelection()}`;
-
-// A shared link opens the sender's choices on the result page; the code is then removed from the address bar.
-export function loadSharedLink() {
-  const code = new URLSearchParams(location.hash.slice(1)).get("s");
-  if (code == null) return;
-  state.selected = decodeSelection(code);
-  state.answered = new Set(QUESTIONS.questions.map((q) => q.id));
-  state.view = "questions";
-  state.layout = "single";
-  state.step = RESULT_STEP;
-  history.replaceState(null, "", location.pathname + location.search);
 }

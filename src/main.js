@@ -5,7 +5,7 @@
 
 import { CONFIG } from "../content/config.js";
 import { DATA } from "../data/measures.js";
-import { state, onChange, load, loadSharedLink } from "./state.js";
+import { state, onChange, load } from "./state.js";
 import { totals } from "./model.js";
 import { t, loc, esc } from "./text.js";
 import { $, $$, showView } from "./ui.js";
@@ -62,9 +62,9 @@ function bind() {
 }
 
 load();
-loadSharedLink();
 $("#lang").innerHTML = CONFIG.languages.map((l) => `<option value="${l.code}" lang="${l.code}">${esc(l.name)}</option>`).join("");
 render();
 bind();
 onChange(update);
 update();
+document.documentElement.classList.remove("loading");

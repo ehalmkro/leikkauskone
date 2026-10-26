@@ -8,7 +8,7 @@ The page has two views:
 
 - **Questions** (the main view): 17 big questions ("Cut support for families with children?") answered with
   *No change / A little / A lot*, one at a time or all at once. Each option explains what it means and what
-  it saves. The result page lists the answers and can be shared as a link or an image.
+  it saves. The result page lists the answers and can be shared as an image.
 - **All measures**: all 459 measures, grouped and individually selectable.
 
 Both views share the same selections: answers to the questions show up as individual measures in the other view.
@@ -36,7 +36,7 @@ and open <http://localhost:8000>. There is no build step and there are no depend
 | `content/strings.js` | UI texts in Finnish and English |
 | `content/config.js` | Languages, milestones, default year, category notes, source links |
 | `src/main.js` | Entry point: header, language, switching views |
-| `src/state.js` | State, saving it in the browser, share links |
+| `src/state.js` | State and saving it in the browser |
 | `src/model.js` | Calculations and selection rules |
 | `src/text.js`, `src/ui.js` | Translation and formatting helpers, small DOM helpers |
 | `src/views/` | Start page, meter, questions, measures and sharing |
@@ -80,10 +80,6 @@ clears another.
 The visitor's choices are a single map from measure id to count. Everything else – totals, answers to the questions,
 the meter – is derived from it on each change, so the two views can never disagree.
 
-Share links (`#s=…`) encode the choices as a bitmask over all measures in id order: one bit per measure, three
-bits for adjustable tax measures, six bits per character. A link is about 85 characters regardless of how much
-is selected. The encoding depends on the set of measures, so links made before the data changes may not
-open correctly afterwards.
 
 ## How the numbers work
 

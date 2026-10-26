@@ -77,21 +77,35 @@ function drawBar(ctx, data, y) {
   });
   ctx.restore();
 
-  // Milestone ticks with labels, alternating rows so neighbours don't collide
+  // Target band (label above the bar) and markers (labels below), as on the page
+  const xAt = (value) => x + (value / max) * w;
+  const bx = xAt(data.target.from);
+  const bw = xAt(data.target.to) - bx;
+  const bandColor = data.target.reached ? COLORS.good : COLORS.text;
+  roundRect(ctx, bx, y - 6, bw, h + 12, 10);
+  ctx.strokeStyle = bandColor;
+  ctx.lineWidth = 4;
+  ctx.stroke();
+  ctx.fillStyle = bandColor;
+  ctx.font = font(26, 700);
+  const bandLabel = (data.target.reached ? "✓ " : "") + data.target.label;
+  ctx.fillText(bandLabel, bx + bw / 2 - ctx.measureText(bandLabel).width / 2, y - 18);
+
   ctx.font = font(24, 600);
-  data.milestones.forEach((m, i) => {
-    const mx = x + (m.value / max) * w;
-    ctx.strokeStyle = m.reached ? COLORS.good : COLORS.muted;
-    ctx.lineWidth = 3;
+  data.markers.forEach((m) => {
+    const mx = xAt(m.value);
+    const color = m.reached ? COLORS.good : COLORS.muted;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.moveTo(mx, y - (i % 2 ? 44 : 14));
+    ctx.moveTo(mx, y - 6);
     ctx.lineTo(mx, y + h + 6);
     ctx.stroke();
-    ctx.fillStyle = m.reached ? COLORS.good : COLORS.muted;
-    const label = m.label;
+    const label = (m.reached ? "✓ " : "") + m.label;
     const lw = ctx.measureText(label).width;
-    const lx = mx + 8 + lw > W - PAD / 2 ? mx - 8 - lw : mx + 8;
-    ctx.fillText(label, lx, y - (i % 2 ? 22 : -8) - 6);
+    const lx = mx + lw / 2 > W - PAD ? mx - lw : mx - lw / 2;
+    ctx.fillStyle = color;
+    ctx.fillText(label, lx, y + h + 34);
   });
 }
 
@@ -150,18 +164,18 @@ function draw(ctx, data) {
   y += 75;
   ctx.fillText(data.status, PAD, y);
 
-  // Bar with milestones
-  const barY = y + 70;
+  // Bar with the target band and markers
+  const barY = y + 80;
   drawBar(ctx, data, barY);
 
   // Cuts vs taxes
-  y = barY + 44 + 48;
+  y = barY + 44 + 66;
   const half = (textWidth - 24) / 2;
   drawStat(ctx, PAD, y, half, data.cutsLabel, data.cuts);
   drawStat(ctx, PAD + half + 24, y, half, data.taxesLabel, data.taxes);
 
   // Biggest choices (must end above the footer at H - 200)
-  y += 140 + 70;
+  y += 140 + 64;
   if (data.top.length) {
     ctx.fillStyle = COLORS.muted;
     ctx.font = font(30, 600);
@@ -192,7 +206,7 @@ function draw(ctx, data) {
 }
 
 // data: { appName, year, headline, total, totalValue, status, statusReached, scaleMax, segments: [{ value, colorIndex }],
-//         milestones: [{ value, label, reached }], cutsLabel, cuts, taxesLabel, taxes, topLabel, top: [{ name, amount }],
+//         target: { from, to, label, reached }, markers: [{ value, label, reached }], cutsLabel, cuts, taxesLabel, taxes, topLabel, top: [{ name, amount }],
 //         cta, source, url }
 // Returns a Promise<Blob> (image/png).
 export function renderShareImage(data) {

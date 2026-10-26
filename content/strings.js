@@ -11,11 +11,6 @@ export const STRINGS = {
     navMeasures: "Kaikki toimenpiteet",
     homeLink: "Leikkauskone – etusivulle",
     introEyebrow: "Valtion talous 2028–2031",
-    introFactDeficitValue: "12,3 mrd €",
-    introFactDeficit: "valtion budjetin alijäämä 2027",
-    introFactTargetValue: "8–11 mrd €",
-    introFactTarget: "sopeutustavoite vuoteen 2031",
-    introFactQuestions: "kysymystä, noin 5 minuuttia",
     introStart: "Aloita",
     introContinue: "Jatka siitä, mihin jäit",
     introRestart: "Aloita alusta",
@@ -26,9 +21,10 @@ export const STRINGS = {
     sourcesSummary: "Lähteet ja laskentatapa",
     appName: "Leikkauskone",
     introLeadHtml:
-      "Valtion budjetti on ensi vuonna noin <strong>12 miljardia euroa alijäämäinen</strong>, eli valtio ottaa sen verran lisää velkaa. " +
-      "Seuraavan hallituksen on tarkoitus vahvistaa julkista taloutta <strong>8–11 miljardilla eurolla</strong> vuoteen 2031 mennessä.",
-    introQuestion: "Mistä sinä ottaisit rahat? Vastaa kysymyksiin, niin mittari näyttää, riittääkö.",
+      "Valtio ottaa ensi vuonna <strong>12,3 miljardia euroa</strong> lisää velkaa. " +
+      "Seuraavan hallituksen tavoite on vahvistaa julkista taloutta <strong>8–11 miljardilla eurolla</strong> vuoteen 2031 mennessä.",
+    introQuestion: "Mistä sinä ottaisit rahat?",
+    introMeta: "{n} kysymystä · noin 5 minuuttia",
     measuresLead:
       "Valtiovarainministeriö listasi noin 400 tapaa vahvistaa julkista taloutta ja noin 60 verovaihtoehtoa. Valitse yksittäisiä " +
       "toimenpiteitä tai kokonaisia ryhmiä ja katso, riittävätkö ne sopeutustavoitteeseen tai jopa valtion budjetin tasapainottamiseen.",
@@ -49,7 +45,6 @@ export const STRINGS = {
     searchPlaceholder: "Hae toimenpidettä, esim. lapsilisä, Yle, poliisi…",
     summaryTitle: "Valintasi",
     breakdownCaption: "Säästöt pääluokittain",
-    copyLink: "Kopioi linkki valintoihin",
     sources: "Lähteet",
 
     // Units
@@ -128,16 +123,12 @@ export const STRINGS = {
     resultAll: "Valintasi riittäisivät laskennallisesti jopa valtion budjetin tasapainottamiseen.",
     resultSome: "Saavutit tavoitteen: {name}.",
     resultQuestion: " Olisitko valmis puolustamaan näitä valintoja vaalikentillä?",
-    share: "Jaa valintasi",
     toMeasures: "Valitse tarkemmin: kaikki {n} toimenpidettä",
 
     // Toasts and sharing
     toastRemoved: "Poistettiin vaihtoehtoinen tai päällekkäinen valinta: {names}",
     toastCleared: "Kaikki valinnat poistettu.",
     toastPackage: "Valittiin {added} toimenpidettä. {skipped} jätettiin pois, koska ne ovat vaihtoehtoisia tai päällekkäisiä valittujen kanssa – avaa ryhmä ja vaihda halutessasi.",
-    shareText: "Minä löysin valtion budjettiin {total}. Mistä sinä ottaisit?",
-    toastCopied: "Linkki valintoihisi kopioitiin leikepöydälle – liitä se viestiin.",
-    toastCopyFailed: "Kopiointi ei onnistunut – kopioi osoite selaimen osoiteriviltä.",
 
     // Share image
     shareImage: "Jaa kuvana",
@@ -157,6 +148,7 @@ export const STRINGS = {
     imageAlt: "Tuloskuva: {total} vuonna {year}.",
     imageFileName: "leikkauskone.png",
     imageFailed: "Kuvan luominen ei onnistunut.",
+    imageShareFailed: "Jakaminen ei onnistunut, joten kuva ladattiin laitteellesi.",
   },
 
   en: {
@@ -167,11 +159,6 @@ export const STRINGS = {
     navMeasures: "All measures",
     homeLink: "Budget Cutter – back to start",
     introEyebrow: "Finland's public finances 2028–2031",
-    introFactDeficitValue: "€12.3bn",
-    introFactDeficit: "state budget deficit in 2027",
-    introFactTargetValue: "€8–11bn",
-    introFactTarget: "adjustment target by 2031",
-    introFactQuestions: "questions, about 5 minutes",
     introStart: "Start",
     introContinue: "Continue where you left off",
     introRestart: "Start over",
@@ -182,9 +169,10 @@ export const STRINGS = {
     sourcesSummary: "Sources and method",
     appName: "Budget Cutter",
     introLeadHtml:
-      "Next year the Finnish central government budget runs a <strong>deficit of about €12 billion</strong> – the state borrows that much more. " +
+      "Next year the Finnish state borrows <strong>€12.3 billion</strong> more. " +
       "The next government aims to strengthen public finances by <strong>€8–11 billion</strong> by 2031.",
-    introQuestion: "Where would you find the money? Answer the questions and the meter shows whether it is enough.",
+    introQuestion: "Where would you find the money?",
+    introMeta: "{n} questions · about 5 minutes",
     measuresLead:
       "The Finnish Ministry of Finance (VM) listed some 400 ways to strengthen public finances and about 60 tax options. Pick individual " +
       "measures or whole groups and see whether they reach the adjustment target – or even balance the state budget.",
@@ -205,7 +193,6 @@ export const STRINGS = {
     searchPlaceholder: "Search measures, e.g. child benefit, Yle, police…",
     summaryTitle: "Your choices",
     breakdownCaption: "Savings by category",
-    copyLink: "Copy link to your choices",
     sources: "Sources",
 
     billions: "bn",
@@ -280,15 +267,11 @@ export const STRINGS = {
     resultAll: "On paper, your choices would even balance the state budget.",
     resultSome: "You reached the target: {name}.",
     resultQuestion: " Would you be ready to defend these choices on the campaign trail?",
-    share: "Share your choices",
     toMeasures: "Choose in detail: all {n} measures",
 
     toastRemoved: "Removed an alternative or overlapping selection: {names}",
     toastCleared: "All selections removed.",
     toastPackage: "Selected {added} measures. {skipped} were left out because they are alternatives to or overlap with selected ones – open the group to switch.",
-    shareText: "I found {total} for the Finnish state budget. Where would you find it?",
-    toastCopied: "A link to your choices was copied to the clipboard – paste it into a message.",
-    toastCopyFailed: "Copying failed – copy the address from the browser's address bar.",
 
     shareImage: "Share as image",
     imageDialogTitle: "Shareable image",
@@ -307,5 +290,6 @@ export const STRINGS = {
     imageAlt: "Result image: {total} in {year}.",
     imageFileName: "budget-cutter.png",
     imageFailed: "Creating the image failed.",
+    imageShareFailed: "Sharing failed, so the image was downloaded instead.",
   },
 };

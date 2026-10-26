@@ -116,7 +116,12 @@ a { color: var(--accent); }
 /* Page width follows the view so that the header, meter and content always line up */
 body[data-view="intro"],
 body[data-view="questions"] { --max-width: 820px; }
-body[data-view="intro"] .meter { display: none; }
+body[data-view="intro"] .meter,
+body[data-view="intro"] .wordmark,
+body[data-view="intro"] .tabs { display: none; }
+body[data-view="intro"] .site-header { background: none; border-bottom: 0; }
+/* Hide the empty page shell until the first render */
+.loading body > * { visibility: hidden; }
 body[data-view="questions"] .milestone-list { display: none; }
 
 .btn {
@@ -192,18 +197,20 @@ body[data-view="questions"] .milestone-list { display: none; }
 .control input { width: 18px; height: 18px; accent-color: var(--accent); }
 .settings { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 10px; }
 
-.bar-frame { grid-column: 1 / -1; position: relative; margin-top: 38px; }
+/* Bar: the target band's label sits above it, marker labels below, so nothing overlaps */
+.bar-frame { grid-column: 1 / -1; position: relative; padding: 24px 0; }
 .bar { display: flex; gap: 2px; height: 22px; background: var(--track); border-radius: 6px; overflow: hidden; }
 .bar-segment { height: 100%; min-width: 0; transition: width 0.25s ease; }
 .bar-segment:last-child { border-radius: 0 4px 4px 0; }
-
-.milestones { position: absolute; inset: 0; pointer-events: none; }
-.milestone { position: absolute; top: -20px; bottom: -4px; border-left: 2px solid var(--text); opacity: 0.75; }
-.milestone span { position: absolute; top: 0; left: 4px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
-.milestone.align-right span { left: auto; right: 4px; }
-.milestone.upper { top: -36px; }   /* every other label on an upper row so neighbours don't overlap */
-.milestone.reached { border-left-color: var(--good); opacity: 1; }
-.milestone.reached span { color: var(--good); }
+.bar-marks { position: absolute; inset: 24px 0; pointer-events: none; }
+.bar-marks span { position: absolute; font-size: 0.8rem; font-weight: 600; white-space: nowrap; color: var(--text-2); }
+.target-band { position: absolute; top: -4px; bottom: -4px; border: 2px solid var(--text); border-radius: 7px; }
+.target-band span { bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 4px; color: var(--text); font-weight: 700; }
+.marker { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--text-2); }
+.marker span { top: 100%; margin-top: 4px; transform: translateX(-50%); }
+.marker.at-end span { transform: translateX(-100%); }
+.target-band.reached, .marker.reached { border-color: var(--good); }
+.target-band.reached span, .marker.reached span { color: var(--good); }
 
 .milestone-list {
   grid-column: 1 / -1;
@@ -221,21 +228,15 @@ body[data-view="questions"] .milestone-list { display: none; }
 
 /* ---------- Start page ---------- */
 
-.intro { padding-top: 40px; padding-bottom: 48px; }
-.intro-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-  padding: clamp(24px, 5vw, 48px);
-}
+.intro { padding-top: clamp(32px, 7vw, 72px); padding-bottom: 56px; }
 .eyebrow { margin: 0 0 8px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
-.intro-card h1 { font-size: clamp(2.4rem, 7vw, 3.6rem); letter-spacing: -0.02em; margin-bottom: 16px; }
-.intro-lead { font-size: 1.15rem; color: var(--text-2); margin: 0 0 24px; max-width: 60ch; }
+.intro h1 { font-size: clamp(2.6rem, 9vw, 4rem); letter-spacing: -0.02em; margin-bottom: 16px; }
+.intro-lead { font-size: clamp(1.1rem, 2.6vw, 1.3rem); color: var(--text-2); margin: 0 0 8px; max-width: 34em; }
 .intro-lead strong { color: var(--text); }
-.facts { list-style: none; margin: 0 0 24px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.facts li { background: var(--surface-2); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
-.facts strong { font-size: 1.6rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.facts span { font-size: 0.9rem; color: var(--text-2); }
-.intro-question { font-size: 1.15rem; font-weight: 700; margin: 0 0 16px; }
-.intro-card .actions + p { margin: 16px 0 0; }
+.intro-bar { margin: 8px 0 28px; }
+.intro-question { font-size: clamp(1.3rem, 3.5vw, 1.6rem); margin-bottom: 4px; }
+.intro-meta { margin: 0 0 16px; color: var(--text-2); }
+.intro-browse { margin: 18px 0 0; }
 
 /* ---------- Questions ---------- */
 /* Both layouts use the same markup; [data-layout] on #questions switches between them. */
@@ -509,12 +510,7 @@ body[data-view="questions"] .milestone-list { display: none; }
   .next-goal { grid-column: 1 / -1; grid-row: 2; font-size: 0.85rem; }
   .total-value { font-size: 1.5rem; }
   .milestone-list { display: none; }
-  .bar-frame { margin-top: 36px; }
-  .milestone.upper { top: -32px; }
-  .milestone span { font-size: 0.68rem; }
-  .facts { grid-template-columns: minmax(0, 1fr); }
-  .facts li { flex-direction: row; align-items: baseline; gap: 10px; padding: 10px 14px; }
-  .facts strong { font-size: 1.3rem; min-width: 5.2em; }
+  .bar-marks span { font-size: 0.72rem; }
   [data-layout="all"] .option { padding: 8px; gap: 6px; }
   .group-header { padding-right: 10px; }
   .group-figures { text-align: left; }
