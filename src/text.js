@@ -6,9 +6,10 @@ import { state } from "./state.js";
 
 const FALLBACK = CONFIG.languages[0].code;
 
-// UI string with {placeholders}; falls back to the first language if a key is missing.
+// UI string with {placeholders}. A flow can override strings (STRINGS.fi.climate); missing keys fall back to the first language.
 export function t(key, vars = {}) {
-  const s = STRINGS[state.lang]?.[key] ?? STRINGS[FALLBACK][key] ?? key;
+  const lookup = (lang) => STRINGS[lang]?.[state.flow]?.[key] ?? STRINGS[lang]?.[key];
+  const s = lookup(state.lang) ?? lookup(FALLBACK) ?? key;
   return s.replace(/\{(\w+)\}/g, (_, k) => (k in vars ? vars[k] : `{${k}}`));
 }
 
@@ -36,6 +37,16 @@ export function formatEur(millions) {
   const [num, unit] = a >= 1000 ? [formatNumber(a / 1000, 1, 1), t("billions")] : [formatNumber(a, a < 10 ? 1 : 0), t("millions")];
   return state.lang === "fi" ? `${sign}${num} ${unit}` : `${sign}€${num}${unit}`;
 }
+
+// "12,3 Mt" / "12.3 Mt" (million tonnes of CO₂ equivalent)
+export function formatMt(value) {
+  const a = Math.abs(value);
+  const sign = value < 0 ? "−" : "";
+  return `${sign}${formatNumber(a, a < 1 ? 2 : 1)} Mt`;
+}
+
+// Amount in the current flow's unit
+export const formatAmount = (value, flow = state.flow) => (flow === "climate" ? formatMt(value) : formatEur(value));
 
 export const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);

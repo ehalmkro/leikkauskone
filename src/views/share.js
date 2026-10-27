@@ -1,47 +1,46 @@
 // Sharing the result as an image: preview dialog, native share sheet on phones, download elsewhere.
 
-import { CONFIG } from "../../content/config.js";
-import { DATA } from "../../data/measures.js";
 import { state } from "../state.js";
-import { M, totals, selectedImpact } from "../model.js";
-import { t, loc, nameOf, formatEur } from "../text.js";
+import { M, flow, flowYear, totals, selectedImpact } from "../model.js";
+import { t, loc, nameOf, formatAmount } from "../text.js";
 import { $, toast } from "../ui.js";
 import { renderShareImage } from "../share-image.js";
 
 function imageData() {
-  const { spending, taxes, total, byCategory } = totals();
-  const { scaleMax, target, markers } = CONFIG.meter;
-  const milestones = CONFIG.milestones;
+  const { total, byType, byCategory } = totals();
+  const { meter, milestones, categories, types } = flow();
+  const { scaleMax, target, markers } = meter;
   const reached = milestones.filter((ms) => total >= ms.value);
   const next = milestones.find((ms) => total < ms.value);
   let status;
   if (!next) status = t("imageAllReached");
   else if (reached.length) status = t("imageReached", { name: loc(reached[reached.length - 1].name) });
-  else status = t("imageMissing", { target: formatEur(next.value), missing: formatEur(next.value - total) });
+  else status = t("imageMissing", { target: formatAmount(next.value), missing: formatAmount(next.value - total) });
   // The address is printed on the image only when the page is hosted somewhere
   const hosted = /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 
   return {
     appName: t("appName"),
-    year: state.year,
+    theme: state.flow,
+    year: flowYear(),
     headline: t("imageHeadline"),
-    total: formatEur(total),
+    total: formatAmount(total),
     totalValue: total,
     status,
     statusReached: reached.length > 0,
     scaleMax,
-    segments: DATA.categories.map((c, i) => ({ value: byCategory[c.id], colorIndex: i })),
+    segments: categories.map((c, i) => ({ value: byCategory[c.id], colorIndex: i })),
     target: { from: target.from, to: target.to, label: loc(target.label), reached: total >= target.from },
     markers: markers.map((m) => ({ value: m.value, label: loc(m.label), reached: total >= m.value })),
     cutsLabel: t("imageCuts"),
-    cuts: formatEur(spending),
+    cuts: formatAmount(byType[types[0]]),
     taxesLabel: t("imageTaxes"),
-    taxes: formatEur(taxes),
+    taxes: formatAmount(byType[types[1]]),
     topLabel: t("imageTop"),
     top: [...state.selected.keys()]
       .sort((a, b) => selectedImpact(b) - selectedImpact(a))
       .slice(0, 3)
-      .map((id) => ({ name: nameOf(M[id]), amount: formatEur(selectedImpact(id)) })),
+      .map((id) => ({ name: nameOf(M[id]), amount: formatAmount(selectedImpact(id)) })),
     cta: t("imageCta"),
     source: t("imageSource"),
     url: hosted ? (location.host + location.pathname).replace(/\/(index\.html)?$/, "") : "",
@@ -65,7 +64,7 @@ async function openImageDialog() {
 
   const img = $("#share-image");
   img.src = imageUrl;
-  img.alt = t("imageAlt", { total: formatEur(totals().total), year: state.year });
+  img.alt = t("imageAlt", { total: formatAmount(totals().total), year: flowYear() });
   $("#image-download").href = imageUrl;
   $("#image-download").download = t("imageFileName");
   $("#image-share").hidden = !navigator.canShare?.({ files: [imageFile] });

@@ -3,19 +3,22 @@
 import { CONFIG } from "../../content/config.js";
 import { DATA } from "../../data/measures.js";
 import { state, changed } from "../state.js";
-import { t, loc, nameOf, formatEur, esc } from "../text.js";
+import { flow, flowYear } from "../model.js";
+import { t, loc, nameOf, formatAmount, esc } from "../text.js";
 import { $, toast } from "../ui.js";
 
 // The bar: coloured segments per category, the target band and reference markers.
-// Also used empty on the start page.
-export function barMarkup(total = 0, byCategory = {}) {
-  const { scaleMax, target, markers } = CONFIG.meter;
+// Also used on the start page, once per flow.
+export function barMarkup(id = state.flow, total = 0, byCategory = {}) {
+  const { meter, categories } = flow(id);
+  const { scaleMax, target, markers } = meter;
+  const format = (value) => formatAmount(value, id);
   const max = Math.max(scaleMax, total * 1.05);
   const pct = (value) => `${(value / max) * 100}%`;
-  const segments = DATA.categories
+  const segments = categories
     .map((c, i) =>
       byCategory[c.id] > 0
-        ? `<div class="bar-segment" style="width:${pct(byCategory[c.id])};background:var(--series-${i + 1})" title="${esc(nameOf(c))}: ${formatEur(byCategory[c.id])}"></div>`
+        ? `<div class="bar-segment" style="width:${pct(byCategory[c.id])};background:var(--series-${i + 1})" title="${esc(nameOf(c))}: ${format(byCategory[c.id])}"></div>`
         : ""
     )
     .join("");
@@ -32,7 +35,7 @@ export function barMarkup(total = 0, byCategory = {}) {
     })
     .join("");
   return `
-    <div class="bar" role="img" aria-label="${esc(t("barAria", { total: formatEur(total), max: formatEur(max) }))}">${segments}</div>
+    <div class="bar" role="img" aria-label="${esc(t("barAria", { total: format(total), max: format(max) }))}">${segments}</div>
     <div class="bar-marks" aria-hidden="true">${band}${marks}</div>`;
 }
 
@@ -43,17 +46,17 @@ export function render() {
 export function update({ total, byCategory }) {
   $("#year").value = String(state.year);
   $("#funds").checked = state.includeFunds;
-  $("#year-label").textContent = state.year;
-  $("#total").textContent = formatEur(total);
-  $("#bar-frame").innerHTML = barMarkup(total, byCategory);
+  $("#year-label").textContent = flowYear();
+  $("#total").textContent = formatAmount(total);
+  $("#bar-frame").innerHTML = barMarkup(state.flow, total, byCategory);
 
-  const milestones = CONFIG.milestones;
+  const milestones = flow().milestones;
   $("#milestone-list").innerHTML = milestones
     .map((ms) => {
       const ok = total >= ms.value;
       return `<li class="${ok ? "reached" : ""}" title="${esc(loc(ms.description))}">
         <span class="icon" aria-hidden="true">${ok ? "✓" : ""}</span>
-        <span>${esc(loc(ms.name))}: ${formatEur(ms.value)}${ok ? ` – ${esc(t("reached"))}` : ""}</span></li>`;
+        <span>${esc(loc(ms.name))}: ${formatAmount(ms.value)}${ok ? ` – ${esc(t("reached"))}` : ""}</span></li>`;
     })
     .join("");
 
@@ -61,9 +64,11 @@ export function update({ total, byCategory }) {
   const previous = milestones.filter((ms) => total >= ms.value).pop();
   let text;
   if (!next) text = t("allReachedHtml");
-  else if (previous) text = t("reachedNextHtml", { reached: esc(loc(previous.name)), next: esc(loc(next.name)), missing: formatEur(next.value - total) });
-  else text = t("nextHtml", { next: esc(loc(next.name)), missing: formatEur(next.value - total) });
-  if (state.year !== CONFIG.defaultYear) text += ` <span class="year-note">${esc(t("yearNote", { year: CONFIG.defaultYear }))}</span>`;
+  else if (previous) text = t("reachedNextHtml", { reached: esc(loc(previous.name)), next: esc(loc(next.name)), missing: formatAmount(next.value - total) });
+  else text = t("nextHtml", { next: esc(loc(next.name)), missing: formatAmount(next.value - total) });
+  if (flow().year == null && state.year !== CONFIG.defaultYear) {
+    text += ` <span class="year-note">${esc(t("yearNote", { year: CONFIG.defaultYear }))}</span>`;
+  }
   $("#next-goal").innerHTML = text;
 }
 

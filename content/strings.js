@@ -1,6 +1,7 @@
 // UI strings in Finnish and English – safe to edit.
 // Placeholders like {total} are filled in by the code. Keys ending in "Html" may contain HTML.
-// Texts for questions, milestones and categories are in questions.js and config.js.
+// Texts for questions, milestones and categories are in questions.js, climate.js and config.js.
+// The climate flow overrides some strings (the `climate` object in each language).
 
 export const STRINGS = {
   fi: {
@@ -10,20 +11,28 @@ export const STRINGS = {
     navQuestions: "Kysymykset",
     navMeasures: "Kaikki toimenpiteet",
     homeLink: "Leikkauskone – etusivulle",
-    introEyebrow: "Valtion talous 2028–2031",
+    introEyebrow: "Suomen talous ja ilmasto",
     introStart: "Aloita",
     introContinue: "Jatka siitä, mihin jäit",
-    introRestart: "Aloita alusta",
-    introBrowse: "Tai selaa kaikkia {n} toimenpidettä",
+    introBrowse: "Tai selaa kaikkia {n} valtiovarainministeriön toimenpidettä",
     introSource: "Luvut: valtiovarainministeriön meno- ja rakennekartoitus sekä verokartoitus 26.10.2026.",
     showAll: "Näytä kaikki kysymykset",
     showOneByOne: "Näytä yksi kerrallaan",
     sourcesSummary: "Lähteet ja laskentatapa",
     appName: "Leikkauskone",
     introLeadHtml:
+      "Suomen pitää lähivuosina kuroa umpeen kaksi isoa vajetta: valtion budjetin alijäämä ja matka hiilineutraaliuteen. " +
+      "Kokeile itse, mistä sinä leikkaisit – virallisilla luvuilla ja tutkijoiden arvioilla.",
+    introQuestion: "Kummasta aloitat?",
+    introHint: "Voit tehdä molemmat, peräkkäin tai erikseen.",
+    budgetTitle: "Valtion budjetti",
+    budgetLeadHtml:
       "Valtio ottaa ensi vuonna <strong>12,3 miljardia euroa</strong> lisää velkaa. " +
       "Seuraavan hallituksen tavoite on vahvistaa julkista taloutta <strong>8–11 miljardilla eurolla</strong> vuoteen 2031 mennessä.",
-    introQuestion: "Mistä sinä ottaisit rahat?",
+    climateTitle: "Kasvihuonepäästöt",
+    climateLeadHtml:
+      "Suomen on ilmastolain mukaan oltava <strong>hiilineutraali vuonna 2035</strong>. Nykytoimilla siitä jää puuttumaan " +
+      "noin <strong>31–34 miljoonaa tonnia</strong> vuodessa, ennen kaikkea metsien heikentyneen hiilinielun takia.",
     introMeta: "{n} kysymystä · noin 5 minuuttia",
     measuresLead:
       "Valtiovarainministeriö listasi noin 400 tapaa vahvistaa julkista taloutta ja noin 60 verovaihtoehtoa. Valitse yksittäisiä " +
@@ -105,6 +114,7 @@ export const STRINGS = {
     noChangeDescription: "Pidetään ennallaan.",
     levelLow: "Vähän",
     levelHigh: "Paljon",
+    levelYes: "Kyllä",
     stepNavLabel: "Kysymysten selaus",
     questionOf: "Kysymys {n}/{total}",
     previous: "← Edellinen",
@@ -123,7 +133,10 @@ export const STRINGS = {
     resultAll: "Valintasi riittäisivät laskennallisesti jopa valtion budjetin tasapainottamiseen.",
     resultSome: "Saavutit tavoitteen: {name}.",
     resultQuestion: " Olisitko valmis puolustamaan näitä valintoja vaalikentillä?",
+    resultNote: "",
     toMeasures: "Valitse tarkemmin: kaikki {n} toimenpidettä",
+    tryOtherText: "Valtion talouden lisäksi Suomen pitää vähentää päästöjään. Riittäisivätkö sinun keinosi hiilineutraaliuteen?",
+    tryOther: "Siirry kasvihuonepäästöihin",
 
     // Toasts and sharing
     toastRemoved: "Poistettiin vaihtoehtoinen tai päällekkäinen valinta: {names}",
@@ -149,29 +162,65 @@ export const STRINGS = {
     imageFileName: "leikkauskone.png",
     imageFailed: "Kuvan luominen ei onnistunut.",
     imageShareFailed: "Jakaminen ei onnistunut, joten kuva ladattiin laitteellesi.",
+
+    climate: {
+      introSource: "Arviot: Ilmastopaneeli, SYKE, Luke ja Tilastokeskus 2022–2026. Luvut ovat suuntaa antavia.",
+      meterLabel: "Päästövähennysten kertymä",
+      totalLabel: "Vähennetty vuonna",
+      barAria: "Valitut päästövähennykset {total} asteikolla 0–{max}",
+      allReachedHtml: "<strong>Kaikki tavoitteet saavutettu.</strong> Valintasi kattaisivat laskennallisesti kaikki Suomen nykyiset nettopäästöt.",
+      cardDetails: "Mihin arviot perustuvat?",
+      resultTitle: "Sinun ilmastopolitiikkasi",
+      resultSplit: "Päästövähennyksiä {a} ja nielujen vahvistusta {b}, yhteensä {total} vuodessa. ",
+      resultNone: "Se ei vielä riitä hiilineutraaliuteen ({first}).",
+      resultAll: "Valintasi kattaisivat laskennallisesti kaikki Suomen nykyiset nettopäästöt.",
+      resultNote:
+        "Hiilineutraalius on Suomen oma tavoite. Pariisin sopimuksen 1,5 asteen raja olisi vielä tiukempi: jos jäljellä oleva " +
+        "maailman hiilibudjetti jaettaisiin tasan asukasta kohden, Suomen osuus olisi noin 89 Mt – nykyisillä nettopäästöillä se kuluisi noin kahdessa vuodessa.",
+      tryOtherText: "Ilmastotoimet maksavat tai tuovat valtiolle rahaa. Entä valtion budjetti – mistä sinä ottaisit 8–11 miljardia?",
+      tryOther: "Siirry valtion budjettiin",
+      imageHeadline: "Minä leikkasin Suomen päästöistä",
+      imageCuts: "Päästövähennykset",
+      imageTaxes: "Nielut ja maankäyttö",
+      imageCta: "Mistä sinä leikkaisit?",
+      imageSource: "Arviot: Ilmastopaneeli, SYKE ja Luke 2022–2026",
+      imageAllReached: "✓ Kaikki nettopäästöt kuitattu",
+      imageFileName: "leikkauskone-ilmasto.png",
+      sourceNote:
+        "Päästövaikutukset ovat karkeita arvioita vuodelle 2035 verrattuna nykytoimiin. Kun lähde antaa vaihteluvälin, käytetään sen keskikohtaa. " +
+        "Arviot ovat osin päällekkäisiä, joten summat ovat suuntaa antavia. Kysymykset ja toimien ryhmittely ovat tämän sivun tekijän tulkintaa.",
+    },
   },
 
   en: {
-    pageTitle: "Budget Cutter – Finland's budget, your choices",
+    pageTitle: "The Cutter – Finland's budget and emissions, your choices",
     skipToContent: "Skip to content",
     navLabel: "Views",
     navQuestions: "Questions",
     navMeasures: "All measures",
-    homeLink: "Budget Cutter – back to start",
-    introEyebrow: "Finland's public finances 2028–2031",
+    homeLink: "The Cutter – back to start",
+    introEyebrow: "Finland's budget and climate",
     introStart: "Start",
     introContinue: "Continue where you left off",
-    introRestart: "Start over",
-    introBrowse: "Or browse all {n} measures",
+    introBrowse: "Or browse all {n} Ministry of Finance measures",
     introSource: "Figures: Finnish Ministry of Finance spending and tax reviews, 26 Oct 2026.",
     showAll: "Show all questions",
     showOneByOne: "Show one at a time",
     sourcesSummary: "Sources and method",
-    appName: "Budget Cutter",
+    appName: "The Cutter",
     introLeadHtml:
+      "In the coming years Finland has two big gaps to close: the state budget deficit and the distance to carbon neutrality. " +
+      "Try where you would cut – with official figures and researchers' estimates.",
+    introQuestion: "Where do you start?",
+    introHint: "You can do both, one after the other or separately.",
+    budgetTitle: "The state budget",
+    budgetLeadHtml:
       "Next year the Finnish state borrows <strong>€12.3 billion</strong> more. " +
       "The next government aims to strengthen public finances by <strong>€8–11 billion</strong> by 2031.",
-    introQuestion: "Where would you find the money?",
+    climateTitle: "Greenhouse gas emissions",
+    climateLeadHtml:
+      "By law, Finland must be <strong>carbon neutral in 2035</strong>. With current policies it falls about " +
+      "<strong>31–34 million tonnes</strong> a year short, above all because the carbon sink of forests has weakened.",
     introMeta: "{n} questions · about 5 minutes",
     measuresLead:
       "The Finnish Ministry of Finance (VM) listed some 400 ways to strengthen public finances and about 60 tax options. Pick individual " +
@@ -249,6 +298,7 @@ export const STRINGS = {
     noChangeDescription: "Keep things as they are.",
     levelLow: "A little",
     levelHigh: "A lot",
+    levelYes: "Yes",
     stepNavLabel: "Question navigation",
     questionOf: "Question {n} of {total}",
     previous: "← Previous",
@@ -267,7 +317,10 @@ export const STRINGS = {
     resultAll: "On paper, your choices would even balance the state budget.",
     resultSome: "You reached the target: {name}.",
     resultQuestion: " Would you be ready to defend these choices on the campaign trail?",
+    resultNote: "",
     toMeasures: "Choose in detail: all {n} measures",
+    tryOtherText: "Besides the budget, Finland has to cut its emissions. Would your choices be enough for carbon neutrality?",
+    tryOther: "On to greenhouse gas emissions",
 
     toastRemoved: "Removed an alternative or overlapping selection: {names}",
     toastCleared: "All selections removed.",
@@ -291,5 +344,33 @@ export const STRINGS = {
     imageFileName: "budget-cutter.png",
     imageFailed: "Creating the image failed.",
     imageShareFailed: "Sharing failed, so the image was downloaded instead.",
+
+    climate: {
+      introSource: "Estimates: Finnish Climate Change Panel, SYKE, Luke and Statistics Finland 2022–2026. Figures are indicative.",
+      meterLabel: "Emission cuts so far",
+      totalLabel: "Cut in",
+      barAria: "Selected emission cuts {total} on a scale of 0–{max}",
+      allReachedHtml: "<strong>All targets reached.</strong> On paper, your choices would cover all of Finland's current net emissions.",
+      cardDetails: "What are the estimates based on?",
+      resultTitle: "Your climate policy",
+      resultSplit: "Emission cuts {a} and stronger sinks {b}, {total} a year in total. ",
+      resultNone: "That is not yet enough for carbon neutrality ({first}).",
+      resultAll: "On paper, your choices would cover all of Finland's current net emissions.",
+      resultNote:
+        "Carbon neutrality is Finland's own target. The Paris Agreement's 1.5 °C limit would be stricter still: if the world's remaining " +
+        "carbon budget were shared equally per person, Finland's share would be about 89 Mt – at current net emissions it would last about two years.",
+      tryOtherText: "Climate measures cost the state money or bring it in. What about the budget – where would you find €8–11 billion?",
+      tryOther: "On to the state budget",
+      imageHeadline: "I cut Finland's emissions by",
+      imageCuts: "Emission cuts",
+      imageTaxes: "Sinks and land use",
+      imageCta: "Where would you cut?",
+      imageSource: "Estimates: Finnish Climate Change Panel, SYKE and Luke 2022–2026",
+      imageAllReached: "✓ All net emissions covered",
+      imageFileName: "the-cutter-climate.png",
+      sourceNote:
+        "Emission effects are rough estimates for 2035 compared with current policies. Where a source gives a range, its midpoint is used. " +
+        "The estimates overlap in places, so totals are indicative. The questions, the grouping and the English translations are the author's interpretation.",
+    },
   },
 };

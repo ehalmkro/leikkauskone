@@ -1,15 +1,19 @@
-// Calculations and selection rules. All amounts are million euros per year.
+// Calculations and selection rules. Budget amounts are million euros per year,
+// climate amounts million tonnes of CO₂ equivalent per year.
 
 import { DATA } from "../data/measures.js";
-import { QUESTIONS } from "../content/questions.js";
+import { FLOWS } from "./flows.js";
 import { state } from "./state.js";
 
-export const M = DATA.measures;
+// All measures of both flows by id (the ids do not overlap)
+export const M = Object.assign({}, ...Object.values(FLOWS).map((f) => f.measures));
 export const YEARS = DATA.years;
-export const QS = QUESTIONS.questions;
+
+export const flow = (id = state.flow) => FLOWS[id];
+export const flowYear = (id = state.flow) => FLOWS[id].year ?? state.year;
 
 // Expand question levels: "VER-74*3" -> { id: "VER-74", count: 3 }
-for (const q of QS) {
+for (const q of Object.values(FLOWS).flatMap((f) => f.questions)) {
   for (const level of q.levels) {
     level.items = level.measures.map((s) => {
       const [id, count] = s.split("*");
@@ -24,7 +28,9 @@ for (const q of QS) {
 const yearIndex = () => YEARS.indexOf(state.year);
 
 // Impact of one measure (or one step of an adjustable measure) in a year; null = no euro estimate.
+// Climate measures have a single estimate for their target year.
 export function impact(m, i = yearIndex()) {
+  if (m.mt != null) return m.mt;
   const gov = m.government[i];
   const funds = state.includeFunds ? m.funds[i] : null;
   if (gov == null && funds == null) return null;
@@ -35,18 +41,16 @@ export const hasEstimate = (m) => m.government.some((x) => x != null) || m.funds
 export const selectedImpact = (id) => (impact(M[id]) || 0) * (state.selected.get(id) || 0);
 export const savesMoney = (m) => YEARS.reduce((sum, _, i) => sum + (impact(m, i) || 0), 0) > 0;
 
-export function totals() {
-  let spending = 0;
-  let taxes = 0;
-  for (const id of state.selected.keys()) {
-    if (M[id].type === "tax") taxes += selectedImpact(id);
-    else spending += selectedImpact(id);
-  }
+export function totals(id = state.flow) {
+  const f = FLOWS[id];
+  const selected = state.flows[id].selected;
+  const amount = (mid) => (impact(M[mid]) || 0) * (selected.get(mid) || 0);
+  const byType = Object.fromEntries(f.types.map((type) => [type, 0]));
+  for (const mid of selected.keys()) byType[M[mid].type] += amount(mid);
   const byCategory = {};
-  for (const c of DATA.categories) {
-    byCategory[c.id] = c.groups.flatMap((g) => g.measures).reduce((sum, id) => sum + selectedImpact(id), 0);
-  }
-  return { spending, taxes, total: spending + taxes, byCategory };
+  for (const c of f.categories) byCategory[c.id] = c.measures.reduce((sum, mid) => sum + amount(mid), 0);
+  const total = Object.values(byType).reduce((a, b) => a + b, 0);
+  return { total, byType, byCategory };
 }
 
 // ---------- Selecting measures ----------

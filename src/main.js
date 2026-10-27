@@ -1,12 +1,13 @@
 // Leikkauskone – entry point.
 //
-// The visitor's choices live in one place, `state.selected` (measure id -> count). Every view is derived from
-// it: after a change, changed() (state.js) calls update() below, which re-syncs all views and saves the state.
+// The visitor's choices live in one place, `state.selected` (measure id -> count, per flow). Every view is derived
+// from it: after a change, changed() (state.js) calls update() below, which re-syncs all views and saves the state.
+// There are two flows, the state budget and emissions (flows.js); switching between them renders the views again.
 
 import { CONFIG } from "../content/config.js";
 import { DATA } from "../data/measures.js";
 import { state, onChange, load } from "./state.js";
-import { totals } from "./model.js";
+import { flow, totals } from "./model.js";
 import { t, loc, esc } from "./text.js";
 import { $, $$, showView } from "./ui.js";
 import * as intro from "./views/intro.js";
@@ -26,25 +27,37 @@ function render() {
   $$("[data-i18n-placeholder]").forEach((el) => (el.placeholder = t(el.dataset.i18nPlaceholder)));
   $$("[data-i18n-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
   $("#lang").value = state.lang;
-  $("#sources").innerHTML = CONFIG.sources
-    .map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(loc(s.name))}</a></li>`)
+  $("#sources").innerHTML = flow()
+    .sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(loc(s.name))}</a></li>`)
     .join("");
   $("#source-note").textContent =
-    t("sourceNote", { source: DATA.source.name, date: DATA.source.date }) +
-    (DATA.source.taxes ? t("sourceNoteTaxes") : ".") +
-    t("sourceNoteInterpretation");
+    state.flow === "budget"
+      ? t("sourceNote", { source: DATA.source.name, date: DATA.source.date }) +
+        (DATA.source.taxes ? t("sourceNoteTaxes") : ".") +
+        t("sourceNoteInterpretation")
+      : t("sourceNote");
   views.forEach((v) => v.render());
 }
 
 function update() {
   document.body.dataset.view = state.view;
+  $('.tabs [data-view-link="measures"]').hidden = state.flow !== "budget";
   $$("[data-view-section]").forEach((el) => (el.hidden = el.dataset.viewSection !== state.view));
   $$(".tabs [data-view-link]").forEach((el) => {
     if (el.dataset.viewLink === state.view) el.setAttribute("aria-current", "page");
     else el.removeAttribute("aria-current");
   });
   const sums = totals();
-  views.forEach((v) => v.update(sums));
+  views.forEach((v) => (v !== measures || state.flow === "budget") && v.update(sums));
+}
+
+// Opens a view in a flow; the measures view exists only for the budget.
+function go(view, flowId = view === "measures" ? "budget" : state.flow) {
+  if (flowId !== state.flow) {
+    state.flow = flowId;
+    render();
+  }
+  showView(view);
 }
 
 function bind() {
@@ -54,8 +67,9 @@ function bind() {
     update();
   });
   document.addEventListener("click", (e) => {
-    const link = e.target.closest("[data-view-link]");
-    if (link) showView(link.dataset.viewLink);
+    const link = e.target.closest("[data-view-link], button[data-flow]");
+    if (link?.dataset.flow) go("questions", link.dataset.flow);
+    else if (link) go(link.dataset.viewLink);
   });
   views.forEach((v) => v.bind());
   share.bind();

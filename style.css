@@ -233,10 +233,19 @@ body[data-view="questions"] .milestone-list { display: none; }
 .intro h1 { font-size: clamp(2.6rem, 9vw, 4rem); letter-spacing: -0.02em; margin-bottom: 16px; }
 .intro-lead { font-size: clamp(1.1rem, 2.6vw, 1.3rem); color: var(--text-2); margin: 0 0 8px; max-width: 34em; }
 .intro-lead strong { color: var(--text); }
-.intro-bar { margin: 8px 0 28px; }
-.intro-question { font-size: clamp(1.3rem, 3.5vw, 1.6rem); margin-bottom: 4px; }
+.intro-bar { margin: 8px 0 22px; }
+.intro-question { font-size: clamp(1.3rem, 3.5vw, 1.6rem); margin: 28px 0 4px; }
+.intro-hint { margin: 0 0 8px; color: var(--text-2); }
 .intro-meta { margin: 0 0 16px; color: var(--text-2); }
-.intro-browse { margin: 18px 0 0; }
+.intro-browse { margin: 24px 0 0; }
+
+/* The two flows side by side, stacked on narrow screens */
+.flow-choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 40px; }
+.flow-choice { border-top: 2px solid var(--border); padding-top: 18px; margin-top: 16px; display: flex; flex-direction: column; }
+.flow-choice h3 { font-size: 1.3rem; margin: 0 0 6px; }
+.flow-lead { color: var(--text-2); margin: 0 0 4px; flex: 1; }
+.flow-lead strong { color: var(--text); }
+.flow-choice .btn { align-self: flex-start; }
 
 /* ---------- Questions ---------- */
 /* Both layouts use the same markup; [data-layout] on #questions switches between them. */
@@ -290,6 +299,7 @@ body[data-view="questions"] .milestone-list { display: none; }
 .card-details-body ul { list-style: none; margin: 0 0 8px; padding: 0; }
 .card-details-body li { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px solid var(--surface-2); }
 .card-details-body .num { white-space: nowrap; }
+.details-source { display: block; font-size: 0.85rem; color: var(--text-3); }
 .details-title { margin: 6px 0 2px; font-weight: 600; color: var(--text); }
 
 /* One at a time: one large question with generous text */
@@ -321,6 +331,9 @@ body[data-view="questions"] .milestone-list { display: none; }
 [data-layout="all"] .result { margin-top: 28px; }
 .result h2 { font-size: 1.4rem; margin-bottom: 8px; }
 .result-text { font-size: 1.05rem; margin: 0 0 14px; max-width: 70ch; }
+.result-note { color: var(--text-2); margin: 0 0 14px; max-width: 70ch; }
+.try-other { margin-top: 32px; padding-top: 18px; border-top: 2px solid var(--border); }
+.try-other p { margin: 0 0 12px; max-width: 60ch; }
 .answers-title { font-size: 1.05rem; margin: 22px 0 2px; }
 .answers-hint { margin: 0 0 8px; font-size: 0.88rem; }
 .answers { list-style: none; margin: 0 0 16px; padding: 0; }

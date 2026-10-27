@@ -1,10 +1,16 @@
-# Leikkauskone (Budget Cutter)
+# Leikkauskone (The Cutter)
 
-An interactive page for trying out how the Finnish public finances could reach the next parliamentary term's
-fiscal adjustment target, using the measures listed in the Ministry of Finance (VM) *expenditure and structural
-review* (26 Oct 2026) and the options in its *tax review*.
+An interactive page for trying out how Finland could close two gaps:
 
-The page has two views:
+- **The state budget**: reaching the next parliamentary term's fiscal adjustment target, using the measures listed
+  in the Ministry of Finance (VM) *expenditure and structural review* (26 Oct 2026) and the options in its *tax review*.
+- **Greenhouse gas emissions**: reaching carbon neutrality in 2035, using the Finnish Climate Change Panel's 2026 policy
+  recommendations and published estimates of their effects.
+
+The start page offers both. They work the same way, keep their own answers and can be done one after the other or
+separately.
+
+The budget flow has two views:
 
 - **Questions** (the main view): 17 big questions ("Cut support for families with children?") answered with
   *No change / A little / A lot*, one at a time or all at once. Each option explains what it means and what
@@ -12,6 +18,7 @@ The page has two views:
 - **All measures**: all 459 measures, grouped and individually selectable.
 
 Both views share the same selections: answers to the questions show up as individual measures in the other view.
+The climate flow has the questions view only.
 
 The UI is in Finnish and English. Choices are saved in the browser (localStorage), so the page continues
 where it was left.
@@ -32,10 +39,12 @@ and open <http://localhost:8000>. There is no build step and there are no depend
 | Path | What it is |
 |---|---|
 | `index.html`, `style.css` | Page structure and styles. Colours and sizes are variables at the top of `style.css` (light and dark theme). |
-| `content/questions.js` | The questions and their levels (which measures each level selects) |
-| `content/strings.js` | UI texts in Finnish and English |
+| `content/questions.js` | The budget questions and their levels (which measures each level selects) |
+| `content/climate.js` | The climate flow: measures with their emission estimates and sources, questions, meter and milestones |
+| `content/strings.js` | UI texts in Finnish and English (the climate flow overrides some of them) |
 | `content/config.js` | Languages, milestones, default year, category notes, source links |
-| `src/main.js` | Entry point: header, language, switching views |
+| `src/main.js` | Entry point: header, language, switching views and flows |
+| `src/flows.js` | The two flows and the content each one uses |
 | `src/state.js` | State and saving it in the browser |
 | `src/model.js` | Calculations and selection rules |
 | `src/text.js`, `src/ui.js` | Translation and formatting helpers, small DOM helpers |
@@ -73,11 +82,14 @@ The CSVs use `;` as the separator so they open directly in Excel with Finnish se
 In `content/questions.js` every question has two levels ("A little" and "A lot"), each listing measure ids
 (for per-unit tax yields, the number of steps after an asterisk, e.g. `"VER-74*3"`). Euro amounts are calculated
 automatically. Avoid putting conflicting measures in different questions – otherwise answering one question
-clears another.
+clears another. A level can have a `name` of its own; a question with a single level is answered *Yes / No change*.
+
+The climate questions in `content/climate.js` work the same way. Their measures are defined in the same file, each
+with an estimate `mt` (million tonnes of CO₂ equivalent a year in 2035) and a `source`.
 
 ## How it works
 
-The visitor's choices are a single map from measure id to count. Everything else – totals, answers to the questions,
+The visitor's choices are a single map from measure id to count per flow. Everything else – totals, answers to the questions,
 the meter – is derived from it on each change, so the two views can never disagree.
 
 
@@ -91,3 +103,15 @@ the meter – is derived from it on each change, so the two views can never disa
   (Finnish Government publication 2026:17) and the €12.3bn deficit of the 2027 state budget.
 - The grouping, the questions, the English translations and the detection of overlaps are the
   author's interpretation. VM has not assessed the combined effects of the measures.
+
+### Climate
+
+- Effects are rough annual estimates for 2035 compared with current policies, taken from the Climate Change Panel's
+  list of policy measures (4 Sep 2026), SYKE (Karhinen et al. 2026), Luke and the panel's AFOLU project. Where a
+  source gives a range, its midpoint is used. Harvest reductions use the panel's rule of thumb of about 1.5 Mt per
+  million cubic metres not harvested.
+- Target: carbon neutrality in 2035 needs roughly 31–34 Mt more than current policies deliver – the land use sector
+  is projected to be a 15.8 Mt source when it should be at least a 15 Mt sink (Climate Change Panel), and the
+  Government's Annual Climate Report 2025 puts the need for additional measures at up to 34 Mt.
+- The estimates overlap in places (for example fuel taxes, blending obligations and electrification), so totals
+  are indicative.

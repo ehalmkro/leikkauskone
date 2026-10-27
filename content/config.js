@@ -24,6 +24,9 @@ export const CONFIG = {
     ],
   },
 
+  // Measure types in the order the result text and the share image show them
+  types: ["spending", "tax"],
+
   // Milestones for the texts about the next target, smallest first.
   milestones: [
     {

@@ -1,17 +1,24 @@
-// Questions view: 17 questions shown one at a time (default) or all at once, and a result page.
+// Questions view: the current flow's questions shown one at a time (default) or all at once, and a result page.
 // Both layouts use the same markup; CSS and update() decide what is visible.
 
-import { CONFIG } from "../../content/config.js";
-import { QUESTIONS } from "../../content/questions.js";
-import { state, changed, RESULT_STEP, resetAnswers } from "../state.js";
-import { M, QS, impact, selectedImpact, levelTotal, currentLevel, setLevel } from "../model.js";
-import { t, loc, nameOf, formatEur, esc } from "../text.js";
+import { DATA } from "../../data/measures.js";
+import { FLOW_IDS } from "../flows.js";
+import { state, changed, resultStep, resetAnswers } from "../state.js";
+import { M, flow, impact, selectedImpact, levelTotal, currentLevel, setLevel } from "../model.js";
+import { t, loc, nameOf, formatAmount, esc } from "../text.js";
 import { $, $$, notifyRemoved, showView, prefersReducedMotion } from "../ui.js";
 
 const AUTO_ADVANCE_MS = 600;
 const root = () => $("#questions");
+const questions = () => flow().questions;
+const otherFlow = () => FLOW_IDS.find((id) => id !== state.flow);
 
-const levelName = (q, n) => (n === 0 ? t("noChange") : loc(q.levels[n - 1].name) || t(n === 1 ? "levelLow" : "levelHigh"));
+function levelName(q, n) {
+  if (n === 0) return t("noChange");
+  if (q.levels[n - 1].name) return loc(q.levels[n - 1].name);
+  if (q.levels.length === 1) return t("levelYes");
+  return t(n === 1 ? "levelLow" : "levelHigh");
+}
 
 export function render() {
   const option = (q, n) => `
@@ -47,12 +54,15 @@ export function render() {
     </div>
     <div class="progress" data-single-only aria-hidden="true"><div data-progress-bar></div></div>
 
-    ${QUESTIONS.sections
-      .map(
+    ${flow()
+      .sections.map(
         (s) => `
       <section class="question-section">
         <h2>${esc(loc(s.title))}</h2>
-        ${QS.filter((q) => q.section === s.id).map(question).join("")}
+        ${questions()
+          .filter((q) => q.section === s.id)
+          .map(question)
+          .join("")}
       </section>`
       )
       .join("")}
@@ -65,6 +75,7 @@ export function render() {
     <section class="result" id="result">
       <h2 tabindex="-1">${esc(t("resultTitle"))}</h2>
       <p class="result-text" data-result-text></p>
+      ${t("resultNote") ? `<p class="result-note">${esc(t("resultNote"))}</p>` : ""}
       <div class="actions">
         <button type="button" class="btn" data-share-image>${esc(t("shareImage"))}</button>
       </div>
@@ -73,7 +84,11 @@ export function render() {
       <ol class="answers" data-answers></ol>
       <div class="actions">
         <button type="button" class="btn secondary" data-start-over>${esc(t("startOver"))}</button>
-        <button type="button" class="btn secondary" data-show-measures>${esc(t("toMeasures", { n: Object.keys(M).length }))}</button>
+        ${state.flow === "budget" ? `<button type="button" class="btn secondary" data-show-measures>${esc(t("toMeasures", { n: Object.keys(DATA.measures).length }))}</button>` : ""}
+      </div>
+      <div class="try-other">
+        <p>${esc(t("tryOtherText"))}</p>
+        <button type="button" class="btn" data-flow="${otherFlow()}">${esc(t("tryOther"))} →</button>
       </div>
     </section>`;
 }
@@ -87,15 +102,18 @@ function renderCardDetails(q) {
         .map((x) => {
           const a = impact(M[x.id]);
           const steps = M[x.id].unit ? ` (+${x.count} × ${esc(M[x.id].unit.step)})` : "";
-          return `<li><span>${esc(nameOf(M[x.id]))}${steps}</span><span class="num">${a == null ? "–" : formatEur(a * x.count)}</span></li>`;
+          const source = M[x.id].source ? `<span class="details-source">${esc(M[x.id].source)}</span>` : "";
+          return `<li><span>${esc(nameOf(M[x.id]))}${steps}${source}</span><span class="num">${a == null ? "–" : formatAmount(a * x.count)}</span></li>`;
         })
         .join("")}</ul>`
     )
     .join("");
 }
 
-export function update({ spending, taxes, total }) {
+export function update({ total, byType }) {
   const el = root();
+  const QS = questions();
+  const RESULT_STEP = resultStep();
   const single = state.layout === "single";
   const onResult = single && state.step === RESULT_STEP;
   el.dataset.layout = state.layout;
@@ -111,7 +129,7 @@ export function update({ spending, taxes, total }) {
   progress.hidden = !single || onResult;
   if (single && !onResult) {
     const q = QS[state.step];
-    const section = QUESTIONS.sections.find((s) => s.id === q.section);
+    const section = flow().sections.find((s) => s.id === q.section);
     progress.textContent = `${t("questionOf", { n: state.step + 1, total: RESULT_STEP })} · ${loc(section.title)}`;
     $("[data-progress-bar]", el).style.width = `${(state.step / RESULT_STEP) * 100}%`;
     $('[data-step-by="-1"]', el).disabled = state.step === 0;
@@ -127,7 +145,7 @@ export function update({ spending, taxes, total }) {
     $$("input", qEl).forEach((input) => {
       const n = Number(input.value);
       input.checked = n === current && (n > 0 || showNoChange);
-      $("[data-level-amount]", input.closest(".option")).textContent = n === 0 ? "" : formatEur(levelTotal(q.levels[n - 1]));
+      $("[data-level-amount]", input.closest(".option")).textContent = n === 0 ? "" : formatAmount(levelTotal(q.levels[n - 1]));
     });
     qEl.classList.toggle("answered", current !== 0);
     $("[data-edited]", qEl).hidden = current !== -1;
@@ -138,12 +156,13 @@ export function update({ spending, taxes, total }) {
   );
 
   // Result page
-  const milestones = CONFIG.milestones;
+  const milestones = flow().milestones;
   const reached = milestones.filter((ms) => total >= ms.value);
   let text = t("resultNothing");
   if (state.selected.size) {
-    text = t("resultSplit", { spending: formatEur(spending), taxes: formatEur(taxes), total: formatEur(total) });
-    if (!reached.length) text += t("resultNone", { first: formatEur(milestones[0].value) });
+    const [a, b] = flow().types.map((type) => formatAmount(byType[type]));
+    text = t("resultSplit", { a, b, total: formatAmount(total) });
+    if (!reached.length) text += t("resultNone", { first: formatAmount(milestones[0].value) });
     else if (reached.length === milestones.length) text += t("resultAll");
     else text += t("resultSome", { name: loc(reached[reached.length - 1].name) });
     text += t("resultQuestion");
@@ -153,7 +172,7 @@ export function update({ spending, taxes, total }) {
   $("[data-answers]", el).innerHTML = QS.map((q, i) => {
     const n = currentLevel(q);
     const answer = n === -1 ? t("modified") : levelName(q, n);
-    const amount = n === 0 ? "" : formatEur(q.ids.reduce((sum, id) => sum + selectedImpact(id), 0));
+    const amount = n === 0 ? "" : formatAmount(q.ids.reduce((sum, id) => sum + selectedImpact(id), 0));
     return `<li><button type="button" class="answer" data-go-to-step="${i}">
         <span class="answer-question">${esc(loc(q.title))}</span>
         <span class="answer-choice${n === 0 ? " muted" : ""}">${esc(answer)}${amount ? ` · ${amount}` : ""}</span>
@@ -168,10 +187,10 @@ let advanceTimer;
 function goToStep(step) {
   clearTimeout(advanceTimer);
   state.layout = "single";
-  state.step = Math.max(0, Math.min(step, RESULT_STEP));
+  state.step = Math.max(0, Math.min(step, resultStep()));
   changed();
   // Bring the new question below the sticky meter and move focus to its heading
-  const heading = state.step === RESULT_STEP ? $("#result h2") : $$(".question h3", root())[state.step];
+  const heading = state.step === resultStep() ? $("#result h2") : $$(".question h3", root())[state.step];
   const meterHeight = $(".meter").getBoundingClientRect().height;
   const top = heading.getBoundingClientRect().top;
   if (top < meterHeight || top > window.innerHeight * 0.5) {
@@ -190,7 +209,7 @@ export function bind() {
   el.addEventListener("change", (e) => {
     const input = e.target.closest(".question input");
     if (!input) return;
-    const q = QS.find((x) => `q-${x.id}` === input.name);
+    const q = questions().find((x) => `q-${x.id}` === input.name);
     state.answered.add(q.id);
     notifyRemoved(setLevel(q, Number(input.value)));
     changed();
@@ -223,7 +242,7 @@ export function bind() {
     (e) => {
       const d = e.target;
       if (d.open && d.matches("[data-card-details]")) {
-        $(".card-details-body", d).innerHTML = renderCardDetails(QS.find((q) => q.id === d.dataset.cardDetails));
+        $(".card-details-body", d).innerHTML = renderCardDetails(questions().find((q) => q.id === d.dataset.cardDetails));
       }
     },
     true

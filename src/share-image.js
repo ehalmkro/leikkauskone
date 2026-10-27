@@ -6,9 +6,13 @@ const H = 1350;
 const PAD = 80;
 const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 
+// Background gradient per flow
+const THEMES = {
+  budget: ["#0f1b3d", "#3a1e6e"],
+  climate: ["#0b2a2a", "#1d4f3a"],
+};
+
 const COLORS = {
-  bgFrom: "#0f1b3d",
-  bgTo: "#3a1e6e",
   text: "#ffffff",
   muted: "rgba(255, 255, 255, 0.72)",
   faint: "rgba(255, 255, 255, 0.10)",
@@ -39,10 +43,11 @@ function fit(ctx, text, maxWidth) {
   return s.trimEnd() + "…";
 }
 
-function drawBackground(ctx) {
+function drawBackground(ctx, theme) {
+  const [from, to] = THEMES[theme] || THEMES.budget;
   const g = ctx.createLinearGradient(0, 0, W, H);
-  g.addColorStop(0, COLORS.bgFrom);
-  g.addColorStop(1, COLORS.bgTo);
+  g.addColorStop(0, from);
+  g.addColorStop(1, to);
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
 
@@ -133,7 +138,7 @@ function fitSize(ctx, text, maxWidth, max, min, weight) {
 }
 
 function draw(ctx, data) {
-  drawBackground(ctx);
+  drawBackground(ctx, data.theme);
   ctx.textBaseline = "alphabetic";
 
   // Header: app name + year
@@ -205,7 +210,7 @@ function draw(ctx, data) {
   }
 }
 
-// data: { appName, year, headline, total, totalValue, status, statusReached, scaleMax, segments: [{ value, colorIndex }],
+// data: { theme, appName, year, headline, total, totalValue, status, statusReached, scaleMax, segments: [{ value, colorIndex }],
 //         target: { from, to, label, reached }, markers: [{ value, label, reached }], cutsLabel, cuts, taxesLabel, taxes, topLabel, top: [{ name, amount }],
 //         cta, source, url }
 // Returns a Promise<Blob> (image/png).
