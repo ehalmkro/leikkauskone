@@ -6,6 +6,12 @@ import { t, loc, nameOf, formatAmount } from "../text.js";
 import { $, toast } from "../ui.js";
 import { renderShareImage } from "../share-image.js";
 
+// The page address without protocol, or "" when the page is not hosted anywhere (opened locally)
+function pageAddress() {
+  const hosted = /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  return hosted ? (location.host + location.pathname).replace(/\/(index\.html)?$/, "") : "";
+}
+
 function imageData() {
   const { total, byType, byCategory } = totals();
   const { meter, milestones, categories, types } = flow();
@@ -16,8 +22,6 @@ function imageData() {
   if (!next) status = t("imageAllReached");
   else if (reached.length) status = t("imageReached", { name: loc(reached[reached.length - 1].name) });
   else status = t("imageMissing", { target: formatAmount(next.value), missing: formatAmount(next.value - total) });
-  // The address is printed on the image only when the page is hosted somewhere
-  const hosted = /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 
   return {
     appName: t("appName"),
@@ -43,12 +47,13 @@ function imageData() {
       .map((id) => ({ name: nameOf(M[id]), amount: formatAmount(selectedImpact(id)) })),
     cta: t("imageCta"),
     source: t("imageSource"),
-    url: hosted ? (location.host + location.pathname).replace(/\/(index\.html)?$/, "") : "",
+    url: pageAddress(),
   };
 }
 
 let imageFile = null;
 let imageUrl = null;
+let shareText = "";
 
 async function openImageDialog() {
   let blob;
@@ -61,6 +66,8 @@ async function openImageDialog() {
   if (imageUrl) URL.revokeObjectURL(imageUrl);
   imageUrl = URL.createObjectURL(blob);
   imageFile = new File([blob], t("imageFileName"), { type: "image/png" });
+  const address = pageAddress();
+  shareText = t("imageShareText", { total: formatAmount(totals().total) }) + (address ? ` https://${address}` : "");
 
   const img = $("#share-image");
   img.src = imageUrl;
@@ -71,10 +78,12 @@ async function openImageDialog() {
   $("#image-dialog").showModal();
 }
 
-// Only the file is shared: several apps (WhatsApp on iOS in particular) fail when a file comes with text.
+// The image is shared with a short text and the link; where the browser cannot share both, the image alone.
 async function shareImageFile() {
+  const data = { files: [imageFile], text: shareText };
+  if (!navigator.canShare(data)) delete data.text;
   try {
-    await navigator.share({ files: [imageFile] });
+    await navigator.share(data);
   } catch (e) {
     if (e?.name === "AbortError") return;
     $("#image-download").click();

@@ -113,5 +113,10 @@ the meter – is derived from it on each change, so the two views can never disa
 - Target: carbon neutrality in 2035 needs roughly 31–34 Mt more than current policies deliver – the land use sector
   is projected to be a 15.8 Mt source when it should be at least a 15 Mt sink (Climate Change Panel), and the
   Government's Annual Climate Report 2025 puts the need for additional measures at up to 34 Mt.
+- The marker beyond the target is a deliberately pessimistic reading of the Paris Agreement: an equal per-person
+  share of the remaining 1.5 °C carbon budget (about 89 Mt for Finland from 2025, based on Forster et al. 2025).
+  Reaching carbon neutrality linearly by 2035 overshoots it by about 140 Mt, which would take net sinks of about
+  10 Mt a year in 2035–2050 to pay back – hence about 10 Mt on top of carbon neutrality. This is the author's
+  rough calculation from the published figures.
 - The estimates overlap in places (for example fuel taxes, blending obligations and electrification), so totals
   are indicative.

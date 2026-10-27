@@ -160,6 +160,7 @@ export const STRINGS = {
     imageMissing: "Tavoitteeseen {target} puuttuu vielä {missing}",
     imageAlt: "Tuloskuva: {total} vuonna {year}.",
     imageFileName: "leikkauskone.png",
+    imageShareText: "Minä löysin valtion budjettiin {total}. Mistä sinä ottaisit?",
     imageFailed: "Kuvan luominen ei onnistunut.",
     imageShareFailed: "Jakaminen ei onnistunut, joten kuva ladattiin laitteellesi.",
 
@@ -168,15 +169,16 @@ export const STRINGS = {
       meterLabel: "Päästövähennysten kertymä",
       totalLabel: "Vähennetty vuonna",
       barAria: "Valitut päästövähennykset {total} asteikolla 0–{max}",
-      allReachedHtml: "<strong>Hiilineutraalius saavutettu.</strong> Kaikki tämän yli menevä tekisi Suomesta vuonna 2035 hiilinegatiivisen, kuten ilmastolaki tavoittelee.",
+      allReachedHtml: "<strong>Kaikki tavoitteet saavutettu.</strong> Suomi olisi vuonna 2035 niin hiilinegatiivinen, että se mahtuisi tasaosuuteensa Pariisin 1,5 asteen hiilibudjetista.",
       cardDetails: "Mihin arviot perustuvat?",
       resultTitle: "Sinun ilmastopolitiikkasi",
       resultSplit: "Päästövähennyksiä {a} ja nielujen vahvistusta {b}, yhteensä {total} vuodessa. ",
       resultNone: "Se ei vielä riitä hiilineutraaliuteen ({first}).",
-      resultAll: "Valintasi riittäisivät laskennallisesti hiilineutraaliuteen vuonna 2035.",
+      resultAll: "Valintasi riittäisivät laskennallisesti jopa Suomen tasaosuuteen Pariisin 1,5 asteen hiilibudjetista.",
       resultNote:
         "Hiilineutraalius on Suomen oma tavoite. Pariisin sopimuksen 1,5 asteen raja olisi vielä tiukempi: jos jäljellä oleva " +
-        "maailman hiilibudjetti jaettaisiin tasan asukasta kohden, Suomen osuus olisi noin 89 Mt – nykyisillä nettopäästöillä se kuluisi noin kahdessa vuodessa.",
+        "maailman hiilibudjetti jaettaisiin tasan asukasta kohden, Suomen osuus olisi noin 89 Mt – nykyisillä nettopäästöillä se kuluisi noin kahdessa vuodessa. " +
+        "Ylitys pitäisi kuitata myöhemmin nieluilla, minkä vuoksi tasaosuus vaatisi mittarissa noin 10 Mt enemmän kuin hiilineutraalius.",
       tryOtherText: "Ilmastotoimet maksavat tai tuovat valtiolle rahaa. Entä valtion budjetti – mistä sinä ottaisit 8–11 miljardia?",
       tryOther: "Siirry valtion budjettiin",
       imageHeadline: "Minä leikkasin Suomen päästöistä",
@@ -184,8 +186,9 @@ export const STRINGS = {
       imageTaxes: "Nielut ja maankäyttö",
       imageCta: "Mistä sinä leikkaisit?",
       imageSource: "Arviot: Ilmastopaneeli, SYKE ja Luke 2022–2026",
-      imageAllReached: "✓ Suomi hiilineutraali 2035",
+      imageAllReached: "✓ Myös Pariisin 1,5 °C:n tasaosuus",
       imageFileName: "leikkauskone-ilmasto.png",
+      imageShareText: "Minä leikkasin Suomen päästöistä {total}. Mistä sinä leikkaisit?",
       sourceNote:
         "Päästövaikutukset ovat karkeita arvioita vuodelle 2035 verrattuna nykytoimiin. Kun lähde antaa vaihteluvälin, käytetään sen keskikohtaa. " +
         "Arviot ovat osin päällekkäisiä, joten summat ovat suuntaa antavia. Kysymykset ja toimien ryhmittely ovat tämän sivun tekijän tulkintaa.",
@@ -342,6 +345,7 @@ export const STRINGS = {
     imageMissing: "{missing} short of the {target} target",
     imageAlt: "Result image: {total} in {year}.",
     imageFileName: "budget-cutter.png",
+    imageShareText: "I found {total} for Finland's budget. Where would you find it?",
     imageFailed: "Creating the image failed.",
     imageShareFailed: "Sharing failed, so the image was downloaded instead.",
 
@@ -350,15 +354,16 @@ export const STRINGS = {
       meterLabel: "Emission cuts so far",
       totalLabel: "Cut in",
       barAria: "Selected emission cuts {total} on a scale of 0–{max}",
-      allReachedHtml: "<strong>Carbon neutrality reached.</strong> Anything beyond it would make Finland carbon negative in 2035, as the Climate Act aims for.",
+      allReachedHtml: "<strong>All targets reached.</strong> In 2035 Finland would be carbon negative enough to stay within its equal share of the Paris 1.5 °C carbon budget.",
       cardDetails: "What are the estimates based on?",
       resultTitle: "Your climate policy",
       resultSplit: "Emission cuts {a} and stronger sinks {b}, {total} a year in total. ",
       resultNone: "That is not yet enough for carbon neutrality ({first}).",
-      resultAll: "On paper, your choices would be enough for carbon neutrality in 2035.",
+      resultAll: "On paper, your choices would even keep Finland within its equal share of the Paris 1.5 °C carbon budget.",
       resultNote:
         "Carbon neutrality is Finland's own target. The Paris Agreement's 1.5 °C limit would be stricter still: if the world's remaining " +
-        "carbon budget were shared equally per person, Finland's share would be about 89 Mt – at current net emissions it would last about two years.",
+        "carbon budget were shared equally per person, Finland's share would be about 89 Mt – at current net emissions it would last about two years. " +
+        "The overshoot would have to be paid back later with sinks, which is why the equal share needs about 10 Mt more on the meter than carbon neutrality.",
       tryOtherText: "Climate measures cost the state money or bring it in. What about the budget – where would you find €8–11 billion?",
       tryOther: "On to the state budget",
       imageHeadline: "I cut Finland's emissions by",
@@ -366,8 +371,9 @@ export const STRINGS = {
       imageTaxes: "Sinks and land use",
       imageCta: "Where would you cut?",
       imageSource: "Estimates: Finnish Climate Change Panel, SYKE and Luke 2022–2026",
-      imageAllReached: "✓ Finland carbon neutral 2035",
+      imageAllReached: "✓ Paris 1.5 °C equal share too",
       imageFileName: "the-cutter-climate.png",
+      imageShareText: "I cut Finland's emissions by {total}. Where would you cut?",
       sourceNote:
         "Emission effects are rough estimates for 2035 compared with current policies. Where a source gives a range, its midpoint is used. " +
         "The estimates overlap in places, so totals are indicative. The questions, the grouping and the English translations are the author's interpretation.",

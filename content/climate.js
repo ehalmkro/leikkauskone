@@ -8,11 +8,12 @@
 export const CLIMATE = {
   year: 2035,
 
-  // The bar counts additional cuts on top of current policies; carbon neutrality in 2035 is the target band.
+  // The bar counts additional cuts on top of current policies. Carbon neutrality in 2035 is the target band;
+  // the marker is a stricter, pessimistic reading of the Paris Agreement (an equal per-person share of the 1.5 °C budget).
   meter: {
-    scaleMax: 40,
+    scaleMax: 48,
     target: { from: 31, to: 34, label: { fi: "Hiilineutraalius 2035", en: "Carbon neutral 2035" } },
-    markers: [],
+    markers: [{ value: 44, label: { fi: "Pariisi 1,5 °C, tasaosuus", en: "Paris 1.5 °C, equal share" } }],
   },
 
   milestones: [
@@ -36,6 +37,21 @@ export const CLIMATE = {
       description: {
         fi: "Valtioneuvoston ilmastovuosikertomuksen 2025 mukaan lisätoimien tarve on suuruusluokaltaan jopa 34 Mt.",
         en: "According to the Government's Annual Climate Report 2025, the need for additional measures is as much as 34 Mt.",
+      },
+    },
+    {
+      value: 44,
+      name: { fi: "Pariisin 1,5 asteen tasaosuus", en: "Equal share of the Paris 1.5 °C budget" },
+      description: {
+        fi:
+          "Karkea, pessimistinen arvio. Jos maailman jäljellä oleva 1,5 asteen hiilibudjetti (noin 130 Gt vuoden 2025 alusta, Forster ym. 2025) " +
+          "jaetaan tasan asukasta kohden, Suomen osuus on noin 89 Mt. Tasaisesti hiilineutraaliksi 2035 laskiessaan Suomi päästää sitä ennen noin 230 Mt " +
+          "eli ylittää osuutensa noin 140 Mt. Ylitys pitäisi kuitata nettonieluilla, esimerkiksi noin 10 Mt vuodessa 2035–2050. Siksi hiilineutraaliuden päälle tarvittaisiin noin 10 Mt lisää.",
+        en:
+          "A rough, pessimistic estimate. If the world's remaining 1.5 °C carbon budget (about 130 Gt from the start of 2025, Forster et al. 2025) " +
+          "were shared equally per person, Finland's share would be about 89 Mt. Falling steadily to carbon neutrality by 2035, Finland emits about 230 Mt before then, " +
+          "overshooting its share by about 140 Mt. The overshoot would have to be paid back with net sinks, for example about 10 Mt a year in 2035–2050 – " +
+          "so about 10 Mt more than carbon neutrality.",
       },
     },
   ],
