@@ -168,12 +168,12 @@ export const STRINGS = {
       meterLabel: "Päästövähennysten kertymä",
       totalLabel: "Vähennetty vuonna",
       barAria: "Valitut päästövähennykset {total} asteikolla 0–{max}",
-      allReachedHtml: "<strong>Kaikki tavoitteet saavutettu.</strong> Valintasi kattaisivat laskennallisesti kaikki Suomen nykyiset nettopäästöt.",
+      allReachedHtml: "<strong>Hiilineutraalius saavutettu.</strong> Kaikki tämän yli menevä tekisi Suomesta vuonna 2035 hiilinegatiivisen, kuten ilmastolaki tavoittelee.",
       cardDetails: "Mihin arviot perustuvat?",
       resultTitle: "Sinun ilmastopolitiikkasi",
       resultSplit: "Päästövähennyksiä {a} ja nielujen vahvistusta {b}, yhteensä {total} vuodessa. ",
       resultNone: "Se ei vielä riitä hiilineutraaliuteen ({first}).",
-      resultAll: "Valintasi kattaisivat laskennallisesti kaikki Suomen nykyiset nettopäästöt.",
+      resultAll: "Valintasi riittäisivät laskennallisesti hiilineutraaliuteen vuonna 2035.",
       resultNote:
         "Hiilineutraalius on Suomen oma tavoite. Pariisin sopimuksen 1,5 asteen raja olisi vielä tiukempi: jos jäljellä oleva " +
         "maailman hiilibudjetti jaettaisiin tasan asukasta kohden, Suomen osuus olisi noin 89 Mt – nykyisillä nettopäästöillä se kuluisi noin kahdessa vuodessa.",
@@ -184,7 +184,7 @@ export const STRINGS = {
       imageTaxes: "Nielut ja maankäyttö",
       imageCta: "Mistä sinä leikkaisit?",
       imageSource: "Arviot: Ilmastopaneeli, SYKE ja Luke 2022–2026",
-      imageAllReached: "✓ Kaikki nettopäästöt kuitattu",
+      imageAllReached: "✓ Suomi hiilineutraali 2035",
       imageFileName: "leikkauskone-ilmasto.png",
       sourceNote:
         "Päästövaikutukset ovat karkeita arvioita vuodelle 2035 verrattuna nykytoimiin. Kun lähde antaa vaihteluvälin, käytetään sen keskikohtaa. " +
@@ -350,12 +350,12 @@ export const STRINGS = {
       meterLabel: "Emission cuts so far",
       totalLabel: "Cut in",
       barAria: "Selected emission cuts {total} on a scale of 0–{max}",
-      allReachedHtml: "<strong>All targets reached.</strong> On paper, your choices would cover all of Finland's current net emissions.",
+      allReachedHtml: "<strong>Carbon neutrality reached.</strong> Anything beyond it would make Finland carbon negative in 2035, as the Climate Act aims for.",
       cardDetails: "What are the estimates based on?",
       resultTitle: "Your climate policy",
       resultSplit: "Emission cuts {a} and stronger sinks {b}, {total} a year in total. ",
       resultNone: "That is not yet enough for carbon neutrality ({first}).",
-      resultAll: "On paper, your choices would cover all of Finland's current net emissions.",
+      resultAll: "On paper, your choices would be enough for carbon neutrality in 2035.",
       resultNote:
         "Carbon neutrality is Finland's own target. The Paris Agreement's 1.5 °C limit would be stricter still: if the world's remaining " +
         "carbon budget were shared equally per person, Finland's share would be about 89 Mt – at current net emissions it would last about two years.",
@@ -366,7 +366,7 @@ export const STRINGS = {
       imageTaxes: "Sinks and land use",
       imageCta: "Where would you cut?",
       imageSource: "Estimates: Finnish Climate Change Panel, SYKE and Luke 2022–2026",
-      imageAllReached: "✓ All net emissions covered",
+      imageAllReached: "✓ Finland carbon neutral 2035",
       imageFileName: "the-cutter-climate.png",
       sourceNote:
         "Emission effects are rough estimates for 2035 compared with current policies. Where a source gives a range, its midpoint is used. " +

@@ -8,11 +8,11 @@
 export const CLIMATE = {
   year: 2035,
 
-  // The meter bar ends at Finland's current net emissions; carbon neutrality in 2035 is the target band.
+  // The bar counts additional cuts on top of current policies; carbon neutrality in 2035 is the target band.
   meter: {
-    scaleMax: 46,
+    scaleMax: 40,
     target: { from: 31, to: 34, label: { fi: "Hiilineutraalius 2035", en: "Carbon neutral 2035" } },
-    markers: [{ value: 46, label: { fi: "Nettopäästöt nyt", en: "Net emissions now" } }],
+    markers: [],
   },
 
   milestones: [
@@ -21,9 +21,11 @@ export const CLIMATE = {
       name: { fi: "Hiilineutraalius 2035, alaraja-arvio", en: "Carbon neutrality 2035, low estimate" },
       description: {
         fi:
+          "Suomen nettopäästöt ovat nyt noin 46 Mt. Jo päätetyt toimet vähentävät niitä vuoteen 2035 mennessä, ja kone laskee niiden päälle tarvittavat lisätoimet. " +
           "Maankäyttösektori on nykytoimilla vuonna 2035 noin 15,8 Mt:n päästölähde, mutta hiilineutraalius vaatisi Ilmastopaneelin mukaan " +
           "vähintään 15 Mt:n nettonielun. Ero on noin 31 Mt, vaikka muut päästöt vähenisivät suunnitellusti.",
         en:
+          "Finland's net emissions are now about 46 Mt. Policies already decided cut them by 2035, and the tool counts the additional measures needed on top. " +
           "With current policies the land use sector is a net source of about 15.8 Mt in 2035, but according to the Climate Change Panel " +
           "carbon neutrality would need a net sink of at least 15 Mt. The difference is about 31 Mt, even if other emissions fall as planned.",
       },
@@ -34,14 +36,6 @@ export const CLIMATE = {
       description: {
         fi: "Valtioneuvoston ilmastovuosikertomuksen 2025 mukaan lisätoimien tarve on suuruusluokaltaan jopa 34 Mt.",
         en: "According to the Government's Annual Climate Report 2025, the need for additional measures is as much as 34 Mt.",
-      },
-    },
-    {
-      value: 46,
-      name: { fi: "Nykyiset nettopäästöt kokonaan pois", en: "All of today's net emissions" },
-      description: {
-        fi: "Vertailuluku: Suomen päästöt olivat vuonna 2025 noin 36,5 Mt ja maankäyttösektori päästi lisäksi noin 9,4 Mt (Tilastokeskuksen ennakko).",
-        en: "For comparison: Finland's emissions were about 36.5 Mt in 2025, and the land use sector emitted another 9.4 Mt (Statistics Finland, preliminary).",
       },
     },
   ],
